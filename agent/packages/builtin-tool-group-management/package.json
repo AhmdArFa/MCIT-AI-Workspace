@@ -1,0 +1,17 @@
+{
+  "name": "@tut/builtin-tool-group-management",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./executor": "./src/executor.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/const": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}

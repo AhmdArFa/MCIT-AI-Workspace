@@ -1,0 +1,26 @@
+{
+  "name": "@tut/builtin-tool-skills",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./executor": "./src/executor/index.ts",
+    "./executionRuntime": "./src/ExecutionRuntime/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/const": "workspace:*",
+    "@tut/prompts": "workspace:*",
+    "@tut/shared-tool-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@lobehub/ui": "^5",
+    "antd-style": "*",
+    "react": "*",
+    "react-i18next": "*"
+  }
+}

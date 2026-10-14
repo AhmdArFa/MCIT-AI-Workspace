@@ -1,0 +1,12 @@
+{
+  "name": "@tut/builtin-tool-verify",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "main": "./src/index.ts",
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}

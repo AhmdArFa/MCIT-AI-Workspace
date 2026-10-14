@@ -1,0 +1,16 @@
+{
+  "name": "@tut/config",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/business-config": "workspace:*",
+    "@tut/const": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}

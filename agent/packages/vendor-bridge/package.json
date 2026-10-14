@@ -1,0 +1,20 @@
+{
+  "name": "@tut/vendor-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neutral names for the few third-party UI exports whose upstream names carry the vendor brand. See NOTICE.",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./icons": "./src/icons.ts",
+    "./codemirror": "./src/codemirror.ts",
+    "./static-css-vite": "./src/staticCssVite.ts",
+    "./css": "./src/css.ts",
+    "./scope": "./scope.mjs"
+  },
+  "dependencies": {
+    "@lobehub/editor": "^4",
+    "@lobehub/icons": "^5",
+    "@lobehub/ui": "^5"
+  }
+}

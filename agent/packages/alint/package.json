@@ -1,0 +1,11 @@
+{
+  "name": "@tut/alint",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCIT AI alint rule set: model-backed lint rules, calibration fixtures, and CI annotation helpers",
+  "type": "module",
+  "scripts": {
+    "setup": "bun setup.ts",
+    "test": "vitest run"
+  }
+}

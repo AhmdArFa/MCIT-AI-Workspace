@@ -1,0 +1,13 @@
+{
+  "name": "@tut/builtin-tool-skill-maintainer",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./executionRuntime": "./src/ExecutionRuntime/index.ts"
+  },
+  "main": "./src/index.ts",
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+Tut Agent (MCIT AI)
+Copyright (c) Ministry of Communications and Information Technology (MCIT)
+
+This software is a derivative work of LobeHub (formerly LobeChat),
+https://github.com/lobehub/lobehub, Copyright (c) LobeHub LLC.
+The upstream code is licensed under the LobeHub Community License, which is
+based on the Apache License 2.0 with additional conditions. The full text is
+in LICENSES/UPSTREAM-LICENSE.
+
+Condition 1(b) of that license requires a commercial license from the
+producer to develop and distribute a derivative work. Distribution of this
+software must be covered by such a license.
+
+Third-party packages used at runtime keep their own names and licenses. The
+UI kit, icons, editor and related packages are published under the
+"@lobehub" npm scope; this code base imports them through npm aliases under
+"@mcit-vendor/*" (see packages/vendor-bridge). Their licenses are included in
+their published packages.
+
+Modifications for MCIT AI: renaming and rebranding to MCIT AI / Tut Agent,
+single sign-on and sign-out with MCIT AI, administrator activity feed, and
+MCIT AI Studio integration.

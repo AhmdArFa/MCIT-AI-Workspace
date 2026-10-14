@@ -1,0 +1,18 @@
+MCIT AI
+Copyright (c) Ministry of Communications and Information Technology (MCIT)
+
+Third-party code in this repository, with the notices its licenses require:
+
+* The backend and web frontend are derived from Open Notebook, MIT License,
+  Copyright (c) 2024 Luis Novo. Full text: LICENSES/OPEN-NOTEBOOK-MIT.
+  Python package and environment names (open_notebook, OPEN_NOTEBOOK_*) are
+  kept for compatibility with existing data and deployments.
+
+* agent/ (Tut Agent) is a derivative of LobeHub; its attribution and license
+  are in agent/NOTICE and agent/LICENSES/UPSTREAM-LICENSE.
+
+* The Craft engines (GridCraft, DeckCraft, WordCraft, PdfCraft, VectorCraft,
+  EffectCraft) are not included in this repository. The Docker build downloads
+  their release binaries, which are used unmodified under their own licenses.
+
+* Container images and npm/PyPI packages keep their own licenses.

@@ -1,0 +1,26 @@
+{
+  "name": "@tut/builtin-tool-task",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./client/executor": "./src/client/executor/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/const": "workspace:*",
+    "@tut/prompts": "workspace:*",
+    "@tut/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@lobehub/ui": "^5",
+    "antd-style": "*",
+    "lucide-react": "*",
+    "react": "*",
+    "react-i18next": "*"
+  }
+}

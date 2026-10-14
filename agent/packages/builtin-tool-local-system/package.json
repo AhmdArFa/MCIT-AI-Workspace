@@ -1,0 +1,29 @@
+{
+  "name": "@tut/builtin-tool-local-system",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./client/displayControls": "./src/client/displayControls.ts",
+    "./client/executor": "./src/client/executor/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/electron-client-ipc": "workspace:*",
+    "@tut/shared-tool-ui": "workspace:*",
+    "@tut/tool-runtime": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@lobehub/ui": "^5",
+    "antd": "^6",
+    "antd-style": "*",
+    "lucide-react": "*",
+    "path-browserify-esm": "*",
+    "react": "*",
+    "react-i18next": "*"
+  }
+}

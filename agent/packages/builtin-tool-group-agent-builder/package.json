@@ -1,0 +1,26 @@
+{
+  "name": "@tut/builtin-tool-group-agent-builder",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./executor": "./src/executor.ts",
+    "./executionRuntime": "./src/ExecutionRuntime/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/agent-manager-runtime": "workspace:*",
+    "@tut/builtin-tool-agent-builder": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@lobehub/ui": "^5",
+    "antd": "^6",
+    "lucide-react": "*",
+    "react": "*",
+    "react-i18next": "*"
+  }
+}

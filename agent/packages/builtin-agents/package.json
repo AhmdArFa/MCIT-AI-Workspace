@@ -1,0 +1,34 @@
+{
+  "name": "@tut/builtin-agents",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest",
+    "test:coverage": "vitest --coverage --silent='passed-only'",
+    "test:update": "vitest -u"
+  },
+  "dependencies": {
+    "@tut/builtin-tool-agent-builder": "workspace:*",
+    "@tut/builtin-tool-agent-documents": "workspace:*",
+    "@tut/builtin-tool-agent-management": "workspace:*",
+    "@tut/builtin-tool-group-agent-builder": "workspace:*",
+    "@tut/builtin-tool-group-management": "workspace:*",
+    "@tut/builtin-tool-notebook": "workspace:*",
+    "@tut/builtin-tool-task": "workspace:*",
+    "@tut/builtin-tool-user-interaction": "workspace:*",
+    "@tut/builtin-tool-verify": "workspace:*",
+    "@tut/business-const": "workspace:*",
+    "@tut/const": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}

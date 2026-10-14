@@ -1,0 +1,16 @@
+{
+  "name": "@tut/tool-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/prompts": "workspace:*",
+    "path-browserify-esm": "*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}

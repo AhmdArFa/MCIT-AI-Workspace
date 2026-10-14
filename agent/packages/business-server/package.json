@@ -1,0 +1,16 @@
+{
+  "name": "@tut/business-server",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@tut/agent-gateway-client": "workspace:*",
+    "@tut/const": "workspace:*",
+    "@tut/database": "workspace:*",
+    "@tut/model-runtime": "workspace:*",
+    "@tut/trpc": "workspace:*",
+    "@tut/types": "workspace:*"
+  }
+}

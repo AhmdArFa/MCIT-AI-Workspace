@@ -1,0 +1,17 @@
+{
+  "name": "@tut/builtin-tool-attachments",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./executionRuntime": "./src/ExecutionRuntime/index.ts",
+    "./executor": "./src/executor/index.ts"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@tut/prompts": "workspace:*"
+  },
+  "devDependencies": {
+    "@tut/types": "workspace:*"
+  }
+}
