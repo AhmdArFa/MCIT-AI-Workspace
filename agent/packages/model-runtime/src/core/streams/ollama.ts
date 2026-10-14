@@ -9,7 +9,10 @@ import {
   generateToolCallId,
 } from './protocol';
 
-const transformOllamaStream = (chunk: ChatResponse, stack: StreamContext): StreamProtocolChunk => {
+const transformOllamaStream = (
+  chunk: ChatResponse,
+  stack: StreamContext,
+): StreamProtocolChunk | StreamProtocolChunk[] => {
   if (chunk.message.thinking) {
     return { data: chunk.message.thinking, id: stack.id, type: 'reasoning' };
   }
@@ -32,6 +35,26 @@ const transformOllamaStream = (chunk: ChatResponse, stack: StreamContext): Strea
 
   // maybe need another structure to add support for multiple choices
   if (chunk.done && !chunk.message.content) {
+    // Ollama reports the real token counts on the final chunk; pass them on so
+    // usage metering and the live token display are never empty.
+    const input = chunk.prompt_eval_count ?? 0;
+    const output = chunk.eval_count ?? 0;
+    if (input || output) {
+      return [
+        { data: 'finished', id: stack.id, type: 'stop' },
+        {
+          data: {
+            inputTextTokens: input,
+            outputTextTokens: output,
+            totalInputTokens: input,
+            totalOutputTokens: output,
+            totalTokens: input + output,
+          },
+          id: stack.id,
+          type: 'usage',
+        },
+      ];
+    }
     return { data: 'finished', id: stack.id, type: 'stop' };
   }
 

@@ -338,15 +338,36 @@ async def execute_chat(request: ExecuteChatRequest):
         # Prepare state for execution
         state_values = current_state.values if current_state else {}
         state_values["messages"] = state_values.get("messages", [])
-        state_values["context"] = request.context
         state_values["notebook"] = notebook
         state_values["model_override"] = model_override
 
         # Add user message to state
-        from langchain_core.messages import HumanMessage
+        from langchain_core.messages import AIMessage, HumanMessage
+
+        from open_notebook import notebook_rag
 
         # Explicit id so a failed turn can remove it from the checkpoint.
         user_message = HumanMessage(content=request.message, id=str(uuid4()))
+
+        # Notebook chat is retrieval only: answer from the processed sources.
+        status = await notebook_rag.source_status(notebook)
+        if not status.ready:
+            reply = AIMessage(
+                content=notebook_rag.no_sources_message(notebook, status),
+                id=str(uuid4()),
+                additional_kwargs={"ingest": status.pending},
+            )
+            config = RunnableConfig(configurable={"thread_id": full_session_id})
+            await asyncio.to_thread(chat_graph.update_state, config, {"messages": [user_message, reply]})
+            await session.save()
+            state = await asyncio.to_thread(chat_graph.get_state, config=config)
+            return ExecuteChatResponse(
+                session_id=request.session_id,
+                messages=extract_chat_messages((state.values or {}).get("messages", [])),
+            )
+        chunks = await notebook_rag.retrieve(notebook, request.message) if notebook else []
+        state_values["context"] = notebook_rag.format_context(chunks) if chunks else ""
+        state_values["citations"] = chunks
         state_values["messages"].append(user_message)
 
         # Execute chat graph in a thread so the synchronous LangGraph invoke

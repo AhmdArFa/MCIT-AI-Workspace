@@ -322,6 +322,9 @@ async def monitoring():
         "tut_agent": await _probe(os.getenv("TUT_AGENT_INTERNAL_URL"), "/"),
     }
     engines = craft_engines.status()
+    from open_notebook.craft.kit import readiness as kit_readiness
+
+    kit = kit_readiness()
 
     jobs: Dict[str, int] = {}
     try:
@@ -348,6 +351,7 @@ async def monitoring():
     return {
         "services": services,
         "engines": engines,
+        "document_kit": kit,
         "jobs": jobs,
         "totals": totals,
         "users": overviews,

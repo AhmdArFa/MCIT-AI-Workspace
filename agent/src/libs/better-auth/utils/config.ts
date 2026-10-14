@@ -93,23 +93,10 @@ export const getTrustedOrigins = (enabledSSOProviders: string[]) => {
     return mergeOrigins(originsFromEnv, additionalOrigins);
   }
 
-  // Always trust common local preview origins so sign-in works behind Alloy/proxy.
-  const localPreviewOrigins = [
-    'http://localhost:8080',
-    'http://127.0.0.1:8080',
-    'http://localhost:3210',
-    'http://127.0.0.1:3210',
-    'http://localhost:8502',
-    'http://127.0.0.1:8502',
-    'http://localhost:3010',
-    'http://127.0.0.1:3010',
-  ];
-
   const defaults = [
     normalizeOrigin(appEnv.APP_URL),
     normalizeOrigin(process.env.VERCEL_URL),
     normalizeOrigin(process.env.VERCEL_BRANCH_URL),
-    ...localPreviewOrigins,
     MOBILE_APP_SCHEME,
     // Add expo URL in development
     ...(isDev ? [EXPO_DEV_SCHEME] : []),

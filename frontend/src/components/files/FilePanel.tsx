@@ -147,7 +147,7 @@ export function FilePanelHost() {
       aria-label="File viewer"
       className={cn(
         'z-40 flex flex-col border-l border-border bg-background',
-        fullscreen ? 'fixed inset-0' : 'relative h-full w-[min(56vw,980px)] shrink-0'
+        fullscreen ? 'fixed inset-0' : 'relative h-full w-[min(68vw,1320px)] min-w-[min(100vw,560px)] shrink-0'
       )}
     >
       <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border px-3">

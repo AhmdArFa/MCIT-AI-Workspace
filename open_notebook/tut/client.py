@@ -46,7 +46,8 @@ async def draft(prompt: str, agent_id: Optional[str] = None):
     if not url:
         raise ValueError("Tut Agent is not configured by the administrator")
     key = decrypt_value(rows[0]["key"])
-    async with httpx.AsyncClient(timeout=300, follow_redirects=False) as client:
+    timeout = float(os.getenv("TUT_DRAFT_TIMEOUT_SECONDS", "900") or 900)
+    async with httpx.AsyncClient(timeout=timeout, follow_redirects=False) as client:
         try:
             response = await client.post(
                 f"{url}/api/v1/responses",
@@ -63,6 +64,8 @@ async def draft(prompt: str, agent_id: Optional[str] = None):
             if exc.response.status_code in (401, 403):
                 raise ValueError("Your Tut Agent API key has expired or lacks permission") from None
             raise ValueError("Tut Agent could not complete the Studio request") from None
+        except httpx.TimeoutException:
+            raise ValueError(f"Tut Agent did not finish within {int(timeout)} seconds; try again or ask your administrator to raise TUT_DRAFT_TIMEOUT_SECONDS") from None
         except httpx.HTTPError:
             raise ValueError("Tut Agent is unavailable; ask your administrator to check the service") from None
 
@@ -70,6 +73,21 @@ async def draft(prompt: str, agent_id: Optional[str] = None):
     if result.get("status") != "completed" or not result.get("output_text"):
         raise ValueError("Tut Agent did not return a completed response")
     usage = result.get("usage") or {}
+    try:  # live usage for the running job (Studio progress shows it as it happens)
+        from open_notebook.ai.usage import usage_listener
+
+        listener = usage_listener.get(None)
+        if listener:
+            listener(
+                {
+                    "model": result.get("model", "Tut Agent"),
+                    "input_tokens": int(usage.get("input_tokens") or 0),
+                    "output_tokens": int(usage.get("output_tokens") or 0),
+                    "reasoning_tokens": int((usage.get("output_tokens_details") or {}).get("reasoning_tokens") or 0),
+                }
+            )
+    except Exception:
+        pass
     try:
         await repo_query(
             "CREATE usage_event CONTENT $event",

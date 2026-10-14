@@ -216,6 +216,20 @@ export default function AdminPage() {
                       ))}
                     </div>
                   </section>
+                  {data.document_kit && (
+                    <section className="flex flex-col gap-2">
+                      <h2 className="text-sm font-semibold">Document kit</h2>
+                      <div className="grid gap-2 md:grid-cols-3">
+                        {data.document_kit.assets.map((a) => (
+                          <div key={a.id} className="flex flex-col gap-0.5 rounded-xl border border-border bg-card px-4 py-3">
+                            <span className="text-sm font-medium">{a.purpose}</span>
+                            <span className="truncate text-xs text-muted-foreground">{a.file}</span>
+                            <span className={cn('text-xs', a.installed ? 'text-foreground' : 'text-destructive')}>{a.installed ? 'Installed' : 'Not installed'}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="activity">

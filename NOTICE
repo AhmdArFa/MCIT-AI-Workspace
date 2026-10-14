@@ -11,8 +11,8 @@ Third-party code in this repository, with the notices its licenses require:
 * agent/ (Tut Agent) is a derivative of LobeHub; its attribution and license
   are in agent/NOTICE and agent/LICENSES/UPSTREAM-LICENSE.
 
-* The Craft engines (GridCraft, DeckCraft, WordCraft, PdfCraft, VectorCraft,
-  EffectCraft) are not included in this repository. The Docker build downloads
-  their release binaries, which are used unmodified under their own licenses.
+* craft/vendor/* are the Craft engines (GridCraft, DeckCraft, WordCraft,
+  PdfCraft, VectorCraft, EffectCraft), used unmodified as command-line tools
+  under their own licenses, which ship with each submodule and release.
 
 * Container images and npm/PyPI packages keep their own licenses.

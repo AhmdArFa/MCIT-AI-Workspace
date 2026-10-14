@@ -117,17 +117,36 @@ class StudioDocument(BaseModel):
     )
 
 
+# Report depth (matches open_notebook/craft/studio/report.py DEPTH): real
+# chapters, sub-sections and figures, never padded repetition.
 LENGTH_HINT = {
-    "short": "Keep it short: 2-3 sections, 2-3 sentence bodies.",
-    "medium": "4-5 sections with 4-6 sentence bodies.",
-    "long": "8-10 sections with 2-3 paragraphs each.",
+    "short": "Outline EXACTLY 3 sections. 3-4 key points, 3 recommendations.",
+    "medium": "Outline EXACTLY 5 sections. 5-6 key points, 4 recommendations.",
+    "long": (
+        "Outline EXACTLY 8 sections covering distinct aspects (context, current state, each pillar or programme, "
+        "data, risks, outlook). 6 key points, 5-6 recommendations."
+    ),
+}
+REPORT_OUTLINE_RULE = (
+    "This is the OUTLINE pass: each section body is ONE sentence saying what the section covers, with 2-3 short "
+    "bullets. Every chapter is then written in its own pass. Put every quantitative series from the material in a "
+    "section table (numbers as numbers)."
+)
+SECTION_DEPTH = {
+    "short": "Write 2 paragraphs (3-4 sentences each) and 2-3 bullets.",
+    "medium": "Write 3 paragraphs (4-6 sentences each) and 3 bullets.",
+    "long": (
+        'Write 2 sub-sections, each starting with a line "### <sub-heading>" followed by 2 substantial paragraphs '
+        "(5-7 sentences each), then 3-5 bullets."
+    ),
 }
 
 KIND_GUIDANCE: Dict[str, str] = {
     "report": "a formal research report. Include 3-5 recommendations.",
     "infographic": (
-        "a one-page infographic. 3-6 stats with short values taken from the material, "
-        "3-4 sections with a body under 25 words and at most 3 bullets each."
+        "a one-page sketchnote infographic. EXACTLY 6 sections (blocks): a heading of at most 5 words and "
+        "2-3 bullets of at most 10 words each. 3-4 stats with short values taken from the material. "
+        "A one-sentence verdict as the conclusion (at most 18 words)."
     ),
     "spreadsheet": (
         "an Excel workbook. Extract every quantitative series from the material into tables: "
@@ -454,8 +473,8 @@ def _repair_slide(s: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def content_slide_count(total: int) -> int:
-    """Total slides minus the cover, closing and (for 8+ slides) agenda the renderer adds."""
-    return max(2, total - (3 if total >= 8 else 2))
+    """Total slides minus the hero cover, the end cover and the agenda the renderer adds."""
+    return max(3, total - 3)
 
 
 def _writing_rules() -> str:
@@ -476,7 +495,9 @@ def build_prompt(
         task = (
             f'a slide deck with EXACTLY {n} content slides in the "slides" array. '
             "Vary the layouts: use at least four different layouts, never the same layout "
-            "twice in a row. When tables exist in the material, dedicate at least one slide "
+            "twice in a row (layouts: bullets, cards, stats, chart, two_column, comparison, process, timeline, table, image, quote). "
+            "The cover, agenda and closing slides are added for you; do not write them. "
+            "When tables exist in the material, dedicate at least one slide "
             "to a 'table' layout with actual table_columns and table_rows. When images/figures exist "
             "in the material, dedicate at least one slide to an 'image' layout using the exact "
             "image_path and caption from the material. Use 'stats' or 'chart' only with numbers "
@@ -490,6 +511,8 @@ def build_prompt(
         schema = DECK_SCHEMA
     else:
         task = KIND_GUIDANCE[kind] + " " + LENGTH_HINT[norm_length(o.length)]
+        if kind == "report":
+            task += " " + REPORT_OUTLINE_RULE
         schema = SHEET_SCHEMA if kind == "spreadsheet" else DOC_SCHEMA
     rules = _writing_rules()
     template_hint = ""
@@ -520,9 +543,15 @@ async def _call_json(
     llm, prompt: str, progress: Progress, label: str
 ) -> Dict[str, Any]:
     raw = ""
-    for attempt in range(2):
+    for attempt in range(3):
         await progress(f"{label}: calling the model" + (" (retry)" if attempt else ""))
-        response = await llm.ainvoke(prompt)
+        try:
+            response = await llm.ainvoke(prompt)
+        except ValueError as e:  # an incomplete or timed-out model turn: try again
+            if attempt == 2:
+                raise
+            await progress(f"{label}: {e}; retrying")
+            continue
         raw = (
             response.content
             if isinstance(response.content, str)
@@ -534,7 +563,7 @@ async def _call_json(
             await progress(
                 f"{label}: model output was not valid JSON ({type(e).__name__}), retrying"
             )
-    raise ValueError(f"{label}: the model did not return valid JSON after 2 attempts")
+    raise ValueError(f"{label}: the model did not return valid JSON after 3 attempts")
 
 
 async def _expand_long(
@@ -545,15 +574,16 @@ async def _expand_long(
     o: StudioOptions,
     progress: Progress,
 ) -> None:
-    """Long reports: write each section in its own pass so length is real, not padding."""
+    """Reports: write each chapter in its own pass so the depth is real, not padding."""
+    depth = SECTION_DEPTH.get(norm_length(o.length), SECTION_DEPTH["medium"])
     sections = data.get("sections") or []
     for i, sec in enumerate(sections, 1):
-        prompt = f"""You are writing section {i} of {len(sections)} of a long-form MCIT report titled "{data.get("title")}".
+        prompt = f"""You are writing section {i} of {len(sections)} of an MCIT report titled "{data.get("title")}".
 Section heading: {sec.get("heading")}
-Write 3 substantial paragraphs (5-7 sentences each) and 3-5 bullets, using ONLY facts from the material.
+{depth} Use ONLY facts from the material.
 Audience: {o.audience}. Tone: {o.tone}. Do not repeat other sections; go deeper on this one.
 {_writing_rules()}
-Return ONLY JSON: {{"body": "paragraph 1\n\nparagraph 2\n\nparagraph 3", "bullets": ["..."]}}
+Return ONLY JSON: {{"body": "paragraphs separated by blank lines", "bullets": ["..."]}}
 
 MATERIAL:
 {material[:9000]}
@@ -582,12 +612,24 @@ async def generate_document(
     o.length = norm_length(o.length)  # type: ignore[assignment]
     progress = progress or _noop
     await progress(f'Reading notebook "{notebook.name}"')
-    (
-        material,
-        titles,
-        extracted_tables,
-        extracted_images,
-    ) = await gather_notebook_content_and_assets(notebook)
+    pasted: List[Table] = []
+    if kind == "spreadsheet":
+        from open_notebook.exports.pasted import parse_pasted_tables
+
+        pasted = parse_pasted_tables(o.instructions)
+        if pasted:
+            await progress(f"Found {sum(len(t.rows) for t in pasted)} row(s) of figures in your request to enter")
+    try:
+        (
+            material,
+            titles,
+            extracted_tables,
+            extracted_images,
+        ) = await gather_notebook_content_and_assets(notebook)
+    except EmptyNotebookError:
+        if not pasted:
+            raise
+        material, titles, extracted_tables, extracted_images = "(No notebook sources: use the figures in the user instructions.)", [], [], []
     await progress(
         f"Loaded {len(material):,} characters from {len(titles)} source(s) ("
         f"{len(extracted_tables)} table(s), {len(extracted_images)} image(s))"
@@ -645,6 +687,9 @@ async def generate_document(
                 }
 
         await progress(f"Drafted {len(data['slides'])} content slides")
+    elif kind == "spreadsheet" and pasted:
+        # The user's figures are entered exactly as pasted; the model's tables never replace them.
+        data["tables"] = [t.model_dump() for t in pasted]
     elif kind == "spreadsheet" and not data["tables"]:
         await progress(
             "No numeric tables found in the material; building from key figures"
@@ -664,7 +709,8 @@ async def generate_document(
                     sec["image_path"] = extracted_images[idx]["path"]
                     sec["image_caption"] = extracted_images[idx].get("caption", "")
 
-    if kind == "report" and o.length == "long":
+    if kind == "report":
+        data["sections"] = (data.get("sections") or [])[: {"short": 3, "medium": 5, "long": 8}[o.length]]
         await _expand_long(llm, notebook, material, data, o, progress)
     return StudioDocument(
         kind=kind,
@@ -673,3 +719,36 @@ async def generate_document(
         options=o,
         **data,
     )
+
+
+async def rewrite_section(
+    notebook: Notebook,
+    title: str,
+    heading: str,
+    current: str,
+    min_words: int,
+    options: StudioOptions,
+    model_id: Optional[str] = None,
+    progress: Optional[Progress] = None,
+) -> str:
+    """Deeper draft of one report chapter, used by the audit loop for thin chapters."""
+    from open_notebook.tut.client import TutModel
+
+    material, _, _, _ = await gather_notebook_content_and_assets(notebook)
+    depth = SECTION_DEPTH.get(norm_length(options.length), SECTION_DEPTH["medium"])
+    prompt = f"""You are rewriting one chapter of an MCIT report titled "{title}".
+Chapter heading: {heading}
+The current draft is too short ({len(current.split())} words). Write at least {min_words + 40} words.
+{depth} Use ONLY facts from the material; go deeper (context, figures, what they mean, what follows).
+Audience: {options.audience}. Tone: {options.tone}.
+{_writing_rules()}
+Return ONLY JSON: {{"body": "paragraphs separated by blank lines"}}
+
+CURRENT DRAFT:
+{current}
+
+MATERIAL:
+{material[:9000]}
+"""
+    part = await _call_json(TutModel(model_id), prompt, progress or _noop, f"Rewriting {heading}")
+    return str(part.get("body") or "")

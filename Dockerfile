@@ -109,6 +109,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     ffmpeg \
     supervisor \
     curl \
+    fontconfig \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
@@ -128,6 +129,12 @@ COPY . /app
 COPY --from=craft-engines /opt/craft /opt/craft
 COPY --from=deck-builder /deck/node_modules /app/open_notebook/craft/deck/node_modules
 ENV CRAFT_BIN_DIR=/opt/craft/bin
+# Document kit fonts (Nohemi, Libre Franklin, Inter) for every engine's renders.
+# CRAFT_KIT_DIR may point at a mounted kit carrying the approved binaries.
+RUN mkdir -p /usr/local/share/fonts/mcit \
+    && cp /app/open_notebook/craft/kit/assets/fonts/*.[ot]tf /usr/local/share/fonts/mcit/ \
+    && fc-cache -f
+ENV MPLCONFIGDIR=/tmp/matplotlib
 
 # Copy pre-downloaded tiktoken encoding from builder (outside /data/ — volume-mount safe)
 COPY --from=backend-builder /app/tiktoken-cache /app/tiktoken-cache

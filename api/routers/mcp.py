@@ -12,8 +12,8 @@ uses fixed, server-controlled CLI invocations instead.
 
 from __future__ import annotations
 
-import asyncio
 import json
+import re
 import uuid
 from typing import Any, Awaitable, Callable, Dict, List, cast
 
@@ -22,13 +22,9 @@ from fastapi.responses import JSONResponse, Response
 from loguru import logger
 
 from api.auth import current_account
-from open_notebook import tenancy
-from open_notebook.craft import engines as craft_engines
 from open_notebook.craft.pipelines import Mode
-from open_notebook.craft.runner import McpSession
 from open_notebook.domain.notebook import Note, Notebook, text_search, vector_search
 from open_notebook.exports import storage
-from open_notebook.exports.content import StudioDocument
 
 router = APIRouter(tags=["mcp"])
 
@@ -86,58 +82,109 @@ async def files_list(_: Dict[str, Any]):
     ]
 
 
+def _public(path: str) -> str:
+    import os
+
+    return (os.getenv("MCIT_PUBLIC_URL") or "").rstrip("/") + path
+
+
 async def studio_produce(a: Dict[str, Any]):
+    """Start one Studio feature; use studio_status to follow the real run."""
+    from open_notebook.craft.pipelines import PRESETS, canonical
     from open_notebook.exports.content import StudioOptions
     from open_notebook.exports.produce import produce
     from open_notebook.tut import jobs
 
-    preset, mode = a["preset"], a.get("mode") or "dark"
-    if preset not in ("presentation", "report", "sketchnote", "noir_sheet"):
-        raise ValueError("Unknown Studio preset")
+    feature = canonical(a.get("feature") or a.get("preset") or "")
+    if feature not in PRESETS:
+        raise ValueError("Unknown Studio feature: use presentation, report, infograph or spreadsheet")
+    mode = a.get("mode") or "dark"
     if mode not in ("dark", "light"):
-        raise ValueError("Unknown Studio mode")
+        raise ValueError("Unknown mode: use dark or light")
+    template = a.get("template") or ("custom" if a.get("design") else "default")
     await Notebook.get(a["notebook_id"])
-    opts = StudioOptions(theme=mode, instructions=a.get("instructions"))
-    result: Dict[str, Any] = {}
-
+    opts = StudioOptions(
+        theme=mode,
+        instructions=a.get("instructions"),
+        length=a.get("length") or "medium",
+        slide_count=int(a.get("slide_count") or 10),
+        template=template,
+    )
     async def work(run):
-        result.update(await produce(run, a["notebook_id"], preset, cast(Mode, mode), opts))
+        await produce(run, a["notebook_id"], feature, cast(Mode, mode), opts, design=a.get("design"))
 
     run = jobs.start("studio", work, feature="studio")
-    for _ in range(int(a.get("wait_seconds") or 600)):
-        if run.task and run.task.done():
-            break
-        await asyncio.sleep(1)
-    errors = [e["message"] for e in run.events if e["type"] == "error"]
-    return {"job_id": run.id, "status": run.status, "errors": errors, **result}
+    return {
+        "job_id": run.id,
+        "status": run.status,
+        "next": "Call studio_status with this job_id to see live steps and usage, then deliver its files when completed.",
+    }
 
 
-async def craft_engines_list(_: Dict[str, Any]):
-    return craft_engines.status()
+async def studio_status(a: Dict[str, Any]):
+    """Status of a job owned by this account, including the same file records as Files."""
+    from open_notebook.tut import jobs
+
+    run = jobs.get_run(a["job_id"])
+    if run is None:
+        raise ValueError("Studio job not found")
+    events = run.events
+    errors = [e["message"] for e in events if e["type"] == "error"]
+    steps = [e.get("title") or e.get("message") for e in events if e["type"] in ("step", "progress") and (e.get("title") or e.get("message"))]
+    files = [
+        {
+            **e["file"],
+            "open_url": _public(f"/files?open={e['file']['id']}"),
+            "download_url": _public(f"/api/studio/files/{e['file']['id']}/download"),
+        }
+        for e in events if e["type"] == "file"
+    ]
+    return {
+        "job_id": run.id,
+        "status": run.status,
+        "errors": errors,
+        "usage": run.usage,
+        "files": files,
+        "steps": steps[-40:],
+        "next": "Call studio_status again later." if run.status == "running" else None,
+        "deliver_as": "When completed, show each file as [filename](open_url) and [Download](download_url). Report any audit_issues.",
+    }
 
 
-async def craft_tools(a: Dict[str, Any]):
-    async with McpSession(a["engine"]) as s:
-        return [
-            {"name": t["name"], "description": (t.get("description") or "")[:300], "input_schema": t.get("inputSchema")}
-            for t in await s.list_tools()
-        ]
+async def skills_list(_: Dict[str, Any]):
+    from open_notebook.craft.kit import skills as kit_skills
+
+    return kit_skills.index()
 
 
-async def craft_publish(a: Dict[str, Any]):
-    """Copy a file the engines produced in the workspace into the user's library."""
-    root = tenancy.craft_workspace().resolve()
-    path = (root / a["path"]).resolve()
-    if not path.is_relative_to(root) or not path.is_file():
-        raise ValueError("File not found in the Craft workspace")
-    title = a.get("title") or path.stem
-    doc = StudioDocument(kind="report", title=title)
-    item = storage.store_bytes(doc, path.suffix.lstrip(".").lower(), path.read_bytes(), a.get("notebook_id"))
-    storage.update_meta(item.id, engine=a.get("engine", ""), filename=f"{title}{path.suffix}")
-    return {"file_id": item.id, "filename": item.filename}
+async def skill_read(a: Dict[str, Any]):
+    from open_notebook.craft.kit import skills as kit_skills
+
+    return {"name": a["name"], "content": kit_skills.read(a["name"])}
 
 
-ENGINE_ENUM = {"type": "string", "enum": list(craft_engines.ENGINES)}
+async def file_info(a: Dict[str, Any]):
+    item = storage.get_file(a["file_id"])
+    if not item:
+        raise ValueError("File not found")
+    return item.model_dump() | {"open_url": _public(f"/files?open={item.id}"), "download_url": _public(f"/api/studio/files/{item.id}/download")}
+
+
+async def file_rename(a: Dict[str, Any]):
+    item = storage.get_file(a["file_id"])
+    if not item:
+        raise ValueError("File not found")
+    stem = re.sub(r"[^\w .()-]+", "", a["name"]).strip()[:80] or item.title
+    storage.update_meta(item.id, filename=f"{stem}.{item.format}", title=stem)
+    return storage.get_file(item.id).model_dump()  # type: ignore[union-attr]
+
+
+async def file_delete(a: Dict[str, Any]):
+    if not storage.delete_file(a["file_id"]):
+        raise ValueError("File not found")
+    return {"deleted": a["file_id"]}
+
+
 TOOLS: Dict[str, Dict[str, Any]] = {
     "notebooks_list": {"fn": notebooks_list, "description": "List the user's notebooks.", "schema": _schema({}, [])},
     "notebook_read": {
@@ -158,28 +205,41 @@ TOOLS: Dict[str, Dict[str, Any]] = {
     "files_list": {"fn": files_list, "description": "List the user's generated files.", "schema": _schema({}, [])},
     "studio_produce": {
         "fn": studio_produce,
-        "description": "Produce a Studio file from a notebook: presentation or report (dark|light), sketchnote infographic, or Noir spreadsheet.",
+        "description": (
+            "Generate a document from a notebook with the approved MCIT templates: presentation (pptx+pdf), "
+            "report (pdf+docx, short|medium|long), infograph (sketchnote png+pdf) or spreadsheet (xlsx: paste the "
+            "figures in instructions; computed cells are formulas). template=default uses the approved template; "
+            "template=custom applies `design` and runs the audit loop. Returns a job_id; call studio_status "
+            "to follow actual progress and deliver the files when completed."
+        ),
         "schema": _schema(
             {
                 "notebook_id": S,
-                "preset": {"type": "string", "enum": ["presentation", "report", "sketchnote", "noir_sheet"]},
+                "feature": {"type": "string", "enum": ["presentation", "report", "infograph", "spreadsheet"]},
                 "mode": {"type": "string", "enum": ["dark", "light"]},
+                "template": {"type": "string", "enum": ["default", "custom"]},
+                "design": S,
+                "length": {"type": "string", "enum": ["short", "medium", "long"]},
+                "slide_count": {"type": "integer", "minimum": 4, "maximum": 20},
                 "instructions": S,
             },
-            ["notebook_id", "preset"],
+            ["notebook_id", "feature"],
         ),
     },
-    "craft_engines": {"fn": craft_engines_list, "description": "List the Craft engines and whether they are installed.", "schema": _schema({}, [])},
-    "craft_tools": {
-        "fn": craft_tools,
-        "description": "List the MCP tools of one Craft engine (GridCraft, DeckCraft, WordCraft, PdfCraft, VectorCraft, EffectCraft).",
-        "schema": _schema({"engine": ENGINE_ENUM}, ["engine"]),
+    "studio_status": {
+        "fn": studio_status,
+        "description": "Poll a Studio job you started. Returns live steps, usage, errors, audit issues and links to the completed files. Poll again while running.",
+        "schema": _schema({"job_id": S}, ["job_id"]),
     },
-    "craft_publish": {
-        "fn": craft_publish,
-        "description": "Add a file from the Craft workspace to the user's file library so it opens in the office viewer.",
-        "schema": _schema({"path": S, "title": S, "notebook_id": S, "engine": S}, ["path"]),
+    "skills_list": {"fn": skills_list, "description": "List the MCIT document skills (templates, presentation, report, Word, infograph, spreadsheet, figures, design helper).", "schema": _schema({}, [])},
+    "skill_read": {
+        "fn": skill_read,
+        "description": "Read one MCIT document skill before producing that kind of file.",
+        "schema": _schema({"name": S}, ["name"]),
     },
+    "file_info": {"fn": file_info, "description": "Details and links for one file in the user's library.", "schema": _schema({"file_id": S}, ["file_id"])},
+    "file_rename": {"fn": file_rename, "description": "Rename a file in the user's library.", "schema": _schema({"file_id": S, "name": S}, ["file_id", "name"])},
+    "file_delete": {"fn": file_delete, "description": "Delete a file from the user's library.", "schema": _schema({"file_id": S}, ["file_id"])},
 }
 
 

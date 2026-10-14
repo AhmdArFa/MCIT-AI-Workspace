@@ -12,11 +12,9 @@ import {
   LayoutPanelTopIcon,
   LibraryBigIcon,
   Mic2,
-  Presentation,
   Scale,
   Settings,
   ShapesIcon,
-  Shield,
   SquarePlay,
   Video,
 } from 'lucide-react';
@@ -891,46 +889,6 @@ export const sharedMainAreaChildren: RouteObject[] = [
     errorElement: <ErrorBoundary />,
     handle: { meta: routeMeta({ Skeleton: GenerationSkeleton }) },
     path: 'image',
-  },
-
-  // MCIT Studio — presentations, PDF reports, infographs
-  {
-    children: [
-      {
-        element: dynamicElement(() => import('@/routes/(main)/studio'), 'Desktop > Studio', {
-          preloadId: 'studio',
-        }),
-        handle: {
-          meta: routeMeta({ icon: Presentation, titleKey: 'navigation.studio' }),
-        },
-        index: true,
-      },
-    ],
-    element: dynamicLayout(
-      () => import('@/routes/(main)/studio/_layout'),
-      'Desktop > Studio > Layout',
-      { preloadId: 'studio' },
-    ),
-    errorElement: <ErrorBoundary />,
-    handle: { meta: routeMeta({ Skeleton: GenerationSkeleton }) },
-    path: 'studio',
-  },
-
-  // MCIT Admin bootstrap (one-time)
-  {
-    children: [
-      {
-        element: dynamicElement(() => import('@/routes/(main)/admin'), 'Desktop > Admin', {
-          preloadId: 'admin',
-        }),
-        handle: {
-          meta: routeMeta({ icon: Shield, titleKey: 'navigation.admin' }),
-        },
-        index: true,
-      },
-    ],
-    errorElement: <ErrorBoundary />,
-    path: 'admin',
   },
 
   ...BusinessDesktopRoutesWithMainLayout,

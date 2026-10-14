@@ -87,6 +87,7 @@ export type ServiceState = { state: 'up' | 'down' | 'degraded' | 'not_configured
 export interface Monitoring {
   services: Record<string, ServiceState>
   engines: { id: string; name: string; role: string; available: boolean; version: string }[]
+  document_kit?: { assets: { id: string; purpose: string; installed: boolean; file: string }[]; missing: Record<string, string[]> }
   jobs: Record<string, number>
   totals: {
     users: number

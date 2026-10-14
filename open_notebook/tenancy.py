@@ -203,7 +203,9 @@ def submit_command(app: str, name: str, args: Dict[str, Any], *a, **kw):
     from surreal_commands import submit_command as _submit
 
     payload = dict(args or {})
-    payload.setdefault(TENANT_ARG, _tenant_user.get())
+    # Input models carry ``tenant=None`` when dumped: never let that hide the caller's tenant
+    if payload.get(TENANT_ARG) is None:
+        payload[TENANT_ARG] = _tenant_user.get()
     return _submit(app, name, payload, *a, **kw)
 
 
@@ -211,7 +213,9 @@ def execute_command_sync(app: str, name: str, args: Dict[str, Any], *a, **kw):
     from surreal_commands import execute_command_sync as _exec
 
     payload = dict(args or {})
-    payload.setdefault(TENANT_ARG, _tenant_user.get())
+    # Input models carry ``tenant=None`` when dumped: never let that hide the caller's tenant
+    if payload.get(TENANT_ARG) is None:
+        payload[TENANT_ARG] = _tenant_user.get()
     return _exec(app, name, payload, *a, **kw)
 
 

@@ -62,6 +62,9 @@ services:
   # Local language models (no cloud keys needed)
   ollama:
     image: ollama/ollama:latest
+    environment:
+      # Studio drafts need room for the notebook material and a full JSON reply
+      - OLLAMA_CONTEXT_LENGTH=16384
     volumes:
       - ./ollama_data:/root/.ollama
     ports:

@@ -1,81 +1,137 @@
-// Builds a .pptx from a Studio deck spec with PptxGenJS.
+// Builds a Midnight Noir .pptx from a Studio deck spec with PptxGenJS.
 // Usage: node build_deck.mjs <spec.json> <out.pptx>
-// The backend then hands the file to DeckCraft for validation, thumbnails
-// and the PDF copy.
+//
+// Spec: { title, subtitle, eyebrow, date, closing, footer, logo, hero, end,
+//         theme: {bg,surface,border,text,muted,accent,premium,series[],onAccent,fontHead,fontBody,fontCover},
+//         scale: {title, body} (audit-loop adjustments), slides: [...] }
+//
+// Rules (kit: covers/USAGE.md, PALETTE.md): hero art full-bleed on the first
+// slide, end art on the last; content slides on solid Midnight or White; one
+// accent per slide; no stripes, underlines, gradients or slide numbers.
 import { readFileSync } from "node:fs";
 import pptxgen from "pptxgenjs";
 
 const [, , specPath, outPath] = process.argv;
 const spec = JSON.parse(readFileSync(specPath, "utf-8"));
-const t = spec.theme; // { bg, surface, border, text, muted, accent, accentText, fontHead, fontBody }
+const t = spec.theme;
+const sc = Object.assign({ title: 1, body: 1 }, spec.scale || {});
 
 const pptx = new pptxgen();
 pptx.layout = "LAYOUT_WIDE"; // 13.333 x 7.5 in
-pptx.author = spec.author || "MCIT AI";
+pptx.author = "MCIT AI";
 pptx.company = "Ministry of Communications and Information Technology";
 pptx.title = spec.title;
 
 const W = 13.333;
-const M = 0.7;
-const head = { fontFace: t.fontHead, color: t.text, bold: true };
-const body = { fontFace: t.fontBody, color: t.text };
-const muted = { fontFace: t.fontBody, color: t.muted };
+const H = 7.5;
+const M = 0.75;
+const head = (o = {}) => ({ fontFace: t.fontHead, color: t.text, bold: true, ...o });
+const body = (o = {}) => ({ fontFace: t.fontBody, color: t.text, ...o });
+const muted = (o = {}) => ({ fontFace: t.fontBody, color: t.muted, ...o });
+let slideScale = 1;
+const fs = (n) => Math.round(n * sc.body * slideScale * 10) / 10;
+const ft = (n) => Math.round(n * sc.title * 10) / 10;
 
 pptx.defineSlideMaster({
-  title: "MCIT",
+  title: "NOIR",
   background: { color: t.bg },
   objects: [
-    { rect: { x: M, y: 7.02, w: W - 2 * M, h: 0.01, fill: { color: t.border } } },
-    { text: { text: spec.footer || "MCIT AI", options: { x: M, y: 7.08, w: 8, h: 0.3, fontSize: 9, ...muted } } },
+    { text: { text: spec.footer || "MCIT AI", options: { x: M, y: H - 0.48, w: 9, h: 0.3, fontSize: 9, ...muted() } } },
   ],
-  slideNumber: { x: W - M - 0.6, y: 7.08, w: 0.6, h: 0.3, fontSize: 9, color: t.muted, align: "right" },
 });
 
-function title(slide, text, sub) {
-  slide.addShape(pptx.ShapeType.rect, { x: M, y: 0.62, w: 0.08, h: 0.62, fill: { color: t.accent }, line: { color: t.accent } });
-  slide.addText(text, { x: M + 0.25, y: 0.5, w: W - 2 * M - 0.25, h: 0.85, fontSize: 28, ...head });
-  if (sub) slide.addText(sub, { x: M + 0.25, y: 1.3, w: W - 2 * M - 0.25, h: 0.4, fontSize: 14, ...muted });
+function logoCard(slide, x, y) {
+  if (!spec.logo) return;
+  slide.addShape(pptx.ShapeType.roundRect, { x, y, w: 1.35, h: 0.82, rectRadius: 0.1, fill: { color: "FFFFFF" }, line: { color: "FFFFFF" } });
+  slide.addImage({ path: spec.logo, x: x + 0.12, y: y + 0.08, w: 1.11, h: 0.66, sizing: { type: "contain", w: 1.11, h: 0.66 } });
 }
 
-function bullets(items, opts) {
-  return items.map((b) => ({ text: String(b), options: { bullet: { code: "25A0", indent: 18 }, paraSpaceAfter: 10, ...body, ...opts } }));
+function header(slide, sl) {
+  // Approved template: logo on a white card, top right of every content slide
+  if (spec.logo) {
+    slide.addShape(pptx.ShapeType.roundRect, { x: W - M - 1.25, y: 0.35, w: 1.25, h: 0.62, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: "FFFFFF" } });
+    slide.addImage({ path: spec.logo, x: W - M - 1.17, y: 0.4, w: 1.09, h: 0.52, sizing: { type: "contain", w: 1.09, h: 0.52 } });
+  }
+  if (sl.eyebrow) slide.addText(String(sl.eyebrow).toUpperCase(), { x: M, y: 0.42, w: W - 2 * M, h: 0.3, fontSize: 11, charSpacing: 3, bold: true, color: t.accent, fontFace: t.fontBody });
+  slide.addText(sl.title, { x: M, y: 0.7, w: W - 2 * M - 1.6, h: 0.9, fontSize: ft(30), ...head(), valign: "top", fit: "shrink" });
+  if (sl.subtitle) slide.addText(sl.subtitle, { x: M, y: 1.55, w: W - 2 * M, h: 0.45, fontSize: fs(15), ...muted() });
 }
+
+const bulletRuns = (items, size) =>
+  items.map((b) => ({ text: String(b), options: { bullet: { indent: 16 }, paraSpaceAfter: 9, ...body({ fontSize: size }) } }));
 
 function card(slide, x, y, w, h) {
-  slide.addShape(pptx.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.08, fill: { color: t.surface }, line: { color: t.border, width: 0.75 } });
+  slide.addShape(pptx.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.06, fill: { color: t.surface }, line: { color: t.border, width: 0.75 } });
 }
 
-// Cover
+// ---------------------------------------------------------------- cover
 {
   const s = pptx.addSlide();
   s.background = { color: t.bg };
-  s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 0.22, h: 7.5, fill: { color: t.accent }, line: { color: t.accent } });
-  s.addText((spec.kicker || "MCIT AI").toUpperCase(), { x: 1.1, y: 2.0, w: 10, h: 0.4, fontSize: 12, charSpacing: 4, color: t.accent, fontFace: t.fontBody, bold: true });
-  s.addText(spec.title, { x: 1.1, y: 2.45, w: 11, h: 1.6, fontSize: 44, ...head, valign: "top" });
-  if (spec.subtitle) s.addText(spec.subtitle, { x: 1.1, y: 4.15, w: 11, h: 0.8, fontSize: 18, ...muted });
-  s.addText(spec.date || "", { x: 1.1, y: 6.4, w: 6, h: 0.4, fontSize: 12, ...muted });
-  if (spec.logo) s.addImage({ path: spec.logo, x: W - 2.3, y: 0.6, w: 1.5, h: 1.5, sizing: { type: "contain", w: 1.5, h: 1.5 } });
+  if (spec.hero) s.addImage({ path: spec.hero, x: 0, y: 0, w: W, h: H, sizing: { type: "cover", w: W, h: H } });
+  logoCard(s, M, 0.55);
+  s.addText((spec.eyebrow || "MCIT AI").toUpperCase(), { x: M, y: 2.35, w: 8.5, h: 0.4, fontSize: 12, charSpacing: 4, bold: true, color: "B9C2CE", fontFace: t.fontCover });
+  s.addText(spec.title, { x: M, y: 2.8, w: 8.6, h: 1.9, fontSize: ft(42), fontFace: t.fontHead, bold: true, color: "FFFFFF", valign: "top", fit: "shrink" });
+  if (spec.subtitle) s.addText(spec.subtitle, { x: M, y: 4.75, w: 8.4, h: 0.9, fontSize: fs(17), fontFace: t.fontBody, color: "B9C2CE", valign: "top" });
+  if (spec.date) s.addText(spec.date, { x: M, y: 6.45, w: 6, h: 0.35, fontSize: 12, fontFace: t.fontCover, color: "B9C2CE" });
 }
 
+let lastLayout = "";
 for (const sl of spec.slides) {
-  const s = pptx.addSlide({ masterName: "MCIT" });
-  const top = sl.subtitle ? 2.0 : 1.7;
-  const h = 6.8 - top;
-  title(s, sl.title, sl.subtitle);
+  const s = pptx.addSlide({ masterName: "NOIR" });
+  slideScale = sl.scale || 1; // audit loop: per-slide fill adjustment
+  const top = sl.subtitle ? 2.2 : 1.9;
+  const h = H - 0.75 - top;
+
+  if (sl.layout === "section") {
+    s.addText(String(sl.number || "").padStart(2, "0"), { x: M, y: 2.2, w: 3, h: 1.2, fontSize: 60, fontFace: t.fontHead, bold: true, color: t.accent });
+    s.addText(sl.title, { x: M, y: 3.45, w: W - 2 * M, h: 1.1, fontSize: ft(36), ...head(), valign: "top", fit: "shrink" });
+    if (sl.subtitle) s.addText(sl.subtitle, { x: M, y: 4.6, w: 9, h: 0.6, fontSize: fs(16), ...muted() });
+    lastLayout = sl.layout;
+    if (sl.notes) s.addNotes(sl.notes);
+    continue;
+  }
+
+  header(s, sl);
   switch (sl.layout) {
+    case "agenda": {
+      const items = (sl.bullets || []).slice(0, 8);
+      const cols = items.length > 4 ? 2 : 1;
+      const per = Math.ceil(items.length / cols);
+      const cw = (W - 2 * M - 0.5 * (cols - 1)) / cols;
+      items.forEach((it, i) => {
+        const c = Math.floor(i / per);
+        const r = i % per;
+        const x = M + c * (cw + 0.5);
+        const y = top + 0.15 + r * 1.05;
+        s.addText(String(i + 1).padStart(2, "0"), { x, y, w: 0.9, h: 0.6, fontSize: 22, fontFace: t.fontHead, bold: true, color: t.accent });
+        s.addText(String(it), { x: x + 0.95, y, w: cw - 0.95, h: 0.6, fontSize: fs(17), ...body(), valign: "middle" });
+        s.addShape(pptx.ShapeType.line, { x, y: y + 0.82, w: cw, h: 0, line: { color: t.border, width: 0.75 } });
+      });
+      break;
+    }
     case "stats":
     case "cards": {
-      const items = sl.layout === "stats" ? sl.stats.map((x) => [x.value, x.label]) : sl.bullets.map((b) => ["", b]);
+      if (sl.layout === "stats" && (sl.stats || []).length === 1) {
+        const st = sl.stats[0];
+        s.addText(String(st.value), { x: M, y: top + 0.3, w: W - 2 * M, h: 2.2, fontSize: ft(110), fontFace: t.fontHead, bold: true, color: t.accent, fit: "shrink" });
+        s.addText(String(st.label), { x: M, y: top + 2.6, w: 9, h: 0.9, fontSize: fs(22), ...body(), valign: "top" });
+        if ((sl.bullets || []).length) s.addText(bulletRuns(sl.bullets.slice(0, 3), fs(15)), { x: M, y: top + 3.5, w: W - 2 * M, h: h - 3.6, valign: "top" });
+        break;
+      }
+      const items = sl.layout === "stats" ? (sl.stats || []).map((x) => [x.value, x.label]) : (sl.bullets || []).map((b) => ["", b]);
       const n = Math.max(1, Math.min(items.length, 4));
       const gap = 0.3;
       const cw = (W - 2 * M - gap * (n - 1)) / n;
       items.slice(0, 4).forEach(([v, l], i) => {
         const x = M + i * (cw + gap);
-        card(s, x, top + 0.3, cw, 2.6);
-        if (v) s.addText(String(v), { x: x + 0.25, y: top + 0.5, w: cw - 0.5, h: 1.1, fontSize: 40, color: t.accent, fontFace: t.fontHead, bold: true });
-        s.addText(String(l), { x: x + 0.25, y: v ? top + 1.6 : top + 0.5, w: cw - 0.5, h: v ? 1.1 : 2.2, fontSize: v ? 14 : 16, ...body, valign: "top" });
+        card(s, x, top + 0.2, cw, 2.7);
+        const label = v ? String(v) : String(i + 1).padStart(2, "0");
+        s.addText(label, { x: x + 0.25, y: top + 0.4, w: cw - 0.5, h: v ? 1.1 : 0.7, fontSize: v ? ft(38) : 26, fontFace: t.fontHead, bold: true, color: t.accent, fit: "shrink" });
+        s.addText(String(l), { x: x + 0.25, y: v ? top + 1.5 : top + 1.15, w: cw - 0.5, h: v ? 1.25 : 1.6, fontSize: fs(v ? 14 : 17), ...body(), valign: "top" });
       });
-      if (sl.bullets.length && sl.layout === "stats") s.addText(bullets(sl.bullets.slice(0, 3), { fontSize: 14 }), { x: M, y: top + 3.2, w: W - 2 * M, h: 1.6, valign: "top" });
+      if ((sl.bullets || []).length && sl.layout === "stats")
+        s.addText(bulletRuns(sl.bullets.slice(0, 3), fs(14)), { x: M, y: top + 3.15, w: W - 2 * M, h: h - 3.2, valign: "top" });
       break;
     }
     case "two_column":
@@ -84,61 +140,84 @@ for (const sl of spec.slides) {
       [[sl.left_title, sl.left], [sl.right_title, sl.right]].forEach(([ct, items], i) => {
         const x = M + i * (cw + 0.4);
         card(s, x, top, cw, h);
-        if (ct) s.addText(ct, { x: x + 0.3, y: top + 0.2, w: cw - 0.6, h: 0.5, fontSize: 18, color: t.accent, fontFace: t.fontHead, bold: true });
-        s.addText(bullets(items || [], { fontSize: 15 }), { x: x + 0.3, y: top + 0.8, w: cw - 0.6, h: h - 1.0, valign: "top" });
+        if (ct) s.addText(ct, { x: x + 0.3, y: top + 0.25, w: cw - 0.6, h: 0.55, fontSize: fs(20), fontFace: t.fontHead, bold: true, color: i === 0 ? t.accent : t.text });
+        s.addText(bulletRuns(items || [], fs((items || []).length <= 3 ? 18 : 16)), { x: x + 0.3, y: top + 0.95, w: cw - 0.6, h: h - 1.15, valign: "top" });
       });
       break;
     }
-    case "process": {
-      const steps = (sl.steps.length ? sl.steps : sl.bullets).slice(0, 5);
+    case "process":
+    case "timeline": {
+      const steps = ((sl.steps || []).length ? sl.steps : sl.bullets || []).slice(0, 5);
       const n = Math.max(steps.length, 1);
       const gap = 0.25;
       const cw = (W - 2 * M - gap * (n - 1)) / n;
+      const ly = top + 0.75;
+      s.addShape(pptx.ShapeType.line, { x: M, y: ly, w: W - 2 * M, h: 0, line: { color: t.border, width: 1 } });
       steps.forEach((st, i) => {
         const x = M + i * (cw + gap);
-        card(s, x, top + 0.4, cw, 2.8);
-        s.addText(String(i + 1).padStart(2, "0"), { x: x + 0.25, y: top + 0.55, w: 1, h: 0.6, fontSize: 24, color: t.accent, fontFace: t.fontHead, bold: true });
-        s.addText(String(st), { x: x + 0.25, y: top + 1.2, w: cw - 0.5, h: 1.9, fontSize: 14, ...body, valign: "top" });
+        s.addShape(pptx.ShapeType.ellipse, { x: x, y: ly - 0.13, w: 0.26, h: 0.26, fill: { color: i === 0 ? t.accent : t.surface }, line: { color: t.accent, width: 1 } });
+        s.addText(String(i + 1).padStart(2, "0"), { x, y: top, w: 1, h: 0.45, fontSize: 18, fontFace: t.fontHead, bold: true, color: t.accent });
+        s.addText(String(st), { x, y: ly + 0.35, w: cw - 0.1, h: h - 1.2, fontSize: fs(14), ...body(), valign: "top" });
       });
       break;
     }
     case "quote": {
-      card(s, M, top + 0.3, W - 2 * M, 3.2);
-      s.addText(`\u201C${sl.quote || sl.bullets[0] || ""}\u201D`, { x: M + 0.6, y: top + 0.5, w: W - 2 * M - 1.2, h: 2.8, fontSize: 26, italic: true, ...body, valign: "middle" });
+      s.addText(`\u201C${sl.quote || (sl.bullets || [])[0] || ""}\u201D`, { x: M + 0.4, y: top + 0.2, w: W - 2 * M - 0.8, h: 3.3, fontSize: ft(28), fontFace: t.fontHead, color: t.text, valign: "middle" });
       break;
     }
     case "chart": {
-      if (sl.chart_labels.length && sl.chart_values.length) {
+      const has = (sl.chart_labels || []).length && (sl.chart_values || []).length;
+      const side = (sl.bullets || []).length ? 4.2 : 0;
+      if (has)
         s.addChart(pptx.ChartType.bar, [{ name: sl.title, labels: sl.chart_labels, values: sl.chart_values }], {
-          x: M, y: top, w: W - 2 * M - (sl.bullets.length ? 4.2 : 0), h,
+          x: M, y: top, w: W - 2 * M - side, h,
           chartColors: [t.accent], catAxisLabelColor: t.muted, valAxisLabelColor: t.muted,
+          catAxisLabelFontFace: t.fontBody, valAxisLabelFontFace: t.fontBody,
           valGridLine: { color: t.border, size: 0.5 }, catGridLine: { style: "none" },
-          showValue: true, dataLabelColor: t.text, dataLabelFontSize: 11, catAxisLabelFontSize: 11,
+          valAxisLineShow: false, catAxisLineShow: false,
+          showValue: true, dataLabelColor: t.text, dataLabelFontFace: t.fontBody, dataLabelFontSize: 11, catAxisLabelFontSize: 11,
         });
-      }
-      if (sl.bullets.length) s.addText(bullets(sl.bullets, { fontSize: 14 }), { x: W - M - 3.9, y: top, w: 3.9, h, valign: "top" });
+      if (side) s.addText(bulletRuns(sl.bullets, fs(14)), { x: W - M - 3.9, y: top, w: 3.9, h, valign: "top" });
       break;
     }
     case "table": {
-      const cols = sl.table_columns;
-      const rows = [cols.map((c) => ({ text: String(c), options: { bold: true, color: t.accentText, fill: { color: t.accent } } }))];
-      for (const r of sl.table_rows.slice(0, 12)) rows.push(r.map((c) => ({ text: String(c ?? ""), options: { color: t.text, fill: { color: t.surface } } })));
-      if (cols.length) s.addTable(rows, { x: M, y: top, w: W - 2 * M, fontSize: 12, fontFace: t.fontBody, border: { type: "solid", color: t.border, pt: 0.75 }, autoPage: false });
+      const cols = sl.table_columns || [];
+      const rows = [cols.map((c) => ({ text: String(c), options: { bold: true, color: t.onAccent, fill: { color: t.accent } } }))];
+      (sl.table_rows || []).slice(0, 10).forEach((r, i) =>
+        rows.push(r.map((c) => ({ text: String(c ?? ""), options: { color: t.text, fill: { color: i % 2 ? t.bg : t.surface } } }))),
+      );
+      const n = Math.max(1, rows.length);
+      const size = n <= 6 ? 16 : n <= 9 ? 14 : 12;
+      const rowH = Math.min(0.62, (h - 0.2) / n);
+      if (cols.length) s.addTable(rows, { x: M, y: top, w: W - 2 * M, rowH, fontSize: fs(size), fontFace: t.fontBody, border: { type: "solid", color: t.border, pt: 0.5 }, valign: "middle", autoPage: false });
+      break;
+    }
+    case "image": {
+      const side = (sl.bullets || []).length ? 4.3 : 0;
+      if (sl.image_path) s.addImage({ path: sl.image_path, x: M, y: top, w: W - 2 * M - side, h: h - 0.4, sizing: { type: "contain", w: W - 2 * M - side, h: h - 0.4 } });
+      if (sl.image_caption) s.addText(sl.image_caption, { x: M, y: top + h - 0.35, w: W - 2 * M - side, h: 0.3, fontSize: 10, ...muted() });
+      if (side) s.addText(bulletRuns(sl.bullets, fs(14)), { x: W - M - 4.0, y: top, w: 4.0, h, valign: "top" });
       break;
     }
     default: {
-      s.addText(bullets(sl.bullets, { fontSize: 18 }), { x: M, y: top, w: W - 2 * M, h, valign: "top" });
+      const n = (sl.bullets || []).length;
+      const size = n <= 3 ? 24 : n <= 5 ? 20 : 18;
+      s.addText(bulletRuns(sl.bullets || [], fs(size)), { x: M, y: top + (n <= 3 ? 0.3 : 0), w: W - 2 * M, h, valign: "top", paraSpaceAfter: n <= 3 ? 22 : 9 });
     }
   }
+  lastLayout = sl.layout;
   if (sl.notes) s.addNotes(sl.notes);
 }
 
-// Closing
+// ---------------------------------------------------------------- closing
 {
   const s = pptx.addSlide();
   s.background = { color: t.bg };
-  s.addText(spec.closing || "Thank you", { x: 1.1, y: 2.9, w: 11, h: 1.2, fontSize: 40, ...head });
-  s.addText(spec.footer || "MCIT AI", { x: 1.1, y: 4.1, w: 11, h: 0.5, fontSize: 16, color: t.accent, fontFace: t.fontBody });
+  if (spec.end) s.addImage({ path: spec.end, x: 0, y: 0, w: W, h: H, sizing: { type: "cover", w: W, h: H } });
+  // The end art carries its figure on the right; the closing block sits on the open left side.
+  s.addText(spec.closing || "Thank You", { x: M, y: 2.75, w: 7.2, h: 1.2, fontSize: 48, fontFace: t.fontHead, bold: true, color: "FFFFFF", align: "left" });
+  s.addText(spec.footer || "Ministry of Communications and Information Technology", { x: M, y: 4.05, w: 7.2, h: 0.45, fontSize: 15, fontFace: t.fontCover, color: "F7EF8A", align: "left" });
+  if (spec.url) s.addText(spec.url, { x: M, y: 4.5, w: 7.2, h: 0.4, fontSize: 13, fontFace: t.fontCover, color: "F7EF8A", align: "left" });
 }
 
 await pptx.writeFile({ fileName: outPath });

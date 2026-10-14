@@ -15,9 +15,11 @@ export interface LibraryFile {
   created: string
   updated?: string | null
   version?: number
+  audit_issues?: string[]
+  audit_passes?: number
 }
 
-export type PresetId = 'presentation' | 'report' | 'sketchnote' | 'noir_sheet'
+export type PresetId = 'presentation' | 'report' | 'infograph' | 'spreadsheet'
 export type PresetMode = 'dark' | 'light'
 
 export interface StudioPreset {
@@ -26,7 +28,9 @@ export interface StudioPreset {
   description: string
   modes: PresetMode[]
   outputs: string[]
+  lengths?: string[]
   ready: boolean
+  missing?: string[]
 }
 
 export type JobEvent =
@@ -51,6 +55,8 @@ export interface StudioJobRequest {
   mode: PresetMode
   slide_count?: number
   length?: 'short' | 'medium' | 'long'
+  template?: 'default' | 'custom'
+  design?: string | null
   audience?: string
   instructions?: string | null
   model_id?: string | null

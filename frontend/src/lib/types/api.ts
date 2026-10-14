@@ -153,11 +153,21 @@ export interface SourceChatSession extends BaseChatSession {
   model_override?: string
 }
 
+export interface ChatCitation {
+  n: number
+  chunk_id: string
+  source_id: string
+  source_title: string
+  excerpt: string
+}
+
 export interface SourceChatMessage {
   id: string
   type: 'human' | 'ai'
   content: string
   timestamp?: string
+  citations?: ChatCitation[]
+  ingest?: { id: string; title: string }[]
 }
 
 export interface SourceChatContextIndicator {
@@ -205,6 +215,8 @@ export interface NotebookChatMessage {
   type: 'human' | 'ai'
   content: string
   timestamp?: string
+  citations?: ChatCitation[]
+  ingest?: { id: string; title: string }[]
 }
 
 export interface NotebookChatSessionWithMessages extends NotebookChatSession {

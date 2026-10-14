@@ -1,5 +1,6 @@
-"""MCIT AI Studio: four presets, written by Tut Agent and built by the Craft
-engines. Results land in the user's private file library and open in ONLYOFFICE.
+"""MCIT AI Studio: four features (presentation, report, infograph,
+spreadsheet), written by Tut Agent and built and audited by the Craft engines.
+Results land in the user's private file library and open in ONLYOFFICE.
 """
 
 from pathlib import Path
@@ -10,7 +11,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from open_notebook.craft import engines as craft_engines
-from open_notebook.craft.pipelines import PRESETS
+from open_notebook.craft.kit.assets import missing_for
+from open_notebook.craft.pipelines import PRESETS, canonical
 from open_notebook.domain.notebook import Notebook
 from open_notebook.exports import storage
 from open_notebook.exports.content import StudioOptions
@@ -35,7 +37,9 @@ MEDIA = {
 
 class StudioJobRequest(BaseModel):
     notebook_id: str
-    preset: Literal["presentation", "report", "sketchnote", "noir_sheet"]
+    preset: Literal["presentation", "report", "infograph", "spreadsheet", "sketchnote", "noir_sheet"]
+    template: Literal["default", "custom"] = "default"
+    design: Optional[str] = Field(None, max_length=2000, description="Custom design direction (custom template only)")
     mode: Literal["dark", "light"] = "dark"
     slide_count: int = Field(8, ge=4, le=20)
     length: Literal["short", "medium", "long"] = "medium"
@@ -55,7 +59,9 @@ async def studio_presets():
                 "description": p.description,
                 "modes": list(p.modes),
                 "outputs": list(p.outputs),
-                "ready": all(available.get(e) for e in p.engines),
+                "lengths": list(p.lengths),
+                "ready": all(available.get(e) for e in p.engines) and not missing_for(p.id),
+                "missing": [e for e in p.engines if not available.get(e)] + missing_for(p.id),
             }
             for p in PRESETS.values()
         ]
@@ -75,10 +81,14 @@ async def studio_job(body: StudioJobRequest):
         length=body.length,
         audience=body.audience or "senior leadership",
         instructions=body.instructions,
+        template=body.template,
     )
+    feature = canonical(body.preset)
+    if missing_for(feature):
+        raise HTTPException(status_code=409, detail=f"{PRESETS[feature].name} needs: {', '.join(missing_for(feature))}")
 
     async def work(run):
-        result = await produce(run, body.notebook_id, body.preset, body.mode, options, body.model_id)
+        result = await produce(run, body.notebook_id, feature, body.mode, options, body.model_id, design=body.design)
         run.emit("message", content=f'Delivered {len(result["files"])} file(s) for "{result["title"]}".')
 
     run = jobs.start("studio", work, feature="studio")

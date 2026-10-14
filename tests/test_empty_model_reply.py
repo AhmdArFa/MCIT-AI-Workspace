@@ -179,6 +179,9 @@ def test_notebook_chat_failed_turn_is_rolled_back_and_retry_is_clean():
             new=AsyncMock(return_value=("chat_session:n", session)),
         ),
         patch("api.routers.chat.repo_query", new=AsyncMock(return_value=[])),
+        # notebook chat is RAG only: give it a processed notebook with no matching passage
+        patch("open_notebook.notebook_rag.source_status", new=AsyncMock(return_value=__import__("open_notebook.notebook_rag", fromlist=["SourceStatus"]).SourceStatus(1, 1, []))),
+        patch("open_notebook.notebook_rag.retrieve", new=AsyncMock(return_value=[])),
     ):
         payload = {"session_id": "chat_session:n", "message": "question", "context": {}}
         failed = client.post("/api/chat/execute", json=payload)

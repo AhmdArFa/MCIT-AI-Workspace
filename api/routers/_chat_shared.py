@@ -12,7 +12,7 @@ Behavior notes:
   them to the same status codes and messages as before.
 """
 
-from typing import Any, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
@@ -27,6 +27,8 @@ class ChatMessage(BaseModel):
     type: str = Field(..., description="Message type (human|ai)")
     content: str = Field(..., description="Message content")
     timestamp: Optional[str] = Field(None, description="Message timestamp")
+    citations: List[Dict[str, Any]] = Field(default_factory=list, description="Source passages the answer cites ([n] markers)")
+    ingest: List[Dict[str, str]] = Field(default_factory=list, description="Unprocessed sources the user can process in one click")
 
 
 class SuccessResponse(BaseModel):
@@ -89,6 +91,8 @@ def extract_chat_messages(raw_messages: Iterable[Any]) -> List[ChatMessage]:
                 type=msg.type if hasattr(msg, "type") else "unknown",
                 content=msg.content if hasattr(msg, "content") else str(msg),
                 timestamp=None,  # LangChain messages don't have timestamps by default
+                citations=list((getattr(msg, "additional_kwargs", None) or {}).get("citations") or []),
+                ingest=list((getattr(msg, "additional_kwargs", None) or {}).get("ingest") or []),
             )
         )
     return messages

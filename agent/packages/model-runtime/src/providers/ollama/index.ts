@@ -187,7 +187,39 @@ export class TutOllamaAI implements TutRuntimeAI {
   };
 
   private async buildOllamaMessages(messages: OpenAIChatMessage[]) {
-    return Promise.all(messages.map((message) => this.convertContentToOllamaMessage(message)));
+    // Tool round trips must survive the conversion: the assistant turn keeps its
+    // tool_calls and each tool result names the tool it answers. Without them
+    // the model never sees its call answered and calls the same tool again.
+    const toolNames = new Map<string, string>();
+    for (const m of messages as any[]) {
+      for (const call of m.tool_calls || []) {
+        if (call?.id && call.function?.name) toolNames.set(call.id, call.function.name);
+      }
+    }
+    return Promise.all(
+      messages.map(async (message) => {
+        const converted: any = await this.convertContentToOllamaMessage(message);
+        const raw = message as any;
+        if (raw.role === 'assistant' && Array.isArray(raw.tool_calls) && raw.tool_calls.length) {
+          converted.tool_calls = raw.tool_calls.map((call: any) => {
+            let args: unknown = call.function?.arguments ?? {};
+            if (typeof args === 'string') {
+              try {
+                args = args.trim() ? JSON.parse(args) : {};
+              } catch {
+                args = {};
+              }
+            }
+            return { function: { arguments: args, name: call.function?.name } };
+          });
+        }
+        if (raw.role === 'tool') {
+          const name = raw.name || (raw.tool_call_id && toolNames.get(raw.tool_call_id));
+          if (name) converted.tool_name = name;
+        }
+        return converted as OllamaMessage;
+      }),
+    );
   }
 
   private convertContentToOllamaMessage = async (

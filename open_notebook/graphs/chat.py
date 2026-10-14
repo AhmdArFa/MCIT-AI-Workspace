@@ -25,6 +25,7 @@ class ThreadState(TypedDict):
     context: Optional[str]
     context_config: Optional[dict]
     model_override: Optional[str]
+    citations: Optional[list]  # retrieved chunks for this turn (notebook RAG)
 
 
 def call_model_with_messages(state: ThreadState, config: RunnableConfig) -> dict:
@@ -82,7 +83,15 @@ def call_model_with_messages(state: ThreadState, config: RunnableConfig) -> dict
                 "The model returned an empty response. Try again, or pick a "
                 "different model if this keeps happening."
             )
-        cleaned_message = ai_message.model_copy(update={"content": cleaned_content})
+        update: dict = {"content": cleaned_content}
+        if state.get("citations") is not None:
+            from open_notebook.notebook_rag import used_citations
+
+            update["additional_kwargs"] = {
+                **(ai_message.additional_kwargs or {}),
+                "citations": used_citations(cleaned_content, state.get("citations") or []),
+            }
+        cleaned_message = ai_message.model_copy(update=update)
 
         return {"messages": cleaned_message}
     except OpenNotebookError:

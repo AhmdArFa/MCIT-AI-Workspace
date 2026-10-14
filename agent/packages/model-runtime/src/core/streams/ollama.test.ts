@@ -223,6 +223,10 @@ describe('OllamaStream', () => {
           'id: chat_1',
           'event: stop',
           `data: "finished"\n`,
+          // Ollama's final chunk carries the real token counts
+          'id: chat_1',
+          'event: usage',
+          `data: {"inputTextTokens":221,"outputTextTokens":26,"totalInputTokens":221,"totalOutputTokens":26,"totalTokens":247}\n`,
         ].map((i) => `${i}\n`),
       );
 

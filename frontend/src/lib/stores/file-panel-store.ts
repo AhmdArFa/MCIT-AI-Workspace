@@ -13,7 +13,8 @@ export const useFilePanel = create<FilePanelState>((set) => ({
   fileId: null,
   ownerId: null,
   fullscreen: false,
-  open: (id, ownerId) => set({ fileId: id, ownerId: ownerId ?? null, fullscreen: true }),
+  // Opens as a large side panel; the header button expands it to full screen.
+  open: (id, ownerId) => set({ fileId: id, ownerId: ownerId ?? null, fullscreen: false }),
   close: () => set({ fileId: null, ownerId: null, fullscreen: false }),
   toggleFullscreen: () => set((s) => ({ fullscreen: !s.fullscreen })),
 }))

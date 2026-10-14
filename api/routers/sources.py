@@ -31,6 +31,7 @@ from api.models import (
     SourceUpdate,
 )
 from commands.source_commands import SourceProcessingInput
+from open_notebook import tenancy
 from open_notebook.database.repository import ensure_record_id, repo_query
 from open_notebook.domain.notebook import Asset, Notebook, Source
 from open_notebook.domain.transformation import Transformation
@@ -990,9 +991,21 @@ async def retry_source_processing(source_id: str):
             if source.full_text:
                 content_state = {"content": source.full_text}
             else:
-                raise HTTPException(
-                    status_code=400, detail="Cannot determine source content for retry"
-                )
+                # A pasted-text source that never finished processing keeps its
+                # text only in the command that was submitted for it.
+                pasted = None
+                if source.command:
+                    with tenancy.tenant_scope(None):
+                        rows = await repo_query(
+                            "SELECT VALUE args.content_state.content FROM $cmd",
+                            {"cmd": ensure_record_id(str(source.command))},
+                        )
+                    pasted = rows[0] if rows else None
+                if not pasted:
+                    raise HTTPException(
+                        status_code=400, detail="Cannot determine source content for retry"
+                    )
+                content_state = {"content": pasted}
 
         try:
             # Import command modules to ensure they're registered

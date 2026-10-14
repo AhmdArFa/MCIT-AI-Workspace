@@ -1,6 +1,4 @@
 export default {
-  'navigation.studio': 'Studio',
-  'navigation.admin': 'Admin',
   'about': 'About',
   'advanceSettings': 'Advanced Settings',
   'alert.cloud.action': 'Try now',

@@ -22,6 +22,8 @@ import { convertReferencesToCompactMarkdown, createCompactReferenceLinkComponent
 import { useModalManager } from '@/lib/hooks/use-modal-manager'
 import { toast } from 'sonner'
 import { useTranslation } from '@/lib/hooks/use-translation'
+import { sourcesApi } from '@/lib/api/sources'
+import type { ChatCitation } from '@/lib/types/api'
 
 interface NotebookContextStats {
   sourcesInsights: number
@@ -356,6 +358,10 @@ const ChatMessage = memo(function ChatMessage({
             <p className="text-sm break-all">{message.content}</p>
           )}
         </div>
+        {message.type === 'ai' && (message.citations?.length ?? 0) > 0 && (
+          <Citations citations={message.citations!} onOpen={(id) => onReferenceClick('source', id)} />
+        )}
+        {message.type === 'ai' && (message.ingest?.length ?? 0) > 0 && <ProcessSources pending={message.ingest!} />}
         {message.type === 'ai' && (
           <MessageActions
             content={message.content}
@@ -395,5 +401,56 @@ function AIMessageContent({
     }}>
       {markdownWithCompactRefs}
     </MarkdownRenderer>
+  )
+}
+
+function Citations({ citations, onOpen }: { citations: ChatCitation[]; onOpen: (sourceId: string) => void }) {
+  const { t } = useTranslation()
+  const [open, setOpen] = useState<number | null>(null)
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-[11px] font-medium text-muted-foreground">{t('common.citedPassages')}</span>
+      <div className="flex flex-wrap gap-1.5">
+        {citations.map((c) => (
+          <button
+            key={c.n}
+            type="button"
+            onClick={() => setOpen(open === c.n ? null : c.n)}
+            aria-expanded={open === c.n}
+            className={`max-w-[16rem] truncate rounded-md border px-2 py-0.5 text-left text-xs ${open === c.n ? 'border-primary/60 bg-muted' : 'hover:bg-muted'}`}
+          >
+            [{c.n}] {c.source_title}
+          </button>
+        ))}
+      </div>
+      {open !== null && (
+        <div className="rounded-md border bg-muted/40 p-2 text-xs leading-relaxed">
+          <p className="whitespace-pre-wrap">{citations.find((c) => c.n === open)?.excerpt}</p>
+          <button type="button" className="mt-1 text-xs text-primary underline-offset-2 hover:underline" onClick={() => onOpen(citations.find((c) => c.n === open)!.source_id)}>
+            {citations.find((c) => c.n === open)?.source_title}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ProcessSources({ pending }: { pending: { id: string; title: string }[] }) {
+  const { t } = useTranslation()
+  const [state, setState] = useState<'idle' | 'busy' | 'done'>('idle')
+  const run = async () => {
+    setState('busy')
+    try {
+      await Promise.all(pending.map((p) => sourcesApi.retry(p.id)))
+      setState('done')
+    } catch {
+      setState('idle')
+    }
+  }
+  if (state === 'done') return <p className="text-xs text-muted-foreground">{t('common.processStarted')}</p>
+  return (
+    <Button size="sm" variant="outline" className="self-start" disabled={state === 'busy'} onClick={run}>
+      {state === 'busy' ? t('common.processingSources') : t('common.processSources', { count: pending.length })}
+    </Button>
   )
 }

@@ -6,7 +6,7 @@ import { TutAvatar } from '@/components/tut/TutAvatar'
 const CAPABILITIES = [
   'Tut Agent: the MCIT agent that plans and runs multi-step work with tools, skills, knowledge and memory',
   'Notebook chat: Tut answers from the sources you select, with citations, without taking actions',
-  'Studio: presentations and reports in dark or light, sketchnote infographics and Noir spreadsheets',
+  'Studio: presentations and reports in dark or light, sketchnote infographs and Noir spreadsheets',
   'Craft document engines build every file; the office viewer opens and edits them',
   'One sign-in for MCIT AI and Tut Agent; every account is private to its owner',
   'Podcasts and speech on the MCIT text-to-speech service',

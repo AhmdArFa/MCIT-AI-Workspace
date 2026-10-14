@@ -1,6 +1,7 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { FolderOpen, Search } from 'lucide-react'
 import { toast } from 'sonner'
@@ -9,20 +10,36 @@ import { AppShell } from '@/components/layout/AppShell'
 import { FileCard } from '@/components/files/FileCard'
 import { filesApi } from '@/lib/api/studio'
 import { cn } from '@/lib/utils'
+import { useFilePanel } from '@/lib/stores/file-panel-store'
 
 const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'presentation', label: 'Presentations' },
   { id: 'report', label: 'Reports' },
-  { id: 'infographic', label: 'Sketchnotes' },
+  { id: 'infographic', label: 'Infographs' },
   { id: 'spreadsheet', label: 'Spreadsheets' },
 ]
 
 export default function FilesPage() {
+  return (
+    <Suspense>
+      <FilesLibrary />
+    </Suspense>
+  )
+}
+
+function FilesLibrary() {
   const qc = useQueryClient()
   const { data: files = [], isLoading } = useQuery({ queryKey: ['studio-files'], queryFn: () => filesApi.list(), refetchInterval: 10000 })
   const [filter, setFilter] = useState('all')
   const [q, setQ] = useState('')
+  const params = useSearchParams()
+  const openFile = useFilePanel((s) => s.open)
+  // Links from Tut Agent and Studio (/files?open=<id>) open the same file in the viewer
+  useEffect(() => {
+    const id = params.get('open')
+    if (id) openFile(id)
+  }, [params, openFile])
 
   const shown = useMemo(
     () =>

@@ -542,7 +542,5 @@
   "visibilityConfirm.publish.itemReversible": "You can switch it back to private later from the same menu",
   "visibilityConfirm.publish.itemVisible": "All workspace members will see this immediately",
   "zoom": "Zoom",
-  "navigation.studio": "Studio",
-  "navigation.admin": "Admin",
   "navigation.image": "Generation"
 }

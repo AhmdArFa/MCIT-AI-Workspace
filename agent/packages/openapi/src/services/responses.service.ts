@@ -1,4 +1,7 @@
 import type { AgentState } from '@tut/agent-runtime';
+import { and, desc, eq } from 'drizzle-orm';
+
+import { messages } from '@/database/schemas';
 
 import { createStreamEventManager } from '@/server/modules/AgentRuntime/factory';
 import { InMemoryStreamEventManager } from '@/server/modules/AgentRuntime/InMemoryStreamEventManager';
@@ -304,6 +307,7 @@ export class ResponsesService extends BaseService {
         instructions,
         prompt,
         stream: false,
+        toolModeOverride: 'agent',
         trigger: 'openapi',
       });
 
@@ -322,7 +326,37 @@ export class ResponsesService extends BaseService {
       const finalState = await agentRuntimeService.executeSync(execResult.operationId);
 
       // 3. Extract results from final state
-      const { output, outputText } = this.extractOutputItems(finalState, responseId);
+      const extracted = this.extractOutputItems(finalState, responseId);
+      let { output, outputText } = extracted;
+      // Runs that used tools persist the final answer to the topic; when the
+      // returned state no longer carries it, answer from that stored message.
+      if (!outputText && execResult.topicId) {
+        const [last] = await this.db
+          .select({ content: messages.content })
+          .from(messages)
+          .where(
+            and(
+              eq(messages.topicId, execResult.topicId),
+              eq(messages.userId, this.userId as string),
+              eq(messages.role, 'assistant'),
+            ),
+          )
+          .orderBy(desc(messages.createdAt))
+          .limit(1);
+        if (last?.content) {
+          outputText = last.content;
+          output = [
+            ...output,
+            {
+              content: [{ annotations: [], logprobs: [], text: last.content, type: 'output_text' as const }],
+              id: `msg_${responseId}_final`,
+              role: 'assistant' as const,
+              status: 'completed' as const,
+              type: 'message' as const,
+            },
+          ];
+        }
+      }
       const usage = this.extractUsage(finalState);
 
       const isClientToolInterrupt =
@@ -409,6 +443,7 @@ export class ResponsesService extends BaseService {
         instructions,
         prompt,
         stream: true,
+        toolModeOverride: 'agent',
         trigger: 'openapi',
       });
 
