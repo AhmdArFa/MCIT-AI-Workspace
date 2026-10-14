@@ -30,7 +30,7 @@ cd open-notebook
 If you plan to contribute, clone your fork instead and add `upstream`:
 
 ```bash
-git clone https://github.com/AhmdArFa/MCIT-AI.git
+git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
 cd open-notebook
 git remote add upstream https://github.com/AhmdArFa/mcit-ai.git
 ```

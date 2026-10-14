@@ -84,7 +84,7 @@ user's database), so every generation runs with that person's permissions.
 30 GB of free disk space.
 
 ```bash
-git clone https://github.com/AhmdArFa/MCIT-AI.git
+git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
 cd MCIT-AI
 cp .env.example .env          # replace every CHANGE_ME, e.g. with: openssl rand -hex 32
 docker compose up -d --build

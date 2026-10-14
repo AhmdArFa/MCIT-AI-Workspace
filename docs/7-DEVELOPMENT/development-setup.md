@@ -24,7 +24,7 @@ The worker is not optional. Source processing, embeddings and podcasts are backg
 ## 1. Clone and install
 
 ```bash
-git clone https://github.com/AhmdArFa/MCIT-AI.git
+git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
 cd open-notebook
 git remote add upstream https://github.com/AhmdArFa/mcit-ai.git
 
