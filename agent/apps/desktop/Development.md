@@ -1,6 +1,5 @@
 ## 专题文档
 
-- [桌面端全屏 Overlay 截图方案设计与集成说明](./WindowOverlayCapture.md)
 
 ## 核心框架组件目录架构
 

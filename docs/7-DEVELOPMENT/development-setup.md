@@ -24,9 +24,9 @@ The worker is not optional. Source processing, embeddings and podcasts are backg
 ## 1. Clone and install
 
 ```bash
-git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
+git clone https://github.com/AhmdArFa/MCIT-AI-Platform.git
 cd open-notebook
-git remote add upstream https://github.com/AhmdArFa/mcit-ai.git
+git remote add upstream https://github.com/AhmdArFa/MCIT-AI-Workspace.git
 
 uv sync                          # Python deps, including the dev group (pytest, ruff, mypy)
 cd frontend && npm install && cd ..
@@ -117,7 +117,7 @@ Optional: `uv run pre-commit install` installs git hooks (`.pre-commit-config.ya
 | `make full` | Same, with `examples/docker-compose-full-local.yml` | Fully local stack in Docker |
 | `make docker-build-local` | Builds the production image for your platform, no push | PRs that touch the `Dockerfile` |
 
-Publishing images is a maintainer task: see [.github/RELEASE_PROCESS.md](../../.github/RELEASE_PROCESS.md).
+Publishing images is a maintainer task: see [Makefile](../../Makefile) (`make docker-release`).
 
 ## Troubleshooting
 

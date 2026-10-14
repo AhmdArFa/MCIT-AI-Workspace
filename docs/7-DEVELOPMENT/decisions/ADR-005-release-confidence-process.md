@@ -2,7 +2,7 @@
 
 - **Status**: Accepted
 - **Date**: 2026-07 (established during the v1.11.0 release)
-- **Related**: [RELEASE_PROCESS.md](../../../.github/RELEASE_PROCESS.md), `scripts/release-test/`, [ADR-004](ADR-004-background-workers.md)
+- **Related**: [Makefile](../../../Makefile) (`make docker-release`), `scripts/release-test/`, [ADR-004](ADR-004-background-workers.md)
 
 ## Context
 
@@ -22,7 +22,7 @@ was: both were found by the process this record establishes.
 and the final gate runs against the built Docker image — the artifact users
 receive — not the repository.**
 
-The process (mechanics in [RELEASE_PROCESS.md](../../../.github/RELEASE_PROCESS.md)):
+The process (mechanics in [Makefile](../../../Makefile) (`make docker-release`)):
 
 1. **Changelog audit first** — the release diff, fully represented in the
    CHANGELOG, is the input for both the test plan and the communication.

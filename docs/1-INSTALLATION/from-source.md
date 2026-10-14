@@ -23,16 +23,16 @@ A source install runs four processes, each in its own terminal:
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/AhmdArFa/mcit-ai.git
+git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
 cd open-notebook
 ```
 
 If you plan to contribute, clone your fork instead and add `upstream`:
 
 ```bash
-git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
+git clone https://github.com/AhmdArFa/MCIT-AI-Platform.git
 cd open-notebook
-git remote add upstream https://github.com/AhmdArFa/mcit-ai.git
+git remote add upstream https://github.com/AhmdArFa/MCIT-AI-Workspace.git
 ```
 
 ## 2. Install Python dependencies
@@ -156,4 +156,4 @@ The development workflow is described in the [Development Setup](../7-DEVELOPMEN
 - [Architecture](../7-DEVELOPMENT/architecture.md)
 - [Contributing](../7-DEVELOPMENT/contributing.md)
 
-**Need help?** [Discord](https://discord.gg/37XJPXfz2w) · [GitHub Issues](https://github.com/AhmdArFa/mcit-aiissues)
+**Need help?** [GitHub Issues](https://github.com/AhmdArFa/MCIT-AI-Workspace/issues)

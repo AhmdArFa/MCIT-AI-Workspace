@@ -84,4 +84,4 @@ The last step of that page creates a notebook, adds a text source and sends a ch
 - [User Guide](../3-USER-GUIDE/index.md): sources, chat, notes, podcasts
 - Before exposing MCIT AI to a network, set a password: [Security](../5-CONFIGURATION/security.md)
 
-**Need help?** Join our [Discord community](https://discord.gg/37XJPXfz2w).
+**Need help?** See [Troubleshooting](../6-TROUBLESHOOTING/index.md).

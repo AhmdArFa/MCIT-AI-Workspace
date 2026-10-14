@@ -90,8 +90,8 @@ Settings belong under the `open_notebook` service's `environment:` block and tak
 
 ## Getting help
 
-1. Search [GitHub Issues](https://github.com/AhmdArFa/mcit-aiissues) for your exact message.
-2. Ask in [Discord](https://discord.gg/37XJPXfz2w) or [GitHub Discussions](https://github.com/AhmdArFa/mcit-aidiscussions/categories/q-a).
+1. Search [GitHub Issues](https://github.com/AhmdArFa/MCIT-AI-Workspace/issues) for your exact message.
+2. Ask in [GitHub Discussions](https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions/categories/q-a).
 3. For a reproducible bug, open an issue with: the exact message, steps to reproduce, the relevant part of `docker compose logs open_notebook` (remove keys and passwords), your MCIT AI version, how you run it (Docker, single container, from source) and the provider you use.
 
-Security problems: don't open a public issue, see [SECURITY.md](../../SECURITY.md).
+Security problems: don't open a public issue, see [private vulnerability reporting](https://github.com/AhmdArFa/MCIT-AI-Workspace/security/advisories/new).

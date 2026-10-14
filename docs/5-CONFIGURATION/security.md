@@ -244,7 +244,7 @@ This is the login page failing to reach the API, not a wrong password. See [Conn
 
 ## Reporting Security Issues
 
-Don't open a public issue. Use GitHub's private vulnerability reporting, as described in [SECURITY.md](../../SECURITY.md).
+Don't open a public issue. Use GitHub's private vulnerability reporting, as described in [private vulnerability reporting](https://github.com/AhmdArFa/MCIT-AI-Workspace/security/advisories/new).
 
 ---
 

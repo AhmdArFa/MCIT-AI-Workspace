@@ -2,7 +2,7 @@
 
 > **Historical snapshot.** This is a point-in-time review of the API key management feature (the Manage → Models credentials UI), done on 2026-01-27/28. It is **not** a security assessment of MCIT AI as a whole, and it is not kept up to date. Rows that were wrong at the time or have since changed are annotated below (corrections verified against the code in October 2026, v1.15.0).
 >
-> For current guidance see [Security Configuration](5-CONFIGURATION/security.md) (operators) and [Developer security notes](7-DEVELOPMENT/security.md) plus the decision records in [docs/7-DEVELOPMENT/decisions/](7-DEVELOPMENT/decisions/) (contributors). To report a vulnerability, follow [SECURITY.md](../SECURITY.md).
+> For current guidance see [Security Configuration](5-CONFIGURATION/security.md) (operators) and [Developer security notes](7-DEVELOPMENT/security.md) plus the decision records in [docs/7-DEVELOPMENT/decisions/](7-DEVELOPMENT/decisions/) (contributors). To report a vulnerability, follow [private vulnerability reporting](https://github.com/AhmdArFa/MCIT-AI-Workspace/security/advisories/new).
 
 ---
 

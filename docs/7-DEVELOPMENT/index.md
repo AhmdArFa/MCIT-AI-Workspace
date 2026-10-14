@@ -26,14 +26,13 @@ The normative rules for coding agents (and humans in a hurry) are in the `AGENTS
 | [Security](security.md) | Query, template and file-handling safety; secrets; review checklist |
 | [Design Principles](design-principles.md) | Engineering practices and anti-patterns |
 | [Decision Records](decisions/README.md) | ADRs and PDRs: why things are the way they are |
-| [VISION.md](../../VISION.md) | Product identity, current posture and priorities |
+| [README.md](../../README.md) | What the product is and what it includes |
 | [Maintainer Guide](maintainer-guide.md) | Triage, reviews, labels |
 
 ## Getting help
 
 - **GitHub Discussions**: questions, ideas, product direction, design and architecture
 - **GitHub Issues**: reproducible bugs and approved work items
-- **Discord**: [join the server](https://discord.gg/37XJPXfz2w) for real-time help
 
 ## Libraries we maintain
 

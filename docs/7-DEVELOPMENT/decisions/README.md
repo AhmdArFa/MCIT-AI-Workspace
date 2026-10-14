@@ -7,7 +7,7 @@ Two kinds, same format:
 - **ADR** (Architecture Decision Record) — technical choices: `ADR-NNN-slug.md`
 - **PDR** (Product Decision Record) — product direction and scope: `PDR-NNN-slug.md`
 
-The **current rules** distilled from these records live in [VISION.md](../../../VISION.md) (product identity + posture) and [design-principles.md](../design-principles.md) (engineering practices). Records are the memory; those pages are the law.
+The **current rules** distilled from these records live in [README.md](../../../README.md) (product identity + posture) and [design-principles.md](../design-principles.md) (engineering practices). Records are the memory; those pages are the law.
 
 ## Rules
 

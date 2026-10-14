@@ -44,7 +44,7 @@ docker-buildx-clean:
 docker-buildx-reset: docker-buildx-clean docker-buildx-prepare
 	@echo "✅ Buildx reset complete!"
 
-# === Release Testing (see .github/RELEASE_PROCESS.md) ===
+# === Release Testing (scripts/release-test/) ===
 
 # Automated image gate: fresh install + upgrade against real images.
 # Usage: make release-test TAG=1.12.0 OLD_TAG=1.11.0

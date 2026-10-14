@@ -2,7 +2,7 @@
 
 - **Status**: Accepted
 - **Date**: 2026-07
-- **Related**: [#712](https://github.com/AhmdArFa/mcit-aiissues/712) (multi-user umbrella), [VISION.md](../../../VISION.md) (Current Posture)
+- **Related**: upstream #712 (multi-user umbrella)
 
 ## Context
 
@@ -16,7 +16,7 @@ This record does **not** commit to building multi-user. It commits to keeping th
 
 ## Alternatives considered
 
-- **Decide multi-user now** — premature: the product core is still stabilizing (see Current Posture in VISION.md) and the design space (team vs. SaaS) is unresolved.
+- **Decide multi-user now** — premature: the product core is still stabilizing and the design space (team vs. SaaS) is unresolved.
 - **Ignore it until decided** — cheapest today, but every single-tenant assumption shipped becomes migration debt.
 
 ## Consequences

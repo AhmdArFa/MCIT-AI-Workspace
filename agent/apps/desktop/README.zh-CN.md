@@ -374,5 +374,5 @@ pnpm type-check # 类型验证
 
 - **开发指南**：[`Development.md`](./Development.md) - 全面的开发文档
 - **架构文档**：[`/docs`](../../docs/) - 详细的技术规范
-- **贡献指南**：[`CONTRIBUTING.md`](../../CONTRIBUTING.md) - 贡献指导
+- **贡献指南**：`CONTRIBUTING.md` - 贡献指导
 - **问题和支持**：[GitHub Issues](https://github.com/AhmdArFa/MCIT-Agent/issues)

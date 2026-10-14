@@ -2,7 +2,7 @@
 
 - **Status**: Accepted
 - **Date**: 2026-09
-- **Related**: #574 and #87 (the two requests this resolves), [#1315](https://github.com/AhmdArFa/mcit-aidiscussions/1315) (Evidence-Centered Research — the larger retrieval contract), [ADR-006](ADR-006-migration-granularity.md) (migration granularity)
+- **Related**: #574 and #87 (the two requests this resolves), [#1315](https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions/1315) (Evidence-Centered Research — the larger retrieval contract), [ADR-006](ADR-006-migration-granularity.md) (migration granularity)
 
 ## Context
 

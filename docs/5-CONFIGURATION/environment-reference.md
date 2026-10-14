@@ -49,6 +49,36 @@ Variables read by the frontend (`API_URL`, `INTERNAL_API_URL`, `NEXT_PUBLIC_*`, 
 
 ---
 
+## MCIT AI accounts, Tut Agent, office editor and Studio
+
+The compose file sets the addresses below; in `.env` you normally set only the secrets,
+the public URLs and, if needed, `TUT_DRAFT_TIMEOUT_SECONDS`.
+
+| Variable | Default | Read by | Description |
+|----------|---------|---------|-------------|
+| `MCIT_AUTH_SECRET` | generated and kept in the data volume | API | Signs MCIT AI sessions. Set it so sessions survive a lost data volume. (Tokens issued to Tut Agent are signed with an RS256 key kept in the data volume.) |
+| `MCIT_ADMIN_USERNAME`, `MCIT_ADMIN_PASSWORD` | `admin`, `1234` | API | Bootstrap administrator created on first start. Change the password after the first sign-in |
+| `MCIT_SESSION_HOURS` | `12` | API | Lifetime of a sign-in session |
+| `MCIT_PUBLIC_URL` | none | API | Browser address of MCIT AI. Used for sign-in redirects and single sign-out |
+| `MCIT_INTERNAL_API_URL` | `http://localhost:5055` | API | Address the office editor and Tut Agent use to reach the API |
+| `MCIT_OIDC_ISSUER` | `MCIT_PUBLIC_URL` + `/api/oidc` | API | Issuer published to Tut Agent; must match `AUTH_GENERIC_OIDC_ISSUER` in Tut Agent |
+| `MCIT_EMAIL_DOMAIN` | `mcit.local` | API | Domain of the e-mail address MCIT AI gives each account in Tut Agent |
+| `MCIT_EXPOSE_API_DOCS` | off | API | `1` publishes the OpenAPI pages at `/docs` |
+| `TUT_AGENT_PUBLIC_URL`, `TUT_AGENT_INTERNAL_URL` | none | API | Browser and container addresses of Tut Agent |
+| `TUT_OIDC_CLIENT_ID`, `TUT_OIDC_CLIENT_SECRET` | `tut-agent`, none | API | Single sign-on client registered for Tut Agent; the same values go to Tut Agent's `AUTH_GENERIC_OIDC_ID` and `AUTH_GENERIC_OIDC_SECRET` |
+| `TUT_OIDC_REDIRECT_ORIGINS` | `TUT_AGENT_PUBLIC_URL` | API | Comma-separated origins allowed as sign-in redirect targets |
+| `MCIT_ADMIN_BOOTSTRAP_TOKEN` | none | API | Server-to-server token (from `TUT_ADMIN_TOKEN` in `.env`): admin views of Tut Agent activity and the per-user MCIT AI tool connection |
+| `TUT_STUDIO_AGENT_ID` | `inbox` | API | Tut Agent agent that drafts Studio content |
+| `TUT_DRAFT_TIMEOUT_SECONDS` | `900` | API | Longest time one Studio drafting call may take. Raise it on slow CPUs |
+| `ONLYOFFICE_PUBLIC_URL`, `ONLYOFFICE_INTERNAL_URL` | none | API | Browser and container addresses of the office editor |
+| `ONLYOFFICE_JWT_SECRET` | none | API | Shared secret with the office editor (its `JWT_SECRET`). **Required** for the editor |
+| `CRAFT_BIN_DIR` | `/opt/craft/bin` | API + Worker | Folder holding the Craft engine CLIs |
+| `CRAFT_KIT_DIR` | the bundled kit | API + Worker | Folder of a mounted document kit (covers, templates, fonts, doodles) |
+| `CRAFT_TIMEOUT_SECONDS` | `180` | API + Worker | Longest time one engine command may take |
+| `CRAFT_MAX_PARALLEL` | `2` | API + Worker | Engine commands that may run at the same time |
+
+---
+
 ## Database (SurrealDB)
 
 Set all five `SURREAL_*` variables explicitly, as the shipped compose file does. The API and the job queue (the surreal-commands library) fall back to different defaults when they are missing: the API uses `open_notebook` for namespace and database, the job queue uses `test`. With mismatched defaults, jobs are written where the worker never looks.
@@ -225,7 +255,7 @@ SurrealDB's own log level is the `--log` argument in the `surrealdb` service's `
 
 ## Legacy: AI provider variables (deprecated)
 
-> **Deprecated.** Configure providers in **Manage → Models**. These variables still work as a fallback (the database is read first, then the environment), but there is no guarantee they keep working, and new automation should not be built on them. A declarative provisioning contract for headless deployments is being discussed in [#765](https://github.com/AhmdArFa/mcit-aidiscussions/765).
+> **Deprecated.** Configure providers in **Manage → Models**. These variables still work as a fallback (the database is read first, then the environment), but there is no guarantee they keep working, and new automation should not be built on them. A declarative provisioning contract for headless deployments is being discussed in [#765](https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions/765).
 
 If you have them set, **Manage → Models** shows **Environment Variables Detected** with a **Migrate to Database** button. Migration creates a credential named "Default (Migrated from env)" per provider. It copies only the variables marked "yes" below; the others keep working only as an environment fallback and must be re-entered by hand if you remove them.
 

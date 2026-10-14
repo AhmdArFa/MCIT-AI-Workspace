@@ -23,7 +23,7 @@ to track and execute.
 **1. Initial triage** (within 24-48 hours when possible)
 
 - Confirm that it is an idea or open-ended proposal rather than a reproducible bug.
-- Search Discussions, Issues, PRs, `VISION.md`, and decision records for related context.
+- Search Discussions, Issues, PRs and decision records for related context.
 - Merge the signal into a canonical Discussion when the topic already exists; preserve links to the original author and contribution.
 - Replace `needs-triage` with `needs-vision` when the question is *whether/why* the project should pursue it, or `needs-design` when the problem is wanted but the *how* remains open.
 
@@ -99,7 +99,7 @@ Thanks for the clear report. We've confirmed this as work the project should tra
 I see you'd like to work on this. Before you start:
 
 1. Please share your proposed approach/solution
-2. Review our [Contributing Guide](contributing.md) and [VISION.md](../../VISION.md)
+2. Review our [Contributing Guide](contributing.md) and [README.md](../../README.md)
 3. Once we agree on the approach, I'll assign this to you
 
 Looking forward to your thoughts!
@@ -137,7 +137,7 @@ these while the backlog is migrated; do not newly route feature proposals into I
 | Label | Meaning |
 |---|---|
 | `needs-triage` | New signal not yet classified |
-| `needs-vision` | Unsure if/how this fits — strategic call for the maintainers (against [VISION.md](../../VISION.md)) |
+| `needs-vision` | Unsure if/how this fits — strategic call for the maintainers (against [README.md](../../README.md)) |
 | `needs-design` | Wanted, but the *how* isn't resolved — needs design/spec before it's ready |
 
 **Issue delivery states:**
@@ -340,7 +340,7 @@ Sorry for the inconvenience - this process helps us manage the project effective
 ```markdown
 Thank you for this suggestion! I can see how this would be useful for [specific use case].
 
-After reviewing against our [vision and principles](https://github.com/AhmdArFa/mcit-aiblob/main/VISION.md), we've decided not to include this in the core project because [specific reason - e.g., "it conflicts with our 'Simplicity Over Features' principle" or "it would require dependencies that conflict with our privacy-first approach"].
+After reviewing against our [vision and principles](../../README.md), we've decided not to include this in the core project because [specific reason - e.g., "it conflicts with our 'Simplicity Over Features' principle" or "it would require dependencies that conflict with our privacy-first approach"].
 
 Some alternatives:
 - [If applicable] This could be built as a plugin/extension
@@ -406,7 +406,7 @@ Thank you for taking the time to contribute! We really appreciate it.
 
 After careful review, we've decided not to merge this PR because [specific reason related to design principles].
 
-This isn't a reflection on your code quality - it's about maintaining focus on our core goals as outlined in [VISION.md](https://github.com/AhmdArFa/mcit-aiblob/main/VISION.md).
+This isn't a reflection on your code quality - it's about maintaining focus on our core goals as outlined in [README.md](../../README.md).
 
 We'd love to have you contribute in other ways! Check out:
 - Good first issues
@@ -485,7 +485,7 @@ This will be included in the next release.
 ## When in Doubt
 
 Ask yourself:
-1. Does this align with our [vision and principles](../../VISION.md)?
+1. Does this align with our [vision and principles](../../README.md)?
 2. Will we be able to maintain this feature long-term?
 3. Does this benefit most users, or just an edge case?
 4. Is there a simpler alternative?

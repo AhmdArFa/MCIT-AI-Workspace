@@ -80,4 +80,4 @@ The single image's database uses `root:root`, which matches the compose default.
 
 ---
 
-**Need help?** [Discord](https://discord.gg/37XJPXfz2w) · [GitHub Issues](https://github.com/AhmdArFa/mcit-aiissues)
+**Need help?** [GitHub Issues](https://github.com/AhmdArFa/MCIT-AI-Workspace/issues)

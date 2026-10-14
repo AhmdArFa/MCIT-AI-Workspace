@@ -6,8 +6,8 @@ Thank you for your interest in contributing to MCIT AI! We welcome contributions
 
 MCIT AI separates **exploration** from **execution**:
 
-- **Feature requests, ideas, behavior changes, product/design/architecture proposals, and contribution proposals start in [GitHub Discussions](https://github.com/AhmdArFa/mcit-aidiscussions/new?category=ideas).** This is where the community explores the problem and maintainers make the product or design decision.
-- **Reproducible bugs start in [GitHub Issues](https://github.com/AhmdArFa/mcit-aiissues/new/choose).**
+- **Feature requests, ideas, behavior changes, product/design/architecture proposals, and contribution proposals start in [GitHub Discussions](https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions/new?category=ideas).** This is where the community explores the problem and maintainers make the product or design decision.
+- **Reproducible bugs start in [GitHub Issues](https://github.com/AhmdArFa/MCIT-AI-Workspace/issues/new/choose).**
 - **Implementation starts from an approved Issue.** Once an idea is sufficiently clear and accepted, a maintainer creates an Issue from the Discussion, scopes it, and assigns it before coding begins.
 
 This means non-trivial contributions follow one of two paths:
@@ -41,14 +41,14 @@ Reproducible bug               → triaged Issue  → code → PR
 
 ## Code of Conduct
 
-By participating in this project, you are expected to uphold our [Code of Conduct](/CODE_OF_CONDUCT.md). Be respectful, constructive, and collaborative.
+Be respectful, constructive, and collaborative.
 
 ## How Can I Contribute?
 
 ### Reporting Bugs
 
 1. **Search existing issues** - Check if the bug was already reported
-2. **Create a bug report** - Use the [Bug Report template](https://github.com/AhmdArFa/mcit-aiissues/new?template=bug_report.yml)
+2. **Create a bug report** - Use the [Bug Report template](https://github.com/AhmdArFa/MCIT-AI-Workspace/issues/new?template=bug_report.yml)
 3. **Provide details** - Include:
    - Steps to reproduce
    - Expected vs actual behavior
@@ -59,7 +59,7 @@ By participating in this project, you are expected to uphold our [Code of Conduc
 ### Suggesting Features
 
 1. **Search existing Discussions and Issues** - Check whether the problem is already being explored or worked on
-2. **Start an Idea Discussion** - Use the [Ideas form](https://github.com/AhmdArFa/mcit-aidiscussions/new?category=ideas)
+2. **Start an Idea Discussion** - Use the [Ideas form](https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions/new?category=ideas)
 3. **Start with the problem and outcome** - Explain what you are trying to do, what is difficult today, and what success would look like
 4. **Add possible directions if useful** - Implementation ideas and references are welcome, but not required
 5. **Join the exploration** - Help answer questions, evaluate trade-offs, or test prototypes
@@ -72,7 +72,7 @@ By participating in this project, you are expected to uphold our [Code of Conduc
 Once your issue is assigned:
 
 1. **Fork the repo** and create your branch from `main`
-2. **Understand our vision and principles** - Read [VISION.md](../../VISION.md) (what the product is and where it's going) and [design-principles.md](design-principles.md) (engineering practices)
+2. **Understand our vision and principles** - Read [README.md](../../README.md) (what the product is and where it's going) and [design-principles.md](design-principles.md) (engineering practices)
 3. **Follow our architecture** - Refer to the architecture documentation to understand project structure
 4. **Write quality code** - Follow the standards outlined in [code-standards.md](code-standards.md)
 5. **Test your changes** - See [testing.md](testing.md) for test guidelines
@@ -181,19 +181,18 @@ When you create a pull request:
 
 ## Where the Project Is Heading
 
-Current priorities and what is out of scope live in [VISION.md](../../VISION.md) (see "Current Posture"). Issues labeled `good first issue` or `help wanted` are ready to pick up.
+Current scope is described in [README.md](../../README.md). Issues labeled `good first issue` or `help wanted` are ready to pick up.
 
 ## Getting Help
 
 ### Community Support
 
-- **Discord**: [Join our Discord server](https://discord.gg/37XJPXfz2w) for real-time help
 - **GitHub Discussions**: For questions, ideas, features, product direction, design, and architecture
 - **GitHub Issues**: For reproducible bugs and approved work items
 
 ### Documentation References
 
-- [VISION.md](../../VISION.md) - Product identity and current posture
+- [README.md](../../README.md) - What the product is
 - [Design Principles](design-principles.md) - Engineering practices and anti-patterns
 - [Decision Records](decisions/README.md) - Why things are the way they are
 - [Code Standards](code-standards.md) - Coding guidelines by language
@@ -213,4 +212,4 @@ We recognize contributions through:
 
 Thank you for contributing to MCIT AI! Your contributions help make research more accessible and private for everyone.
 
-For questions about this guide or contributing in general, please reach out on [Discord](https://discord.gg/37XJPXfz2w) or open a GitHub Discussion.
+For questions about this guide or contributing in general, please open a GitHub Discussion.

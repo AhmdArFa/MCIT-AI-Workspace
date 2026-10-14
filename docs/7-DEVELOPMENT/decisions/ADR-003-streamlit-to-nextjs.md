@@ -2,7 +2,7 @@
 
 - **Status**: Accepted
 - **Date**: 2026-07 (retroactive record — migration shipped with the v1→v2 platform rework)
-- **Related**: [frontend.md](../frontend.md), API-first principle in [VISION.md](../../../VISION.md)
+- **Related**: [frontend.md](../frontend.md), API-first principle in [README.md](../../../README.md)
 
 ## Context
 

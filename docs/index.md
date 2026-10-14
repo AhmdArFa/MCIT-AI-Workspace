@@ -23,6 +23,5 @@ MCIT AI is a self-hosted, privacy-focused AI research assistant. New here? Start
 
 ## Getting help
 
-- **Discord**: https://discord.gg/37XJPXfz2w
-- **GitHub Issues** (reproducible bugs): https://github.com/AhmdArFa/mcit-aiissues
-- **GitHub Discussions** (questions and ideas): https://github.com/AhmdArFa/mcit-aidiscussions
+- **GitHub Issues** (reproducible bugs): https://github.com/AhmdArFa/MCIT-AI-Workspace/issues
+- **GitHub Discussions** (questions and ideas): https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions

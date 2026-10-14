@@ -4,7 +4,7 @@
 Feature            Pipeline (engines, outputs)
 =================  =====================================================
 presentation       PptxGenJS builds, DeckCraft renders and exports (pptx, pdf)
-report             ReportLab and PdfCraft (pdf), WordCraft (docx)
+report             ReportLab and PdfCraft (pdf), filled Word master checked by WordCraft (docx)
 infograph          sketchnote layout, VectorCraft render (png, pdf, svg)
 spreadsheet        GridCraft data entry, formulas and checks (xlsx)
 =================  =====================================================

@@ -78,7 +78,7 @@ server {
 
 ### Compose example with nginx
 
-Add an `nginx` service next to the `surrealdb` and `open_notebook` services of the [shipped docker-compose.yml](https://github.com/AhmdArFa/mcit-aiblob/main/docker-compose.yml), and stop publishing the app ports to the outside:
+Add an `nginx` service next to the `surrealdb` and `open_notebook` services of the [shipped docker-compose.yml](https://github.com/AhmdArFa/MCIT-AI-Workspace/blob/main/docker-compose.yml), and stop publishing the app ports to the outside:
 
 ```yaml
 services:

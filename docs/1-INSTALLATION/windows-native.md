@@ -1,6 +1,6 @@
 # Windows Native Installation (No Docker)
 
-This guide runs [MCIT AI](https://github.com/AhmdArFa/mcit-ai) on Windows **natively, without Docker or WSL**. It is community-maintained; the officially supported route is [Docker Compose](docker-compose.md).
+This guide runs [MCIT AI](https://github.com/AhmdArFa/MCIT-AI-Workspace) on Windows **natively, without Docker or WSL**. It is community-maintained; the officially supported route is [Docker Compose](docker-compose.md).
 
 ## Who Is This For?
 
@@ -25,7 +25,7 @@ This guide runs [MCIT AI](https://github.com/AhmdArFa/mcit-ai) on Windows **nati
 
    ```batch
    cd %USERPROFILE%\Projects
-   git clone https://github.com/AhmdArFa/mcit-ai.git
+   git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
    cd open-notebook
    uv sync
    cd frontend && npm install && cd ..

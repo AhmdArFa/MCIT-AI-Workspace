@@ -2,8 +2,8 @@
 
 Engineering practices and decision-making guidance for contributors.
 
-> **Looking for the product vision?** What MCIT AI is (and is not), the durable product
-> principles, and the current posture live in **[VISION.md](../../VISION.md)** — read that first.
+> **Looking for the product overview?** What MCIT AI is and what it includes is in
+> **[README.md](../../README.md)**; read that first.
 > The reasoning behind past structural choices lives in the
 > **[decision records](decisions/README.md)**.
 
@@ -74,7 +74,7 @@ Engineering practices and decision-making guidance for contributors.
 - Trying to be everything to everyone
 
 **Instead**: Focus on core use cases; say no to features that don't align with the
-[vision](../../VISION.md); build extensibility points for edge cases.
+[vision](../../README.md); build extensibility points for edge cases.
 
 ### Premature Optimization
 
@@ -113,7 +113,7 @@ When evaluating new features or changes, ask:
 ### 1. Does it align with our vision?
 - Does it help users own their research data?
 - Does it support privacy and self-hosting?
-- Does it fit our core use cases? (See [VISION.md](../../VISION.md))
+- Does it fit our core use cases? (See [README.md](../../README.md))
 
 ### 2. Does it follow our principles?
 - Is it simple to use and understand?
@@ -149,7 +149,7 @@ still loaded.
 When proposing a feature or change:
 
 1. **Reference the vision and principles** — explain how your proposal aligns with
-   [VISION.md](../../VISION.md)
+   [README.md](../../README.md)
 2. **Identify trade-offs** — be honest about what you're trading for what
 3. **Suggest alternatives** — show you've considered other approaches
 4. **Be open to feedback** — maintainers may see concerns you don't
@@ -159,4 +159,4 @@ focused on our core vision. We appreciate all contributions and ideas!
 
 ---
 
-**Questions about these principles?** Open a discussion on GitHub or join our [Discord](https://discord.gg/37XJPXfz2w).
+**Questions about these principles?** Open a discussion on GitHub.

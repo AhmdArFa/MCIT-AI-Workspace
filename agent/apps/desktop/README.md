@@ -386,5 +386,5 @@ Desktop application development involves complex cross-platform considerations a
 
 - **Development Guide**: [`Development.md`](./Development.md) - Comprehensive development documentation
 - **Architecture Docs**: [`/docs`](../../docs/) - Detailed technical specifications
-- **Contributing**: [`CONTRIBUTING.md`](../../CONTRIBUTING.md) - Contribution guidelines
+- **Contributing**: `CONTRIBUTING.md` - Contribution guidelines
 - **Issues & Support**: [GitHub Issues](https://github.com/AhmdArFa/MCIT-Agent/issues)

@@ -778,7 +778,7 @@ Markdown 消息有两种使用方式：
 | `__text__`                        | 下划线加粗               |
 | `_text_`、`*text*`                | 斜体                     |
 | `~~text~~`                        | 删除线                   |
-| `[text](url)`                     | 链接                     |
+| `text`                     | 链接                     |
 | `![text #widthpx #heightpx](url)` | 图片（需公网可访问 URL） |
 | `1.`、`-`                         | 有序 / 无序列表          |
 | `>`                               | 引用                     |

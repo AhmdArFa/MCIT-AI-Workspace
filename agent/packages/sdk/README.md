@@ -65,6 +65,6 @@ for await (const chunk of response.body!) {
 
 ## Releasing
 
-Publishing is automated by [`release-sdk.yml`](../../.github/workflows/release-sdk.yml): every push to `canary` touching `packages/sdk/**` publishes `1.0.<UTC timestamp>` to npm with provenance (manual `workflow_dispatch` also available). To ship a spec change, run `bun generate` and commit the regenerated output — the workflow's drift check (`bun scripts/generate-sdk.ts --check`) guards the published artifact.
+Publishing is automated by `release-sdk.yml`: every push to `canary` touching `packages/sdk/**` publishes `1.0.<UTC timestamp>` to npm with provenance (manual `workflow_dispatch` also available). To ship a spec change, run `bun generate` and commit the regenerated output — the workflow's drift check (`bun scripts/generate-sdk.ts --check`) guards the published artifact.
 
 Regular PR CI does not gate on spec drift — the check runs locally (`bun run test`) and inside the release workflow only.

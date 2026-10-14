@@ -138,6 +138,8 @@ services:
       - TUT_OIDC_CLIENT_ID=${TUT_OIDC_CLIENT_ID:-tut-agent}
       - TUT_OIDC_CLIENT_SECRET=${TUT_OIDC_CLIENT_SECRET:-}
       - MCIT_ADMIN_BOOTSTRAP_TOKEN=${TUT_ADMIN_TOKEN}
+      # Longest time one Studio drafting call may take on a slow local model
+      - TUT_DRAFT_TIMEOUT_SECONDS=${TUT_DRAFT_TIMEOUT_SECONDS:-900}
       # Web UI -> API
       - API_URL=same-origin
       # Database

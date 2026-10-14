@@ -2,18 +2,18 @@
 
 - **Status**: Accepted
 - **Date**: 2026-07
-- **Related**: [ADR-002](ADR-002-external-libraries.md), [VISION.md](../../../VISION.md) (Principles + Current Posture)
+- **Related**: [ADR-002](ADR-002-external-libraries.md), [README.md](../../../README.md)
 
 ## Context
 
-Our philosophy is to support as many providers as makes sense — users choose their AI, including fully local. The cost of that democratic stance is that we don't immediately adopt capabilities unique to one provider, even compelling ones. But "portable by default" must not harden into "never": some provider-exclusive capabilities (including paid-only ones) may be worth adopting deliberately. The current phase (see VISION.md posture) is basics-first; that phase is expected to evolve — the decision is to evolve, not to stand still.
+Our philosophy is to support as many providers as makes sense — users choose their AI, including fully local. The cost of that democratic stance is that we don't immediately adopt capabilities unique to one provider, even compelling ones. But "portable by default" must not harden into "never": some provider-exclusive capabilities (including paid-only ones) may be worth adopting deliberately. The current phase is basics-first; that phase is expected to evolve — the decision is to evolve, not to stand still.
 
 ## Decision
 
 Two rules with different lifespans:
 
 1. **Durable principle**: the core is provider-agnostic. Features must work across the provider matrix by default. Adopting a provider-exclusive capability is *allowed*, but it is a deliberate product decision that requires its own PDR (stating scope, fallback behavior for other providers, and why the exclusivity is worth it).
-2. **Current posture** (temporal, lives in VISION.md): in the basics-first phase, we lean portable. Expanding into provider-exclusive premium capabilities is a phase change, recorded as a short PDR when it happens — that will be the principle working, not a reversal.
+2. **Current posture** (temporal): in the basics-first phase, we lean portable. Expanding into provider-exclusive premium capabilities is a phase change, recorded as a short PDR when it happens — that will be the principle working, not a reversal.
 
 ## Alternatives considered
 

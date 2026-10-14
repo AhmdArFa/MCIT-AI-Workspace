@@ -101,9 +101,8 @@ Back up, then `docker compose pull && docker compose up -d`. Database migrations
 
 ## Getting help
 
-- **Discord:** https://discord.gg/37XJPXfz2w
-- **GitHub Discussions:** questions and ideas, https://github.com/AhmdArFa/mcit-aidiscussions
-- **GitHub Issues:** reproducible bugs, https://github.com/AhmdArFa/mcit-aiissues
+- **GitHub Discussions:** questions and ideas, https://github.com/AhmdArFa/MCIT-AI-Workspace/discussions
+- **GitHub Issues:** reproducible bugs, https://github.com/AhmdArFa/MCIT-AI-Workspace/issues
 
 When reporting a bug, include the exact error message, steps to reproduce, relevant logs (without keys or passwords), your version and how you run MCIT AI.
 
