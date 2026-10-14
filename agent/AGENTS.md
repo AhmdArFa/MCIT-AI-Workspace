@@ -49,15 +49,8 @@ bun run dev
 pnpm --filter @tut/server dev
 ```
 
-After `dev:spa` starts, the terminal prints a **Debug Proxy** URL:
-
-```plaintext
-Debug Proxy: https://mcit.gov.eg/_dangerous_local_dev_proxy?debug-host=http%3A%2F%2Flocalhost%3A9876
-```
-
-Open this URL to develop locally against the production backend (mcit.gov.eg). The proxy page loads your local Vite dev server's SPA into the online environment, enabling HMR with real server config.
-
-This proxy is a **development convenience, not a verification surface**: it runs your local frontend against production's backend, origin, and data. Acceptance must exercise the delivered branch in an environment that runs it — for which surface to use, see `.agents/acceptance/PROJECT.md` §4.
+After `dev:spa` starts, the terminal prints the local SPA URL (`http://localhost:9876/`).
+It talks to the backend you run locally; there is no hosted debug proxy.
 
 ### Git Workflow
 

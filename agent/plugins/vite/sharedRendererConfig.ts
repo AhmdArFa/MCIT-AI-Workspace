@@ -551,8 +551,10 @@ export function sharedRendererDefine(options: { isElectron: boolean; isMobile: b
   };
 }
 
+// Vendor packages also import each other by their real scope, so every alias is
+// pre-bundled under both names (see packages/vendor-bridge/scope.mjs).
 export const sharedOptimizeDeps = {
-  include: [
+  include: withVendorNames([
     'react',
     'react-dom',
     'react-dom/client',
@@ -591,7 +593,8 @@ export const sharedOptimizeDeps = {
 
     'ahooks',
     'motion/react',
-  ],
+    '@mcit-vendor/icons',
+  ]),
 };
 
 // Workspace packages can resolve @mcit-vendor/editor through different peer-dependency

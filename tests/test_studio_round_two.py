@@ -335,3 +335,69 @@ def test_submitted_commands_carry_the_tenant_even_when_args_have_none():
         with tenancy.tenant_scope("mcit_user:alice"):
             tenancy.submit_command("open_notebook", "process_source", {"source_id": "source:1", "tenant": None})
     assert seen["tenant"] == "mcit_user:alice"
+
+
+# ---------------------------------------------------------- Word from master
+
+
+def _word_plan(mode, tmp_path):
+    from open_notebook.craft.kit.tokens import theme
+    from open_notebook.craft.studio.report import ReportPlan, render_figure
+
+    fig = render_figure(("Users", ["2021", "2022", "2023"], [1.0, 2.0, 3.0], "M"), theme(mode), tmp_path / "f.png", 6.3)
+    return ReportPlan(
+        title="Digital Egypt Review", subtitle="Five years", summary="Overview.",
+        stats=[("82M", "Internet users")],
+        chapters=[{"heading": "Connectivity", "body": "Body one.\n\n### Mobile\n\nBody two.", "bullets": ["Fiber"],
+                   "table": {"name": "Table 1", "columns": ["A", "B", "C", "D"], "rows": [["1", "2", "3", "4"]]},
+                   "figure": {"path": str(fig), "caption": "Figure 1. Users"}, "image": "", "image_caption": None}],
+        findings=["Mobile led"], recommendations=["Extend fiber"], conclusion="Positive.", mode=mode, length="medium",
+    )
+
+
+@pytest.mark.parametrize("mode", ["dark", "light"])
+def test_word_report_is_filled_copy_of_master(mode, tmp_path):
+    import hashlib
+    import zipfile
+
+    from open_notebook.craft.studio.word_template import (
+        build_report_docx,
+        template_path,
+    )
+
+    master = template_path(mode)
+    before = hashlib.sha256(master.read_bytes()).hexdigest()
+    out = build_report_docx(_word_plan(mode, tmp_path), tmp_path / "r.docx")
+    assert hashlib.sha256(master.read_bytes()).hexdigest() == before  # master untouched
+    with zipfile.ZipFile(out) as z:
+        xml = z.read("word/document.xml").decode()
+        names = z.namelist()
+        core = z.read("docProps/core.xml").decode()
+    for text in ("Digital Egypt Review", "CHAPTER 01", "Connectivity", "Mobile", "FIGURE 1", "Key Findings", "Extend fiber", "Thank You"):
+        assert text in xml
+    assert "Egypt&apos;s Digital Decade" not in xml and "The Mobile Leap" not in xml  # sample text replaced
+    assert 'w:ascii="Nohemi"' in xml
+    assert any(n.startswith("word/media/mcit-figure-") for n in names)
+    assert xml.count("<w:gridCol ") >= 4  # four-column table
+    assert "Digital Egypt Review" in core
+    if mode == "light":
+        assert 'w:color w:val="FFFFFF"' not in xml  # closing page readable on white
+
+
+def test_body_blocks_reads_model_markdown():
+    from open_notebook.craft.studio.report import body_blocks
+
+    text = (
+        "### Workforce development and digital infrastructure expansion\n"
+        "The National Digital Transformation rests on skills. **Digital Egypt** trained 500,000 people.\n\n"
+        "**Bullets** - Over 170 services are online. * Fiber reached 4,500 villages. * Speeds rose to 72 Mbps.\n\n"
+        "* Twelve innovation hubs\n- Knowledge City\n1. First priority\n\n"
+        "### " + "A very long heading line that is really a paragraph " * 4
+    )
+    blocks = body_blocks(text)
+    assert blocks[0] == ("h", "Workforce development and digital infrastructure expansion")
+    assert blocks[1][0] == "p" and "**" not in blocks[1][1] and blocks[1][1].startswith("The National")
+    assert ("li", "Fiber reached 4,500 villages.") in blocks and ("li", "Speeds rose to 72 Mbps.") in blocks
+    assert not any("Bullets" in t for _, t in blocks)
+    assert ("li", "Twelve innovation hubs") in blocks and ("li", "Knowledge City") in blocks and ("li", "First priority") in blocks
+    assert blocks[-1][0] == "p"

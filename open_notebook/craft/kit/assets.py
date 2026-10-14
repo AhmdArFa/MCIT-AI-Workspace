@@ -78,7 +78,7 @@ class Requirement:
 REQUIREMENTS: List[Requirement] = [
     Requirement("cover-hero", HERO, ("presentation", "report"), "Opening cover art"),
     Requirement("cover-end", END, ("presentation", "report"), "Closing cover art"),
-    # Headings fall back to Libre Franklin until Nohemi is installed: listed, not blocking.
+    # Headings fall back to Libre Franklin if Nohemi is missing: listed, not blocking.
     Requirement("font-nohemi", FONTS_DIR / "Nohemi-Bold.ttf", (), "Heading font (Nohemi)"),
     Requirement("font-libre-franklin", FONTS_DIR / "LibreFranklin-Regular.ttf", ("presentation", "report", "infograph", "spreadsheet"), "Body font"),
     Requirement("doodles", DOODLES, ("infograph",), "Sketchnote artwork"),

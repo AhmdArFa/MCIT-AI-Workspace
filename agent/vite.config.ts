@@ -166,7 +166,6 @@ export default defineConfig({
     isDev && {
       name: 'tut-dev-proxy-print',
       configureServer(server: ViteDevServer) {
-        const ONLINE_HOST = 'https://mcit.gov.eg';
         const c = {
           green: (s: string) => `\x1B[32m${s}\x1B[0m`,
           bold: (s: string) => `\x1B[1m${s}\x1B[0m`,
@@ -179,14 +178,15 @@ export default defineConfig({
           const urls = server.resolvedUrls;
           if (!urls?.local?.[0]) return;
           const localHost = urls.local[0].replace(/\/$/, '');
-          return `${ONLINE_HOST}/_dangerous_local_dev_proxy?debug-host=${encodeURIComponent(localHost)}`;
+          // MCIT AI has no hosted debug proxy: point at the local SPA itself.
+          return `${localHost}/`;
         };
         const printProxyUrl = () => {
           const proxyUrl = getProxyUrl();
           if (!proxyUrl) return;
           const colorUrl = (url: string) =>
             c.cyan(url.replace(/:(\d+)\//, (_, port) => `:${c.bold(port)}/`));
-          info(`  ${c.green('➜')}  ${c.bold('Debug Proxy')}: ${colorUrl(proxyUrl)}`);
+          info(`  ${c.green('➜')}  ${c.bold('SPA')}: ${colorUrl(proxyUrl)}`);
         };
         const openProxyUrl = async () => {
           const proxyUrl = getProxyUrl();
@@ -195,7 +195,7 @@ export default defineConfig({
           const opened = await openExternalBrowser(proxyUrl, server.config.logger);
 
           if (!opened) {
-            server.config.logger.warn(`Failed to open Debug Proxy automatically: ${proxyUrl}`);
+            server.config.logger.warn(`Failed to open the SPA automatically: ${proxyUrl}`);
           }
         };
 

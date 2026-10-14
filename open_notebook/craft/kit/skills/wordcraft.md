@@ -1,6 +1,6 @@
 ---
 name: wordcraft
-description: Editable Word reports with WordCraft: constant Noir covers, styled headings, tables, per-page render audit.
+description: Editable Word reports from the approved Noir Word masters, checked page by page with WordCraft.
 ---
 
 # WordCraft skill
@@ -8,10 +8,14 @@ description: Editable Word reports with WordCraft: constant Noir covers, styled 
 The report feature always delivers the editable `.docx` next to the PDF, built
 from the same content.
 
-- Covers: hero art on page 1, end art on the last page (base64 picture insert,
-  then move the caret to the document end before the next paragraph).
-- Typing attributes (font, size, colour, bold) are set before inserting text.
-- Paragraph borders are sticky: set after typing, clear right after.
-- Tables: header row bold in the accent colour; never Tab out of the last cell.
-- Dark theme sets the page colour to Midnight.
-- Audit: render every page and fix before delivery.
+- Start from a copy of the approved master: `templates/word/MCIT-WSIS-Report-Noir-DARK.docx`
+  or `-LIGHT.docx`. Never edit the master.
+- The master's own blocks are the design: hero cover, contents, at a glance,
+  chapter pages (eyebrow, title with rule, body, figure, figure label, caption),
+  key findings, closing cover. Clone them and replace the text; keep their
+  fonts (Nohemi titles, Libre Franklin body), colours and spacing.
+- Figures replace the sample charts at the master's width, with the real
+  aspect ratio. Tables reuse the master's table style for any column count.
+- Light output keeps the closing page readable: text colours meant for the
+  dark page map to the light palette.
+- Audit with WordCraft: page count and a render of the pages before delivery.

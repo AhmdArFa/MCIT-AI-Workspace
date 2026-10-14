@@ -130,6 +130,7 @@ COPY --from=craft-engines /opt/craft /opt/craft
 COPY --from=deck-builder /deck/node_modules /app/open_notebook/craft/deck/node_modules
 ENV CRAFT_BIN_DIR=/opt/craft/bin
 # Document kit fonts (Nohemi, Libre Franklin, Inter) for every engine's renders.
+# Static weights only: fonts/variable/ (Nohemi-VF) stays in the kit for designers.
 # CRAFT_KIT_DIR may point at a mounted kit carrying the approved binaries.
 RUN mkdir -p /usr/local/share/fonts/mcit \
     && cp /app/open_notebook/craft/kit/assets/fonts/*.[ot]tf /usr/local/share/fonts/mcit/ \

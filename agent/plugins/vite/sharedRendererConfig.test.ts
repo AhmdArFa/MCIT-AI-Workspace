@@ -57,6 +57,14 @@ describe('sharedOptimizeDeps', () => {
       expect.arrayContaining(['@mcit-vendor/ui', '@mcit-vendor/ui/base-ui']),
     );
   });
+
+  // Vendor packages import each other by their real scope; without the real names
+  // the UI kit is served unbundled in dev and its CommonJS dependencies fail to load.
+  it('pre-bundles every vendor alias under its real package name too', () => {
+    expect(sharedOptimizeDeps.include).toEqual(
+      expect.arrayContaining(['@lobehub/ui', '@lobehub/ui/base-ui', '@lobehub/icons']),
+    );
+  });
 });
 
 describe('sharedRendererDedupe', () => {

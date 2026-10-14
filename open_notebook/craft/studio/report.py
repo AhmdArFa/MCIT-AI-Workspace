@@ -1,5 +1,6 @@
 """Report: the Noir report as a print PDF (ReportLab + PdfCraft) and an
-editable Word document (WordCraft), from the same content.
+editable Word document, from the same content. The Word file is a filled copy
+of the approved Word master (kit: templates/word/), checked with WordCraft.
 
 Structure (kit: templates/TEMPLATES.md): cover with hero art, contents, at a
 glance, chapters with figures, findings and recommendations, back cover with
@@ -9,7 +10,6 @@ sub-sections, figures and tables, not in padding.
 
 from __future__ import annotations
 
-import base64
 import html
 import re
 from dataclasses import dataclass, field, replace
@@ -24,10 +24,11 @@ from open_notebook.craft.audit import (
     strip_dashes,
 )
 from open_notebook.craft.kit.assets import END, HERO, LOGO, font_path, head_family
-from open_notebook.craft.kit.tokens import FONTS, Theme, theme
+from open_notebook.craft.kit.tokens import Theme, theme
 from open_notebook.craft.runner import run_cli
 from open_notebook.craft.studio import Rendered, job_dir
 from open_notebook.craft.studio.direction import Direction
+from open_notebook.craft.studio.word_template import build_report_docx
 
 
 @dataclass(frozen=True)
@@ -138,6 +139,59 @@ class ReportPlan:
     body_size: float = 10.5
     figure_width: float = 6.3
     issues_seen: List[str] = field(default_factory=list)
+
+
+_LIST_ITEM = re.compile(r"^\s*(?:[*\-\u2022\u25aa]|\d+[.)])\s+(.*)$")
+_INLINE_ITEMS = re.compile(r"\s[*\u2022]\s+(?=[A-Z0-9\"'(])")
+_LABEL = re.compile(r"^\s*\"?(?:bullets?|key points?|key achievements?)\"?\s*[:\-]\s*", re.I)
+
+
+def body_blocks(text: str) -> List[Tuple[str, str]]:
+    """Model prose as ("h" | "p" | "li", text) blocks.
+
+    Local models mix Markdown into chapter text: a ``###`` heading followed by
+    its paragraph on the next line, ``*`` list lines, list items run together
+    inside one paragraph, ``**bold**`` markers and JSON-ish labels. Both the PDF
+    and the Word file lay the chapter out from these blocks so neither shows
+    raw markup or a whole paragraph styled as a heading."""
+    clean = re.sub(r"\*\*|__", "", text or "")
+    blocks: List[Tuple[str, str]] = []
+    para: List[str] = []
+
+    def flush() -> None:
+        if not para:
+            return
+        raw = " ".join(para)
+        labelled = bool(_LABEL.match(raw))  # "Bullets: a * b": every part is an item
+        joined = _LABEL.sub("", raw).strip()
+        para.clear()
+        parts = _INLINE_ITEMS.split(" " + joined)
+        head = parts[0].strip()
+        if head:
+            blocks.append(("li" if labelled else "p", head))
+        blocks.extend(("li", x.strip()) for x in parts[1:] if x.strip())
+
+    for raw in clean.splitlines():
+        line = raw.strip()
+        if not line:
+            flush()
+            continue
+        h = re.match(r"^#{1,6}\s+(.*)$", line)
+        if h:
+            flush()
+            title = h.group(1).strip().rstrip(":")
+            blocks.append(("h", title) if len(title) <= 110 else ("p", title))
+            continue
+        m = _LIST_ITEM.match(line)
+        if m:
+            flush()
+            item = _LABEL.sub("", m.group(1)).strip()
+            if item:
+                blocks.append(("li", item))
+            continue
+        para.append(line)
+    flush()
+    return blocks
 
 
 def build_plan(doc, mode: str, length: str, direction: Direction, work: Path) -> ReportPlan:
@@ -355,12 +409,13 @@ def build_pdf(plan: ReportPlan, out: Path) -> int:
     # chapters
     for i, ch in enumerate(plan.chapters, start=1):
         story += [PageBreak(), Paragraph(f"CHAPTER {i:02d}", st["eyebrow"]), Paragraph(esc(ch["heading"]), st["h1"]), accent_rule, Spacer(1, 12)]
-        paras = [p.strip() for p in re.split(r"\n{2,}", ch["body"] or "") if p.strip()]
-        for p in paras:
-            if p.startswith("### "):
-                story.append(Paragraph(esc(p[4:]), st["h2"]))
+        for kind, text in body_blocks(ch["body"]):
+            if kind == "h":
+                story.append(Paragraph(esc(text), st["h2"]))
+            elif kind == "li":
+                story.append(Paragraph(esc(text), st["bullet"], bulletText="\u25aa"))
             else:
-                story.append(Paragraph(esc(p), st["body"]))
+                story.append(Paragraph(esc(text), st["body"]))
         for b in ch["bullets"]:
             story.append(Paragraph(esc(b), st["bullet"], bulletText="\u25aa"))
         if ch.get("figure"):
@@ -410,100 +465,9 @@ def build_pdf(plan: ReportPlan, out: Path) -> int:
 # --------------------------------------------------------------------- Word
 
 
-def report_html(plan: ReportPlan) -> str:
-    t = theme(plan.mode)
-    hf, bf = head_family(), FONTS.body
-    e = lambda s: html.escape(str(s or ""))  # noqa: E731
-    h1 = f'style="font-family:{hf};font-size:22pt;color:#{t.text};margin:0 0 4pt"'
-    h2 = f'style="font-family:{bf};font-size:13pt;font-weight:600;color:#{t.text}"'
-    eb = f'style="font-family:{bf};font-size:8pt;font-weight:600;letter-spacing:2pt;color:#{t.accent};margin:0"'
-    p = f'style="font-family:{bf};font-size:{plan.body_size}pt;line-height:1.5;color:#{t.text}"'
-    cap = f'style="font-family:{bf};font-size:8.5pt;color:#{t.muted}"'
-    out = [f'<h1 style="font-family:{hf};font-size:30pt;color:#{t.text}">{e(plan.title)}</h1>']
-    if plan.subtitle:
-        out.append(f'<p style="font-family:{bf};font-size:13pt;color:#{t.muted}">{e(plan.subtitle)}</p>')
-    out.append(f'<p {eb}>AT A GLANCE</p><h1 {h1}>At a glance</h1>')
-    if plan.summary:
-        out.append(f"<p {p}>{e(plan.summary)}</p>")
-    if plan.stats:
-        out.append('<table style="border-collapse:collapse;width:100%"><tr>')
-        for v, lab in plan.stats:
-            out.append(
-                f'<td style="padding:8pt;border-bottom:0.5pt solid #{t.border};background:#{t.surface}">'
-                f'<p style="font-family:{hf};font-size:20pt;color:#{t.accent};margin:0">{e(v)}</p>'
-                f'<p style="font-family:{bf};font-size:9pt;color:#{t.muted};margin:0">{e(lab)}</p></td>'
-            )
-        out.append("</tr></table>")
-    for i, ch in enumerate(plan.chapters, start=1):
-        out.append(f'<p {eb}>CHAPTER {i:02d}</p><h1 {h1}>{e(ch["heading"])}</h1>')
-        for para in [x.strip() for x in re.split(r"\n{2,}", ch["body"] or "") if x.strip()]:
-            out.append(f"<h2 {h2}>{e(para[4:])}</h2>" if para.startswith("### ") else f"<p {p}>{e(para)}</p>")
-        if ch["bullets"]:
-            out.append("<ul>" + "".join(f"<li {p}>{e(b)}</li>" for b in ch["bullets"]) + "</ul>")
-        if ch.get("figure"):
-            data = base64.b64encode(Path(ch["figure"]["path"]).read_bytes()).decode()
-            out.append(f'<p><img src="data:image/png;base64,{data}" width="600"/></p><p {cap}>{e(ch["figure"]["caption"])}</p>')
-        tb = ch.get("table")
-        if tb and tb.get("columns"):
-            out.append('<table style="border-collapse:collapse;width:100%">')
-            out.append("<tr>" + "".join(f'<th style="background:#{t.accent};color:#{t.on_accent};font-family:{bf};font-size:9pt;padding:4pt">{e(c)}</th>' for c in tb["columns"]) + "</tr>")
-            for r in tb.get("rows", [])[:18]:
-                out.append("<tr>" + "".join(f'<td style="font-family:{bf};font-size:9pt;padding:4pt;border-bottom:0.5pt solid #{t.border};color:#{t.text}">{e(x)}</td>' for x in r) + "</tr>")
-            out.append(f"</table><p {cap}>{e(tb.get('name'))}</p>")
-    out.append(f'<p {eb}>FINDINGS</p><h1 {h1}>Findings and recommendations</h1>')
-    if plan.findings:
-        out.append(f"<h2 {h2}>Key findings</h2><ul>" + "".join(f"<li {p}>{e(x)}</li>" for x in plan.findings) + "</ul>")
-    if plan.recommendations:
-        out.append(f"<h2 {h2}>Recommendations</h2><ol>" + "".join(f"<li {p}>{e(x)}</li>" for x in plan.recommendations) + "</ol>")
-    if plan.conclusion:
-        out.append(f"<h2 {h2}>Conclusion</h2><p {p}>{e(plan.conclusion)}</p>")
-    return f"<html><body>{''.join(out)}</body></html>"
-
-
-def _cover_b64(src: Path, work: Path, limit: int = 110_000) -> str:
-    """WordCraft takes pictures as base64 command arguments (``path=`` is broken
-    headless) and each argument must stay under the OS limit, so the constant
-    cover is embedded as a print-resolution JPEG of the same art, aspect kept."""
-    from PIL import Image as PILImage
-
-    out = work / f"{src.stem}-word.jpg"
-    with PILImage.open(src) as im:
-        rgb = im.convert("RGB")
-        for width, quality in ((1600, 86), (1400, 84), (1280, 82), (1100, 80), (960, 78)):
-            h = round(rgb.height * width / rgb.width)
-            rgb.resize((width, h), PILImage.Resampling.LANCZOS).save(out, "JPEG", quality=quality, optimize=True, progressive=True)
-            data = base64.b64encode(out.read_bytes()).decode()
-            if len(data) <= limit:
-                return data
-    return data
-
-
-async def build_docx(plan: ReportPlan, work: Path) -> Path:
-    t = theme(plan.mode)
-    src = work / "report.html"
-    src.write_text(report_html(plan), "utf-8")
-    draft = work / "draft.docx"
-    await run_cli("wordcraft", ["convert", str(src), str(draft)], cwd=work)
-    cmds = ['layout.size={"name":"A4"}', 'layout.margins={"top":62,"bottom":62,"left":62,"right":62}']
-    if t.is_dark:
-        cmds.append(f'design.pageColor={{"color":"{t.bg}"}}')
-    if HERO.exists():
-        hero = _cover_b64(HERO, work)
-        cmds += ["caret.docStart", "text.newParagraph", "caret.docStart", f'insert.picture={{"data":"{hero}","width":451,"alt":"MCIT cover"}}', "caret.right", "text.pageBreak"]
-    if END.exists():
-        end = _cover_b64(END, work)
-        cmds += ["caret.docEnd", "text.pageBreak", f'insert.picture={{"data":"{end}","width":451,"alt":"MCIT back cover"}}', "caret.docEnd",
-                 "text.newParagraph", "para.alignCenter", f'format.font={{"name":"{head_family()}"}}', 'format.size={"size":28}',
-                 f'format.color={{"color":"{t.text}"}}', 'text.insert={"text":"Thank You"}', "text.newParagraph",
-                 f'format.font={{"name":"{FONTS.body}"}}', 'format.size={"size":11}', f'format.color={{"color":"{t.premium}"}}',
-                 'text.insert={"text":"Ministry of Communications and Information Technology"}']
-    out = work / "report.docx"
-    args = ["run", "--file", str(draft)]
-    for c in cmds:
-        args += ["--cmd", c]
-    args += ["--save", str(out), "--author", "MCIT AI"]
-    await run_cli("wordcraft", args, cwd=work, timeout=300)
-    return out
+def build_docx(plan: ReportPlan, work: Path) -> Path:
+    """Editable Word report: a filled copy of the approved Noir Word master."""
+    return build_report_docx(plan, work / "report.docx")
 
 
 # -------------------------------------------------------------------- loop
@@ -532,8 +496,8 @@ async def render(doc, mode: str, length: str, direction: Direction, progress, re
         await progress(f"Laying out the PDF (pass {n})")
         pdf = work / f"report-{n}.pdf"
         build_pdf(p, pdf)
-        await progress(f"WordCraft: building the editable Word file (pass {n})")
-        docx = await build_docx(p, work)
+        await progress(f"Filling the Word template (pass {n})")
+        docx = build_docx(p, work)
         final_pdf = work / f"report-final-{n}.pdf"
         await run_cli("pdfcraft", ["edit", str(pdf), "--out", str(final_pdf), "--title", p.title, "--author", "MCIT AI"], cwd=work)
         return {"pdf": final_pdf.read_bytes(), "docx": docx.read_bytes()}

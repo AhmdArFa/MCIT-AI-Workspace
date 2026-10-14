@@ -137,6 +137,7 @@ export default {
   'betterAuth.signin.continueWithCloudflareZeroTrust': 'Sign in with Cloudflare Zero Trust',
   'betterAuth.signin.continueWithCognito': 'Continue with AWS Cognito',
   'betterAuth.signin.continueWithFeishu': 'Sign in with Feishu',
+  'betterAuth.signin.continueWithGenericOidc': 'Continue with MCIT AI',
   'betterAuth.signin.continueWithGithub': 'Continue with GitHub',
   'betterAuth.signin.continueWithGoogle': 'Continue with Google',
   'betterAuth.signin.continueWithKeycloak': 'Sign in with Keycloak',

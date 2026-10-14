@@ -176,3 +176,4 @@ api.err.log
 api.log
 backend_error.log
 backend_server.log
+.scratch/
