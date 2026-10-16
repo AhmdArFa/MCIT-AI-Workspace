@@ -16,7 +16,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 from loguru import logger
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -454,3 +454,25 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "healthy"}
+
+
+@app.get("/f/{file_id}")
+@app.get("/api/f/{file_id}")
+async def proxy_tut_file(file_id: str, request: Request):
+    """Proxy file requests to TuT Agent storage/preview service."""
+    import httpx
+    is_download = request.query_params.get("download") == "1"
+    tut_internal = f"http://tut-agent:3210/f/{file_id}" + ("?download=1" if is_download else "")
+    try:
+        async with httpx.AsyncClient(follow_redirects=False, timeout=10.0) as client:
+            resp = await client.get(tut_internal)
+            if resp.status_code in (301, 302, 307):
+                return RedirectResponse(url=resp.headers["location"], status_code=302)
+            elif resp.status_code == 200:
+                return Response(content=resp.content, media_type=resp.headers.get("content-type"))
+    except Exception as e:
+        logger.warning(f"Error proxying file {file_id} from tut-agent: {e}")
+
+    dl_param = "?download=1" if is_download else ""
+    return RedirectResponse(url=f"http://localhost:3210/f/{file_id}{dl_param}", status_code=302)
+

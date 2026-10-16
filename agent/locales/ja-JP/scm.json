@@ -28,7 +28,7 @@
   "github.changeRequests.title": "プルリクエスト",
   "github.connect.action": "GitHubを接続",
   "github.connect.addAnother": "別のアカウントを追加",
-  "github.connect.description": "MCIT AI GitHubアプリをアカウントまたは組織にインストールしてください。エージェントはCIの失敗、レビューのフィードバック、マージについてポーリングなしで通知を受け取ります。",
+  "github.connect.description": "TuT AI GitHubアプリをアカウントまたは組織にインストールしてください。エージェントはCIの失敗、レビューのフィードバック、マージについてポーリングなしで通知を受け取ります。",
   "github.connect.disabled": "このデプロイメントではGitHubアプリが構成されていません。",
   "github.connect.identity": "GitHubに{{login}}としてサインインしています",
   "github.connect.title": "GitHub",

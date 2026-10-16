@@ -55,8 +55,8 @@
   "email.footer.contactSupport": "تماس با پشتیبانی",
   "email.footer.joinDiscord": "به دیسکورد بپیوندید",
   "email.footer.manage": "مدیریت اعلان‌ها",
-  "email.footer.preference": "شما این ایمیل را به دلیل تنظیمات اعلان‌های خود در MCIT AI دریافت کرده‌اید.",
-  "email.footer.system": "این یک اعلان مهم حساب از MCIT AI است.",
+  "email.footer.preference": "شما این ایمیل را به دلیل تنظیمات اعلان‌های خود در TuT AI دریافت کرده‌اید.",
+  "email.footer.system": "این یک اعلان مهم حساب از TuT AI است.",
   "email.viewDetails": "مشاهده جزئیات",
   "group_transfer_reassigned": "یک مالک فضای کاری گروه شما \"{{agentTitle}}\" را به {{recipientLabel}} منتقل کرد.",
   "group_transfer_reassigned_title": "گروه مجدداً اختصاص داده شد",
@@ -149,6 +149,6 @@
   "workspace_primary_ownership_transferred_title": "شما اکنون مالک اصلی {{workspaceName}} هستید",
   "workspace_subscription_expired": "اشتراک فضای کاری \"{{workspaceName}}\" به پایان رسیده است. ظرف {{days}} روز تمدید کنید تا دسترسی کامل بازیابی شود، در غیر این صورت فضای کاری کاهش سطح خواهد یافت.",
   "workspace_subscription_expired_title": "اشتراک برای {{workspaceName}} به پایان رسید",
-  "workspace_waitlist_approved": "دسترسی بتای Workspace شما آماده است. به MCIT AI بروید تا اولین Workspace خود را ایجاد کرده و تیم خود را دعوت کنید.",
+  "workspace_waitlist_approved": "دسترسی بتای Workspace شما آماده است. به TuT AI بروید تا اولین Workspace خود را ایجاد کرده و تیم خود را دعوت کنید.",
   "workspace_waitlist_approved_title": "دسترسی بتای Workspace تأیید شد"
 }

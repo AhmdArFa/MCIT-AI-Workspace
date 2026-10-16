@@ -469,11 +469,11 @@
   --line: #1f1f1f;
   --tx: #ececec;
   --mut: #8b8b8b;
-  --gold: #4B7BFF;
-  --gold2: #A9C1FF;
-  --d: #1F3FB8;
-  --accrgb: 75, 123, 255;
-  --on: #ffffff;
+  --gold: #F5C242;
+  --gold2: #FFEDB9;
+  --d: #B97D0C;
+  --accrgb: 245, 194, 66;
+  --on: #1a1204;
   --gg: var(--gold);
   --teal: #3fd0c0;
 }

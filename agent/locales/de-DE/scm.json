@@ -28,7 +28,7 @@
   "github.changeRequests.title": "Pull-Requests",
   "github.connect.action": "GitHub verbinden",
   "github.connect.addAnother": "Ein weiteres Konto hinzufügen",
-  "github.connect.description": "Installieren Sie die MCIT AI GitHub-App auf Ihrem Konto oder Ihrer Organisation. Ihre Agenten werden über CI-Fehler, Überprüfungsfeedback und Merges informiert, ohne dass ein Abfragen erforderlich ist.",
+  "github.connect.description": "Installieren Sie die TuT AI GitHub-App auf Ihrem Konto oder Ihrer Organisation. Ihre Agenten werden über CI-Fehler, Überprüfungsfeedback und Merges informiert, ohne dass ein Abfragen erforderlich ist.",
   "github.connect.disabled": "Die GitHub-App ist in dieser Bereitstellung nicht konfiguriert.",
   "github.connect.identity": "Angemeldet bei GitHub als {{login}}",
   "github.connect.title": "GitHub",

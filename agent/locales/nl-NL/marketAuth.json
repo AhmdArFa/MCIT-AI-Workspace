@@ -22,7 +22,7 @@
   "callback.messages.successWithCountdown": "{{message}} Het venster wordt automatisch gesloten over {{countdown}} seconden",
   "callback.messages.successWithRedirect": "Autorisatie geslaagd! Bezig met doorverwijzen...",
   "callback.titles.error": "Autorisatie mislukt",
-  "callback.titles.loading": "MCIT AI Market Autorisatie",
+  "callback.titles.loading": "TuT AI Market Autorisatie",
   "callback.titles.success": "Autorisatie geslaagd",
   "claimResources.claim": "Geselecteerde claimen",
   "claimResources.description": "We hebben bronnen gevonden die aan uw account zijn gekoppeld en die u kunt claimen:",

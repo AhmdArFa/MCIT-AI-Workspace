@@ -1,7 +1,7 @@
 {
   "github.automation.acceptOnMerge.description": "Wanneer een pull request gekoppeld aan een acceptatie wordt samengevoegd, markeer de acceptatie als geaccepteerd en voltooi de taak.",
   "github.automation.acceptOnMerge.title": "Accepteer leveringen bij samenvoeging",
-  "github.automation.description": "Wat MCIT AI zelfstandig doet wanneer GitHub activiteit rapporteert.",
+  "github.automation.description": "Wat TuT AI zelfstandig doet wanneer GitHub activiteit rapporteert.",
   "github.automation.title": "Automatisering",
   "github.automation.wakeOnCiFailure.description": "Wanneer een controle mislukt, meld dit aan de agent die het pull request heeft geopend met het logboek van de mislukte taak. Maximaal drie keer per pull request.",
   "github.automation.wakeOnCiFailure.title": "Meld agents bij CI-fout",

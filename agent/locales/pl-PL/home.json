@@ -170,7 +170,7 @@
   "project.create": "Nowy projekt",
   "project.deleteConfirm": "Ten projekt zostanie usunięty i nie będzie można go odzyskać. Potwierdź, aby kontynuować.",
   "recommendations.heteroAgent.cta": "Dodaj agenta",
-  "recommendations.heteroAgent.description": "Wykryto CLI {{name}} na tym urządzeniu — dodaj agenta {{name}}, aby rozmawiać z nim z MCIT AI.",
+  "recommendations.heteroAgent.description": "Wykryto CLI {{name}} na tym urządzeniu — dodaj agenta {{name}}, aby rozmawiać z nim z TuT AI.",
   "recommendations.heteroAgent.tag": "Agent kodowania",
   "recommendations.heteroAgent.title": "Dodaj agenta {{name}}",
   "recommendations.subtitle": "Kilka rekomendacji dla Twojej konfiguracji",

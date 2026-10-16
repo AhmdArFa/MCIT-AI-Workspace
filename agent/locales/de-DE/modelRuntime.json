@@ -3,7 +3,7 @@
   "AgentRuntimeError": "Ausführungsfehler des Tut-Sprachmodells zur Laufzeit. Bitte beheben Sie das Problem oder versuchen Sie es erneut basierend auf den folgenden Informationen.",
   "CapabilityNotSupported": "Entschuldigung, dieses Modell unterstützt die angeforderte Funktion (wie z. B. visuelle Eingabe oder Tool-Aufrufe) nicht. Bitte wechseln Sie zu einem Modell, das dies unterstützt.",
   "ClientLlmExecutorLost": "Das Gerät, auf dem {{provider}} für dieses Gespräch ausgeführt wird, hat vor Abschluss der Antwort nicht mehr reagiert – es könnte geschlossen, aktualisiert oder getrennt worden sein. Halten Sie das Mcit-Fenster geöffnet und versuchen Sie es erneut.",
-  "ClientLlmExecutorUnavailable": "{{provider}} kann nur von Ihrem eigenen Gerät aus erreicht werden, aber keine offene Mcit-Sitzung hat die Anfrage aufgenommen. Öffnen Sie MCIT AI auf dem Gerät, auf dem {{provider}} läuft, und versuchen Sie es erneut.",
+  "ClientLlmExecutorUnavailable": "{{provider}} kann nur von Ihrem eigenen Gerät aus erreicht werden, aber keine offene Mcit-Sitzung hat die Anfrage aufgenommen. Öffnen Sie TuT AI auf dem Gerät, auf dem {{provider}} läuft, und versuchen Sie es erneut.",
   "ClientLlmTimeout": "{{provider}} auf Ihrem Gerät hat nicht rechtzeitig geantwortet. Stellen Sie sicher, dass das Modell läuft und geladen ist, und versuchen Sie es erneut.",
   "ComfyUIBizError": "Beim Anfordern des ComfyUI-Dienstes ist ein Fehler aufgetreten. Bitte beheben Sie das Problem mit den unten stehenden Informationen oder versuchen Sie es erneut.",
   "ComfyUIEmptyResult": "ComfyUI hat kein Bild generiert. Bitte überprüfen Sie die Modellkonfiguration oder versuchen Sie es erneut.",

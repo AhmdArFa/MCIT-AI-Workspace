@@ -3,7 +3,7 @@
   "AgentRuntimeError": "Fout bij de uitvoering van het Tut-taalmodel. Los het probleem op of probeer het opnieuw op basis van de onderstaande informatie.",
   "CapabilityNotSupported": "Sorry, dit model ondersteunt de gevraagde functionaliteit niet (zoals visuele invoer of het aanroepen van tools). Schakel over naar een model dat dit wel ondersteunt.",
   "ClientLlmExecutorLost": "Het apparaat dat {{provider}} uitvoert voor dit gesprek reageerde niet meer voordat het antwoord was voltooid — het kan zijn gesloten, vernieuwd of losgekoppeld. Houd het Mcit-venster open en probeer het opnieuw.",
-  "ClientLlmExecutorUnavailable": "{{provider}} kan alleen worden bereikt vanaf je eigen apparaat, maar geen open Mcit-venster heeft het verzoek opgepikt. Open MCIT AI op het apparaat waar {{provider}} draait en probeer het opnieuw.",
+  "ClientLlmExecutorUnavailable": "{{provider}} kan alleen worden bereikt vanaf je eigen apparaat, maar geen open Mcit-venster heeft het verzoek opgepikt. Open TuT AI op het apparaat waar {{provider}} draait en probeer het opnieuw.",
   "ClientLlmTimeout": "{{provider}} op je apparaat reageerde niet op tijd. Zorg ervoor dat het model actief en geladen is, en probeer het opnieuw.",
   "ComfyUIBizError": "Er is een fout opgetreden bij het aanvragen van de ComfyUI-service. Los het probleem op met behulp van de onderstaande informatie of probeer het opnieuw.",
   "ComfyUIEmptyResult": "Er is geen afbeelding gegenereerd door ComfyUI. Controleer de modelconfiguratie of probeer het opnieuw.",

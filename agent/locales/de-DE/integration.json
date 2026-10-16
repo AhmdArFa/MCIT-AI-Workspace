@@ -1,7 +1,7 @@
 {
   "github.automation.acceptOnMerge.description": "Wenn eine mit einer Abnahme verknüpfte Pull-Anfrage zusammengeführt wird, markiere die Abnahme als akzeptiert und schließe ihre Aufgabe ab.",
   "github.automation.acceptOnMerge.title": "Abnahmen bei Merge akzeptieren",
-  "github.automation.description": "Was MCIT AI eigenständig tut, wenn GitHub Aktivitäten meldet.",
+  "github.automation.description": "Was TuT AI eigenständig tut, wenn GitHub Aktivitäten meldet.",
   "github.automation.title": "Automatisierung",
   "github.automation.wakeOnCiFailure.description": "Wenn ein Check fehlschlägt, benachrichtige den Ajan, der die Pull-Anfrage geöffnet hat, mit dem Protokoll des fehlgeschlagenen Jobs. Maximal dreimal pro Pull-Anfrage.",
   "github.automation.wakeOnCiFailure.title": "Agenten bei CI-Fehler benachrichtigen",

@@ -135,7 +135,16 @@ export function AppSidebar() {
 
       {/* User profile footer */}
       <div className="user-box">
-        <div className="av">{initials}</div>
+        <div className="av overflow-hidden flex items-center justify-center p-0">
+          <img
+            src="/avatars/users/admin.svg"
+            alt={displayName}
+            className="w-full h-full object-cover rounded-full"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = 'none';
+            }}
+          />
+        </div>
         <div className="flex-1 min-w-0">
           <div className="text-sm font-medium text-[#ececec] truncate">{displayName}</div>
           <small>TuT AI</small>

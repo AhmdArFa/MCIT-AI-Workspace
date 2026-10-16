@@ -170,7 +170,7 @@
   "project.create": "Yeni proje",
   "project.deleteConfirm": "Bu proje silinecek ve geri alınamaz. Devam etmek için onaylayın.",
   "recommendations.heteroAgent.cta": "Ajan Ekle",
-  "recommendations.heteroAgent.description": "Bu cihazda {{name}} CLI tespit edildi — {{name}} ajanını ekleyerek MCIT AI'dan onunla sohbet edin.",
+  "recommendations.heteroAgent.description": "Bu cihazda {{name}} CLI tespit edildi — {{name}} ajanını ekleyerek TuT AI'dan onunla sohbet edin.",
   "recommendations.heteroAgent.tag": "Kodlama Ajanı",
   "recommendations.heteroAgent.title": "{{name}} ajanını ekle",
   "recommendations.subtitle": "Kurulumunuz için bazı öneriler",

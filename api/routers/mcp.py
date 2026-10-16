@@ -143,9 +143,9 @@ def _assign_tut_file_to_user(tut_file_id: str, target_username: Optional[str] = 
                         target_user_id = row[0]
 
                 if not target_user_id:
-                    # Resolve to the non-admin active user in tut_agent database
+                    # Resolve to active user in tut_agent database
                     cur.execute(
-                        "SELECT id FROM users WHERE email != 'admin@mcit.local' ORDER BY created_at DESC LIMIT 1"
+                        "SELECT id FROM users ORDER BY (email = 'admin@mcit.local') DESC, created_at DESC LIMIT 1"
                     )
                     row = cur.fetchone()
                     if row:
@@ -153,11 +153,17 @@ def _assign_tut_file_to_user(tut_file_id: str, target_username: Optional[str] = 
 
                 if target_user_id:
                     cur.execute(
-                        "UPDATE files SET user_id = %s WHERE id = %s",
+                        "UPDATE files SET user_id = %s, visibility = 'public' WHERE id = %s",
                         (target_user_id, tut_file_id),
                     )
                     conn.commit()
-                    logger.info(f"Assigned TuT file {tut_file_id} to user {target_user_id} ({target_username or 'active'})")
+                    logger.info(f"Assigned TuT file {tut_file_id} to user {target_user_id} ({target_username or 'active'}) with public visibility")
+                else:
+                    cur.execute(
+                        "UPDATE files SET visibility = 'public' WHERE id = %s",
+                        (tut_file_id,),
+                    )
+                    conn.commit()
     except Exception as ex:
         logger.warning(f"Could not assign TuT file {tut_file_id} to user: {ex}")
 

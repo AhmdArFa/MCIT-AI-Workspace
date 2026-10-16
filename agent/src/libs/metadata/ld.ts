@@ -15,7 +15,7 @@ export const AUTHOR_LIST = {
   mcit: {
     avatar: '/mcit-logo.webp',
     desc: 'Ministry of Communications and Information Technology',
-    name: 'MCIT AI',
+    name: 'TuT AI',
     url: 'https://mcit.gov.eg',
   },
 };

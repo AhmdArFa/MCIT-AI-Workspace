@@ -41,6 +41,8 @@ PUBLIC_PREFIXES = (
     "/.well-known/",
     "/api/office/file/",
     "/api/office/callback/",
+    "/api/f/",
+    "/f/",
 )
 DOC_PATHS = {"/docs", "/openapi.json", "/redoc"}
 

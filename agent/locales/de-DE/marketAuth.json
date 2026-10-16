@@ -22,7 +22,7 @@
   "callback.messages.successWithCountdown": "{{message}} Das Fenster schließt sich automatisch in {{countdown}} Sekunden",
   "callback.messages.successWithRedirect": "Autorisierung erfolgreich! Weiterleitung...",
   "callback.titles.error": "Autorisierung fehlgeschlagen",
-  "callback.titles.loading": "MCIT AI Market Autorisierung",
+  "callback.titles.loading": "TuT AI Market Autorisierung",
   "callback.titles.success": "Autorisierung erfolgreich",
   "claimResources.claim": "Ausgewählte beanspruchen",
   "claimResources.description": "Wir haben Ressourcen gefunden, die mit Ihrem Konto verknüpft sind und die Sie beanspruchen können:",

@@ -29,7 +29,7 @@
   "consent.scope.sync-read": "Lees je gesynchroniseerde gegevens",
   "consent.scope.sync-write": "Schrijf en werk je gesynchroniseerde gegevens bij",
   "consent.thirdParty.developedBy": "Door {{developerName}}",
-  "consent.thirdParty.notice": "Deze applicatie is gemaakt door een externe ontwikkelaar en wordt niet beheerd door MCIT AI. Na autorisatie kan het namens u handelen en uw accountquotum gebruiken.",
+  "consent.thirdParty.notice": "Deze applicatie is gemaakt door een externe ontwikkelaar en wordt niet beheerd door TuT AI. Na autorisatie kan het namens u handelen en uw accountquotum gebruiken.",
   "consent.thirdParty.privacyPolicy": "Privacybeleid",
   "consent.thirdParty.unknownDeveloper": "een externe ontwikkelaar",
   "consent.title": "Geef toestemming aan {{clientName}}",

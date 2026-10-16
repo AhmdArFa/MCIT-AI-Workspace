@@ -55,8 +55,8 @@
   "email.footer.contactSupport": "Contact support",
   "email.footer.joinDiscord": "Join Discord",
   "email.footer.manage": "Manage notifications",
-  "email.footer.preference": "You received this email because of your notification settings on MCIT AI.",
-  "email.footer.system": "This is an important account notification from MCIT AI.",
+  "email.footer.preference": "You received this email because of your notification settings on TuT AI.",
+  "email.footer.system": "This is an important account notification from TuT AI.",
   "email.viewDetails": "View Details",
   "group_transfer_reassigned": "A workspace owner transferred your group \"{{agentTitle}}\" to {{recipientLabel}}.",
   "group_transfer_reassigned_title": "Group reassigned",
@@ -149,6 +149,6 @@
   "workspace_primary_ownership_transferred_title": "You are now the Owner of {{workspaceName}}",
   "workspace_subscription_expired": "The subscription for workspace \"{{workspaceName}}\" has ended. Renew within {{days}} days to restore full access before the workspace is downgraded.",
   "workspace_subscription_expired_title": "Subscription ended for {{workspaceName}}",
-  "workspace_waitlist_approved": "Your Workspace beta access is ready. Head to MCIT AI to create your first workspace and invite your team.",
+  "workspace_waitlist_approved": "Your Workspace beta access is ready. Head to TuT AI to create your first workspace and invite your team.",
   "workspace_waitlist_approved_title": "Workspace beta access approved"
 }

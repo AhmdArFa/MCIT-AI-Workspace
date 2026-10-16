@@ -416,7 +416,7 @@
   "supportAgent.starter.feedback": "I want to report a problem or suggest a feature",
   "supportAgent.starter.modelError": "A model call failed. How do I troubleshoot it?",
   "supportAgent.title": "MCIT Support",
-  "supportAgent.welcome": "Hi, I'm the MCIT AI support assistant. Ask me how something works, tell me what went wrong, or leave feedback for the team. I'm an AI, so double-check anything important.",
+  "supportAgent.welcome": "Hi, I'm the TuT AI support assistant. Ask me how something works, tell me what went wrong, or leave feedback for the team. I'm an AI, so double-check anything important.",
   "supportAgent.working": "Looking into it…",
   "switch": "Switch",
   "sync.actions.settings": "Sync Settings",
