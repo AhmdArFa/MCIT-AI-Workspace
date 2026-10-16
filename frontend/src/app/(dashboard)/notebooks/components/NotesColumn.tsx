@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Plus, StickyNote, Bot, User, MoreVertical, Trash2, ListChecks, ChevronDown } from 'lucide-react'
+import { TutAvatar } from '@/components/tut/TutAvatar'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { EmptyState } from '@/components/common/EmptyState'
 import { Badge } from '@/components/ui/badge'
@@ -145,7 +146,7 @@ export function NotesColumn({
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {note.note_type === 'ai' ? (
-                          <Bot className="h-4 w-4 text-teal" />
+                          <TutAvatar size={18} />
                         ) : (
                           <User className="h-4 w-4 text-muted-foreground" />
                         )}

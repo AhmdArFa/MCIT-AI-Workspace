@@ -402,49 +402,54 @@ const AgentTool = memo<AgentToolProps>(
     // Builtin Agent Skills list items (grouped under MCIT AI)
     const builtinAgentSkillItems = useMemo(
       () =>
-        installedBuiltinSkills.map((skill) => ({
-          icon: skill.avatar ? (
-            <Avatar avatar={skill.avatar} size={SKILL_ICON_SIZE} style={{ marginInlineEnd: 0 }} />
-          ) : (
-            <Icon icon={SkillsIcon} size={SKILL_ICON_SIZE} />
-          ),
-          key: skill.identifier,
-          label: (
-            <ToolItem
-              checked={isToolEnabled(skill.identifier)}
-              id={skill.identifier}
-              label={skill.name}
-              onUpdate={async () => {
-                setUpdating(true);
-                await handleToggleTool(skill.identifier);
-                setUpdating(false);
-              }}
-            />
-          ),
-          popoverContent: (
-            <ToolItemDetailPopover
-              identifier={skill.identifier}
-              sourceLabel={t('skillStore.tabs.mcit')}
-              description={t(`tools.builtins.${skill.identifier}.description` as any, {
-                defaultValue: skill.description,
-              })}
-              icon={
-                skill.avatar ? (
-                  <Avatar
-                    avatar={skill.avatar}
-                    size={36}
-                    style={{ flex: 'none', marginInlineEnd: 0 }}
-                  />
-                ) : (
-                  <Icon icon={SkillsIcon} size={36} />
-                )
-              }
-              title={t(`tools.builtins.${skill.identifier}.title` as any, {
-                defaultValue: skill.name,
-              })}
-            />
-          ),
-        })),
+        installedBuiltinSkills.map((skill) => {
+          const isMcit = skill.identifier === 'mcit';
+          const avatar = isMcit ? '/avatars/mcit/tutankhamun.webp' : skill.avatar;
+          const displayName = isMcit ? 'TuT AI' : skill.name;
+          return {
+            icon: avatar ? (
+              <Avatar avatar={avatar} size={SKILL_ICON_SIZE} style={{ marginInlineEnd: 0 }} />
+            ) : (
+              <Icon icon={SkillsIcon} size={SKILL_ICON_SIZE} />
+            ),
+            key: skill.identifier,
+            label: (
+              <ToolItem
+                checked={isToolEnabled(skill.identifier)}
+                id={skill.identifier}
+                label={displayName}
+                onUpdate={async () => {
+                  setUpdating(true);
+                  await handleToggleTool(skill.identifier);
+                  setUpdating(false);
+                }}
+              />
+            ),
+            popoverContent: (
+              <ToolItemDetailPopover
+                identifier={skill.identifier}
+                sourceLabel={t('skillStore.tabs.mcit')}
+                description={t(`tools.builtins.${skill.identifier}.description` as any, {
+                  defaultValue: skill.description,
+                })}
+                icon={
+                  avatar ? (
+                    <Avatar
+                      avatar={avatar}
+                      size={36}
+                      style={{ flex: 'none', marginInlineEnd: 0 }}
+                    />
+                  ) : (
+                    <Icon icon={SkillsIcon} size={36} />
+                  )
+                }
+                title={t(`tools.builtins.${skill.identifier}.title` as any, {
+                  defaultValue: displayName,
+                })}
+              />
+            ),
+          };
+        }),
       [installedBuiltinSkills, isToolEnabled, handleToggleTool, t],
     );
 
@@ -520,48 +525,52 @@ const AgentTool = memo<AgentToolProps>(
       () => [
         // 1. Builtin Agent Skills
         ...builtinAgentSkillItems,
-        // 2. Original builtin tools
-        ...filteredBuiltinList.map((item) => ({
-          icon: (
-            <Avatar
-              avatar={item.meta.avatar}
-              size={SKILL_ICON_SIZE}
-              style={{ marginInlineEnd: 0 }}
-            />
-          ),
-          key: item.identifier,
-          label: (
-            <ToolItem
-              checked={isToolEnabled(item.identifier)}
-              id={item.identifier}
-              label={item.meta?.title}
-              onUpdate={async () => {
-                setUpdating(true);
-                await handleToggleTool(item.identifier);
-                setUpdating(false);
-              }}
-            />
-          ),
-          popoverContent: (
-            <ToolItemDetailPopover
-              identifier={item.identifier}
-              sourceLabel={t('skillStore.tabs.mcit')}
-              description={t(`tools.builtins.${item.identifier}.description` as any, {
-                defaultValue: item.meta?.description || '',
-              })}
-              icon={
-                <Avatar
-                  avatar={item.meta.avatar}
-                  size={36}
-                  style={{ flex: 'none', marginInlineEnd: 0 }}
-                />
-              }
-              title={t(`tools.builtins.${item.identifier}.title` as any, {
-                defaultValue: item.meta?.title || item.identifier,
-              })}
-            />
-          ),
-        })),
+        ...filteredBuiltinList.map((item) => {
+          const isMcit = item.identifier === 'mcit';
+          const avatar = isMcit ? '/avatars/mcit/tutankhamun.webp' : item.meta.avatar;
+          const displayName = isMcit ? 'TuT AI' : (item.meta?.title || item.identifier);
+          return {
+            icon: (
+              <Avatar
+                avatar={avatar}
+                size={SKILL_ICON_SIZE}
+                style={{ marginInlineEnd: 0 }}
+              />
+            ),
+            key: item.identifier,
+            label: (
+              <ToolItem
+                checked={isToolEnabled(item.identifier)}
+                id={item.identifier}
+                label={displayName}
+                onUpdate={async () => {
+                  setUpdating(true);
+                  await handleToggleTool(item.identifier);
+                  setUpdating(false);
+                }}
+              />
+            ),
+            popoverContent: (
+              <ToolItemDetailPopover
+                identifier={item.identifier}
+                sourceLabel={t('skillStore.tabs.mcit')}
+                description={t(`tools.builtins.${item.identifier}.description` as any, {
+                  defaultValue: item.meta?.description || '',
+                })}
+                icon={
+                  <Avatar
+                    avatar={avatar}
+                    size={36}
+                    style={{ flex: 'none', marginInlineEnd: 0 }}
+                  />
+                }
+                title={t(`tools.builtins.${item.identifier}.title` as any, {
+                  defaultValue: displayName,
+                })}
+              />
+            ),
+          };
+        }),
         // 3. MCIT AI Skill Providers
         ...mcitSkillItems,
         // 4. Composio servers

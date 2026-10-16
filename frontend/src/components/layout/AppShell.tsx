@@ -1,8 +1,7 @@
 'use client'
 
 import { AppSidebar } from './AppSidebar'
-import { SetupBanner } from './SetupBanner'
-import { AppFooter } from './AppFooter'
+import { TopBar } from './TopBar'
 import { FilePanelHost } from '@/components/files/FilePanel'
 
 interface AppShellProps {
@@ -12,12 +11,11 @@ interface AppShellProps {
 
 export function AppShell({ children, hideSidebar = false }: AppShellProps) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-[#000000] text-[#ececec]">
       {!hideSidebar && <AppSidebar />}
-      <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
-        <SetupBanner />
+      <main className="flex-1 flex flex-col min-h-0 overflow-hidden bg-[#000000]">
+        <TopBar />
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">{children}</div>
-        <AppFooter />
       </main>
       <FilePanelHost />
     </div>

@@ -60,9 +60,15 @@ class Direction:
         return "custom design (" + ", ".join(bits) + ")"
 
 
-_VISUAL = re.compile(r"\b(visual|cards?|icons?|less text|minimal text|infographic|diagram)\w*", re.I)
-_COMPACT = re.compile(r"\b(compact|concise|brief|dense|short(er)? bullets?|less text|minimal)\b", re.I)
-_AIRY = re.compile(r"\b(airy|spacious|breathing|large text|bigger text|readable)\b", re.I)
+_VISUAL = re.compile(
+    r"\b(visual|cards?|icons?|less text|minimal text|infographic|diagram)\w*", re.I
+)
+_COMPACT = re.compile(
+    r"\b(compact|concise|brief|dense|short(er)? bullets?|less text|minimal)\b", re.I
+)
+_AIRY = re.compile(
+    r"\b(airy|spacious|breathing|large text|bigger text|readable)\b", re.I
+)
 _DATA = re.compile(r"\b(data|numbers|figures|charts?|kpis?|statistics|metrics)\b", re.I)
 _ROYAL = re.compile(r"\b(royal|deep blue|navy accent|calmer|conservative)\b", re.I)
 
@@ -70,13 +76,13 @@ _ROYAL = re.compile(r"\b(royal|deep blue|navy accent|calmer|conservative)\b", re
 def parse(design: Optional[str], template: str = "default") -> Direction:
     """``template`` is "default" or "custom"; ``design`` is the user's direction."""
     text = (design or "").strip()
-    if template != "custom" and not text:
-        return Direction()
     return Direction(
         custom=True,
         text=text,
-        density="compact" if _COMPACT.search(text) else ("airy" if _AIRY.search(text) else "standard"),
-        visual=bool(_VISUAL.search(text)),
+        density="compact"
+        if _COMPACT.search(text)
+        else ("airy" if _AIRY.search(text) else "standard"),
+        visual=True if (bool(_VISUAL.search(text)) or not text) else False,
         accent="royal" if _ROYAL.search(text) else "pulse",
         data_first=bool(_DATA.search(text)),
     )

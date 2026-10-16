@@ -19,7 +19,7 @@ const Mcit: ModelProviderCard = {
           'MCIT AI uses official APIs to access AI models and measures usage with Credits tied to model tokens.',
         modelsUrl: 'https://mcit.gov.eg/zh/docs/usage/subscription/model-pricing',
       }),
-  enabled: true,
+  enabled: false,
   id: 'mcit',
   name: BRANDING_NAME,
   settings: {

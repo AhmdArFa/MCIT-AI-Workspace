@@ -22,7 +22,7 @@ const SERVICE_NAMES: Record<string, string> = {
   language_models: 'Language models',
   speech: 'Speech (podcasts)',
   office_viewer: 'Office viewer',
-  tut_agent: 'Tut Agent',
+  tut_agent: 'TuT Agent',
 }
 
 const STATE_TEXT: Record<ServiceState['state'], string> = {
@@ -184,7 +184,7 @@ export default function AdminPage() {
 
                 <TabsContent value="monitoring" className="flex flex-col gap-6">
                   <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                    <StatCard label="Requests" value={formatTokens(data.totals.requests)} hint="MCIT AI and Tut Agent" />
+                    <StatCard label="Requests" value={formatTokens(data.totals.requests)} hint="TuT AI and TuT Agent" />
                     <StatCard label="Input tokens" value={formatTokens(data.totals.input_tokens)} />
                     <StatCard label="Output tokens" value={formatTokens(data.totals.output_tokens)} />
                     <StatCard label="Background jobs" value={Object.values(data.jobs).reduce((a, b) => a + b, 0)} hint={Object.entries(data.jobs).map(([k, v]) => `${v} ${k}`).join(' · ') || 'None queued'} />

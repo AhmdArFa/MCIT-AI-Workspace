@@ -50,7 +50,7 @@ export type McitConnectorProviderType = McitSkillProviderType;
  */
 export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description:
@@ -62,7 +62,7 @@ export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
       'Connect to GitHub to access your repositories, create and manage issues, review pull requests, and collaborate on code—all through natural conversation with your AI assistant.',
   },
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description:
@@ -74,7 +74,7 @@ export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
     label: 'Linear',
   },
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description:
@@ -86,7 +86,7 @@ export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
     label: 'Outlook Calendar',
   },
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description: 'Notion is a collaborative productivity and note-taking application.',
@@ -97,7 +97,7 @@ export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
     label: 'Notion',
   },
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description:
@@ -109,7 +109,7 @@ export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
       'Connect to PostHog to query product analytics, inspect dashboards, review feature flags and experiments, and understand user behavior through natural conversation with your AI assistant.',
   },
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description:
@@ -121,7 +121,7 @@ export const MCIT_SKILL_PROVIDERS: McitSkillProviderType[] = [
     label: 'X',
   },
   {
-    author: 'MCIT AI',
+    author: 'TuT AI',
     authorUrl: OFFICIAL_SITE,
     defaultVisible: true,
     description:

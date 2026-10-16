@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 180 180" role="img" aria-label="Thoth cartouche mark, light edition">
+  <title>TuT Cartouche — Light</title>
+  <desc>Light-surface variant: ivory background, bronze gold ring, deep navy letters. Faithful to the original concept E palette.</desc>
+  <rect x="0" y="0" width="180" height="180" fill="#F8F5EC"/>
+  <g fill="none" stroke="#B7791F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="28" y="54" width="112" height="72" rx="36"/>
+    <path d="M150 46V134"/>
+  </g>
+  <g fill="none" stroke="#1E1B4B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 76H66M56 76V104"/>
+    <path d="M76 84V94a8 8 0 0 0 16 0V84"/>
+    <path d="M102 76H122M112 76V104"/>
+  </g>
+</svg>

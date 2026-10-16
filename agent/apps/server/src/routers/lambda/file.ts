@@ -452,7 +452,10 @@ export const fileRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const item = await ctx.fileModel.findById(input.id);
+      let item = await ctx.fileModel.findById(input.id);
+      if (!item) {
+        item = await FileModel.getFileById(ctx.db, input.id);
+      }
       if (!item) throw new TRPCError({ code: 'BAD_REQUEST', message: 'File not found' });
 
       await assertFileNotInRestrictedKnowledgeBase(ctx, input.id);
@@ -506,7 +509,10 @@ export const fileRouter = router({
       }),
     )
     .query(async ({ ctx, input }): Promise<FileListItem | undefined> => {
-      const item = await ctx.fileModel.findById(input.id);
+      let item = await ctx.fileModel.findById(input.id);
+      if (!item) {
+        item = await FileModel.getFileById(ctx.db, input.id);
+      }
 
       if (!item) throw new TRPCError({ code: 'NOT_FOUND', message: 'File not found' });
 

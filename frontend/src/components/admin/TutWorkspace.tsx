@@ -11,7 +11,7 @@ import { formatBytes, formatTokens } from '@/lib/api/studio'
 import { cn } from '@/lib/utils'
 
 function apiError(err: unknown) {
-  return (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Tut Agent did not answer.'
+  return (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'TuT Agent did not answer.'
 }
 
 function Muted({ children }: { children: React.ReactNode }) {
@@ -28,7 +28,7 @@ function TutChats({ userId }: { userId: string }) {
   })
   if (isLoading) return <Muted>Loading…</Muted>
   if (error) return <Muted>{apiError(error)}</Muted>
-  if (!chats.length) return <Muted>No Tut Agent chats yet.</Muted>
+  if (!chats.length) return <Muted>No TuT Agent chats yet.</Muted>
   return (
     <div className="grid gap-4 md:grid-cols-[300px_1fr]">
       <ul className="flex flex-col gap-1">
@@ -58,7 +58,7 @@ function TutChats({ userId }: { userId: string }) {
           messages.map((m, i) => (
             <div key={i} className={cn('rounded-lg px-3 py-2 text-sm', m.role === 'user' ? 'max-w-[80%] self-end bg-primary/15' : 'max-w-[90%] bg-muted')}>
               <span className="mb-1 block text-xs font-medium text-muted-foreground">
-                {m.role === 'user' ? 'User' : 'Tut Agent'}
+                {m.role === 'user' ? 'User' : 'TuT Agent'}
                 {m.role !== 'user' && m.usage?.totalTokens ? ` · ${formatTokens(m.usage.totalTokens)} tokens` : ''}
               </span>
               <MarkdownRenderer>{m.content || ''}</MarkdownRenderer>
@@ -74,7 +74,7 @@ function TutFiles({ userId }: { userId: string }) {
   const { data = [], isLoading, error } = useQuery({ queryKey: ['admin-tut-files', userId], queryFn: () => adminApi.tut.files(userId) })
   if (isLoading) return <Muted>Loading…</Muted>
   if (error) return <Muted>{apiError(error)}</Muted>
-  if (!data.length) return <Muted>No files in Tut Agent yet.</Muted>
+  if (!data.length) return <Muted>No files in TuT Agent yet.</Muted>
   return (
     <ul className="flex flex-col divide-y divide-border rounded-xl border border-border">
       {data.map((f) => (
@@ -93,7 +93,7 @@ function TutGenerations({ userId }: { userId: string }) {
   const { data = [], isLoading, error } = useQuery({ queryKey: ['admin-tut-generations', userId], queryFn: () => adminApi.tut.generations(userId) })
   if (isLoading) return <Muted>Loading…</Muted>
   if (error) return <Muted>{apiError(error)}</Muted>
-  if (!data.length) return <Muted>No image or video generations in Tut Agent yet.</Muted>
+  if (!data.length) return <Muted>No image or video generations in TuT Agent yet.</Muted>
   return (
     <ul className="flex flex-col divide-y divide-border rounded-xl border border-border">
       {data.map((g) => (
@@ -129,7 +129,7 @@ function TutUsage({ userId }: { userId: string }) {
             </tr>
           ))}
           {!data.length && (
-            <tr><td colSpan={5} className="px-4 py-6 text-center text-muted-foreground">No Tut Agent usage yet.</td></tr>
+            <tr><td colSpan={5} className="px-4 py-6 text-center text-muted-foreground">No TuT Agent usage yet.</td></tr>
           )}
         </tbody>
       </table>
@@ -137,19 +137,19 @@ function TutUsage({ userId }: { userId: string }) {
   )
 }
 
-/** One person's Tut Agent workspace: chats, files, generations and token usage. */
+/** One person's TuT Agent workspace: chats, files, generations and token usage. */
 export function TutWorkspace({ userId, overview }: { userId: string; overview?: TutOverview }) {
-  if (overview && !overview.available) return <Muted>Tut Agent is not connected to the admin console.</Muted>
-  if (overview && !overview.linked) return <Muted>This person has not opened Tut Agent yet.</Muted>
+  if (overview && !overview.available) return <Muted>TuT Agent is not connected to the admin console.</Muted>
+  if (overview && !overview.linked) return <Muted>This person has not opened TuT Agent yet.</Muted>
   const counts = overview?.counts
   const usage = overview?.usage
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Tut chats" value={counts?.chats ?? '—'} />
-        <StatCard label="Tut files" value={counts?.files ?? '—'} />
-        <StatCard label="Tut generations" value={counts?.generations ?? '—'} />
-        <StatCard label="Tut tokens" value={usage ? formatTokens(usage.total_tokens || usage.input_tokens + usage.output_tokens) : '—'} />
+        <StatCard label="TuT chats" value={counts?.chats ?? '—'} />
+        <StatCard label="TuT files" value={counts?.files ?? '—'} />
+        <StatCard label="TuT generations" value={counts?.generations ?? '—'} />
+        <StatCard label="TuT tokens" value={usage ? formatTokens(usage.total_tokens || usage.input_tokens + usage.output_tokens) : '—'} />
       </div>
       <Tabs defaultValue="chats" className="flex flex-col gap-4">
         <TabsList className="self-start">

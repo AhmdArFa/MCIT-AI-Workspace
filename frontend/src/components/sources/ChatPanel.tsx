@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Bot, User, Send, Loader2, FileText, Lightbulb, StickyNote, Clock } from 'lucide-react'
+import { TutAvatar } from '@/components/tut/TutAvatar'
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 import {
   SourceChatMessage,
@@ -147,7 +148,7 @@ export function ChatPanel({
           <div className="space-y-4 py-4">
             {messages.length === 0 ? (
               <div className="text-center text-muted-foreground py-8">
-                <Bot className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <TutAvatar size={56} className="mx-auto mb-4 shadow-sm" />
                 <p className="text-sm">
                   {t('chat.startConversation', { type: contextType === 'source' ? t('navigation.sources') : t('common.notebook') })}
                 </p>
@@ -166,9 +167,7 @@ export function ChatPanel({
             {isStreaming && (
               <div className="flex gap-3 justify-start">
                 <div className="flex-shrink-0">
-                  <div className="h-8 w-8 rounded-full bg-teal-tint flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-teal" />
-                  </div>
+                  <TutAvatar size={34} />
                 </div>
                 <div className="rounded-lg px-4 py-2 bg-card border">
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -336,9 +335,7 @@ const ChatMessage = memo(function ChatMessage({
     >
       {message.type === 'ai' && (
         <div className="flex-shrink-0">
-          <div className="h-8 w-8 rounded-full bg-teal-tint flex items-center justify-center">
-            <Bot className="h-4 w-4 text-teal" />
-          </div>
+          <TutAvatar size={34} />
         </div>
       )}
       <div className="flex flex-col gap-2 max-w-[80%]">

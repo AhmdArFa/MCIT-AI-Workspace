@@ -1,4 +1,4 @@
-import { DEFAULT_INBOX_AVATAR, DEFAULT_INBOX_TITLE, INBOX_SESSION_ID } from '@tut/const';
+import { DEFAULT_INBOX_AVATAR, DEFAULT_INBOX_TITLE, INBOX_SESSION_ID, resolveMcitPersona } from '@tut/const';
 
 interface InboxAgentIdentity {
   slug?: string | null;
@@ -16,16 +16,25 @@ export const isInboxAgentIdentity = ({ slug }: InboxAgentIdentity) => slug === I
 export function normalizeInboxAgentTitle(
   title: string | null,
   identity: InboxAgentIdentity,
+  avatar?: string | null,
 ): string | null;
 export function normalizeInboxAgentTitle(
   title: string | null | undefined,
   identity: InboxAgentIdentity,
+  avatar?: string | null,
 ): string | null | undefined;
 export function normalizeInboxAgentTitle(
   title: string | null | undefined,
   identity: InboxAgentIdentity,
+  avatar?: string | null,
 ) {
-  return isInboxAgentIdentity(identity) && isBlank(title) ? DEFAULT_INBOX_TITLE : title;
+  if (isInboxAgentIdentity(identity)) {
+    const persona = resolveMcitPersona(avatar || title);
+    if (isBlank(title) || title === DEFAULT_INBOX_TITLE || title === 'Tut' || title === 'Tut Agent') {
+      return persona.label;
+    }
+  }
+  return title;
 }
 
 export function normalizeInboxAgentAvatar(
@@ -49,5 +58,6 @@ export const normalizeInboxAgentMeta = <T extends InboxAgentMeta>(
 ): T => ({
   ...agent,
   avatar: normalizeInboxAgentAvatar(agent.avatar, identity),
-  title: normalizeInboxAgentTitle(agent.title, identity),
+  title: normalizeInboxAgentTitle(agent.title, identity, agent.avatar),
 });
+

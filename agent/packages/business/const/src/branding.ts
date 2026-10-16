@@ -1,9 +1,9 @@
-// MCIT AI branding & official ownership.
+// TuT AI branding & official ownership.
 
-export const TUT_CHAT_CLOUD = 'MCIT AI';
+export const TUT_CHAT_CLOUD = 'TuT AI';
 
-export const BRANDING_NAME = 'MCIT AI';
-export const BRANDING_LOGO_URL = '/mcit-logo.webp';
+export const BRANDING_NAME = 'TuT AI';
+export const BRANDING_LOGO_URL = '/logo.webp';
 
 export const ORG_NAME = 'Ministry of Communications and Information Technology (MCIT)';
 export const DEVELOPER_NAME = 'Eng Ahmed Arfa';
@@ -42,4 +42,4 @@ export const COPYRIGHT = `© ${new Date().getFullYear()} ${ORG_NAME}. Developed 
 export const COPYRIGHT_FULL = `${COPYRIGHT}. All rights reserved.`;
 
 /** Default agent display name shown in chat / sidebar. */
-export const DEFAULT_AGENT_DISPLAY_NAME = 'Tut Agent';
+export const DEFAULT_AGENT_DISPLAY_NAME = 'TuT Agent';

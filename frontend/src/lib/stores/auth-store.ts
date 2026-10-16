@@ -25,7 +25,7 @@ interface AuthState {
   hasHydrated: boolean
   setHasHydrated: (state: boolean) => void
   login: (username: string, password: string) => Promise<boolean>
-  /** Ends this browser's MCIT AI session; returns the Tut Agent sign-out address. */
+  /** Ends this browser's TuT AI session; returns the TuT Agent sign-out address. */
   logout: () => Promise<string | null>
   checkAuth: () => Promise<boolean>
 }
@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthState>()(
           return true
         } catch {
           set({
-            error: 'Unable to reach the server. Check that MCIT AI is running.',
+            error: 'Unable to reach the server. Check that TuT AI is running.',
             isLoading: false,
             isAuthenticated: false,
             token: null,

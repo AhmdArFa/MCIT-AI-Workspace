@@ -21,8 +21,13 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MCIT AI",
-  description: "MCIT AI, the private AI workspace of the Ministry of Communications and Information Technology",
+  title: "TuT AI",
+  description: "TuT AI, the private AI workspace with TuT Agent",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({

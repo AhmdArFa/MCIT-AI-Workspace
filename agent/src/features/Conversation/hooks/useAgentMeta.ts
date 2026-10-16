@@ -1,18 +1,19 @@
+import { resolveMcitPersona } from '@tut/const';
 import { type MetaData } from '@tut/types';
 import { useMemo } from 'react';
 
+import { DEFAULT_AVATAR } from '@/const/meta';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 
 import { contextSelectors, useConversationStore } from '../store';
 
-const TUT_AI_TITLE = 'Tut Agent';
+const TUT_AI_TITLE = 'TuT Agent';
 
 /**
  * Hook to get agent meta data for a specific agent or the current conversation.
  * Handles special cases for builtin agents (inbox, page agent, agent builder)
- * by showing Tut Agent title instead of the agent's own meta.
- * Avatar is now returned from the backend (merged from builtin-agents package).
+ * by resolving to the selected sovereign MCIT persona (Tut, Cleopatra, Thoth, etc.).
  *
  * @param messageAgentId - Optional agent ID from the message. If provided, uses this agent's meta.
  *                         Falls back to the current conversation's agent if not provided.
@@ -28,18 +29,33 @@ export const useAgentMeta = (messageAgentId?: string | null): MetaData => {
     // Check if the current agent is a builtin agent
     const builtinAgentIds = Object.values(builtinAgentIdMap);
     const isBuiltinAgent = builtinAgentIds.includes(agentId);
+    const persona = resolveMcitPersona(agentMeta?.avatar || agentMeta?.name || agentMeta?.title);
 
     if (isBuiltinAgent) {
-      // Use DB-stored title if customized (e.g. via onboarding), otherwise fallback to Tut Agent
-      return { ...agentMeta, title: agentMeta.title || TUT_AI_TITLE };
+      const isDefaultOrTut =
+        !agentMeta?.title ||
+        agentMeta.title === TUT_AI_TITLE ||
+        agentMeta.title === 'TuT Agent' ||
+        agentMeta.title === 'Tut Agent' ||
+        agentMeta.title === 'TuT' ||
+        agentMeta.title === 'Tut' ||
+        agentMeta.title.includes('TuT Agent') ||
+        agentMeta.title.includes('Tut Agent');
+      return {
+        ...agentMeta,
+        title: isDefaultOrTut ? persona.label : agentMeta.title,
+        description: agentMeta?.description || persona.title,
+        avatar: agentMeta?.avatar || persona.src || DEFAULT_AVATAR,
+      };
     }
 
-    // `name` and `title` both stay intact — resolving them into a single label is
-    // the renderer's job (see `agentDisplayName`), not this hook's. Collapsing here
-    // would leave a consumer that wants the role holding the personal name.
-    return agentMeta;
+    return {
+      ...agentMeta,
+      avatar: agentMeta?.avatar || persona.src || DEFAULT_AVATAR,
+    };
   }, [agentId, agentMeta, builtinAgentIdMap]);
 };
+
 
 /**
  * Hook to check if the current agent is a builtin agent

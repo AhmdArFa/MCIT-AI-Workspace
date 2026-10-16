@@ -85,6 +85,13 @@ async def bootstrap_local_models() -> None:
     llm = os.environ.get("OLLAMA_CHAT_MODEL", "qwen2.5:7b").strip()
     embed = os.environ.get("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text").strip()
 
+    ollama_base = os.environ.get("OLLAMA_API_BASE")
+    if ollama_base:
+        await repo_query(
+            "UPDATE credential SET base_url = $base WHERE provider = 'ollama' AND (base_url IS NONE OR string::starts_with(base_url, 'http://ollama:') OR base_url = 'http://localhost:11434' OR base_url = 'http://127.0.0.1:11434');",
+            {"base": ollama_base.rstrip("/")},
+        )
+
     llm_id = await _ensure_model(llm, "language")
     embed_id = await _ensure_model(embed, "embedding") if embed else None
 

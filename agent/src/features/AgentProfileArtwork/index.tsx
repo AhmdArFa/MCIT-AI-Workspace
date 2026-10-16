@@ -238,8 +238,9 @@ export const AgentProfileArtwork = memo<AgentProfileArtworkProps>(
       (state) => aiProviderSelectors.enabledImageModelList(state).length > 0,
     );
     const generateAgentArtwork = useAgentStore((s) => s.generateAgentArtwork);
-    const cancelAgentArtworkGeneration = useAgentStore((s) => s.cancelAgentArtworkGeneration);
-    const generation = useAgentStore(agentArtworkSelectors.generationByAgentId(agentId));
+    const updateAgentMetaById = useAgentStore((s) => s.updateAgentMetaById);
+    const updateAgentConfigById = useAgentStore((s) => s.updateAgentConfigById);
+    const builtinAgentIdMap = useAgentStore((s) => s.builtinAgentIdMap);
     const backgroundInputRef = useRef<HTMLInputElement>(null);
     const backgroundInputId = useId();
     const [backgroundUploading, setBackgroundUploading] = useState(false);
@@ -500,7 +501,7 @@ export const AgentProfileArtwork = memo<AgentProfileArtworkProps>(
               remount a newly generated avatar stays invisible whenever the
               previous one failed to load. */}
           <EmojiPicker
-            allowModelAvatar
+            allowModelAvatar={false}
             allowDelete={canEdit && !!avatar}
             key={avatarRemountKey(avatar)}
             locale={locale}
@@ -537,7 +538,22 @@ export const AgentProfileArtwork = memo<AgentProfileArtworkProps>(
                               cursor: 'pointer',
                               padding: 2,
                             }}
-                            onClick={() => onAvatarChange(item.src)}
+                            onClick={() => {
+                              onAvatarChange(item.src);
+                              const targetId = agentId || builtinAgentIdMap?.inbox;
+                              if (targetId) {
+                                void updateAgentMetaById(targetId, {
+                                  avatar: item.src,
+                                  description: item.title,
+                                  name: item.label,
+                                  title: item.title,
+                                });
+                                void updateAgentConfigById(targetId, {
+                                  openingMessage: item.welcome,
+                                  systemRole: item.systemRole,
+                                });
+                              }
+                            }}
                           >
                             <Avatar avatar={item.src} shape={'square'} size={56} />
                           </button>

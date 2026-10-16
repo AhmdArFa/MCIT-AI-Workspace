@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256"><defs><radialGradient id="bgad" cx=".5" cy=".32" r=".85"><stop offset="0" stop-color="#232b42"/><stop offset="1" stop-color="#04050a"/></radialGradient></defs><rect width="64" height="64" fill="url(#bgad)"/><circle cx="32" cy="26" r="23" fill="#fff" opacity=".05"/><defs><radialGradient id="skad" cx=".4" cy=".32" r=".8"><stop offset="0" stop-color="#f0bb94"/><stop offset=".6" stop-color="#E0A47C"/><stop offset="1" stop-color="#b9805c"/></radialGradient>
+<linearGradient id="suad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#232a3d"/><stop offset="1" stop-color="#07090f"/></linearGradient>
+<linearGradient id="lpad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4460"/><stop offset="1" stop-color="#151a29"/></linearGradient>
+<linearGradient id="tiad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fb0ff"/><stop offset=".5" stop-color="#3B6BFF"/><stop offset="1" stop-color="#1b3aa8"/></linearGradient>
+<linearGradient id="rgad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8ceff"/><stop offset=".5" stop-color="#3B6BFF"/><stop offset="1" stop-color="#1a3799"/></linearGradient>
+<linearGradient id="mtad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6fa"/><stop offset=".5" stop-color="#9aa3b5"/><stop offset="1" stop-color="#e5e9f2"/></linearGradient>
+<filter id="glad" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6"/></filter></defs>
+<circle cx="32" cy="32" r="30.5" fill="none" stroke="#3B6BFF" stroke-width="2.4" opacity=".6" filter="url(#glad)"/>
+<path d="M6 64c1-12 11-19 26-19s25 7 26 19z" fill="url(#suad)"/><path d="M24 45l8 12 8-12-3.5-2h-9z" fill="#f4f6fa"/><path d="M24 45l8 12" stroke="#c8cfdd" stroke-width=".6"/>
+<path d="M30.5 46.500h3l-.6 3h-1.800z" fill="url(#tiad)"/><path d="M31 49.500h2l2 13h-6z" fill="url(#tiad)"/>
+<path d="M13 64c1-8 6-14 14-17l5 11zM51 64c-1-8-6-14-14-17l-5 11z" fill="url(#lpad)"/><path d="M14 58l6-6" stroke="#fff" stroke-opacity=".12" stroke-width=".8"/>
+<path d="M18 56.500l5-.8-.4 3.300h-5z" fill="#f4f6fa"/>
+<rect x="27" y="37" width="10" height="9" rx="4" fill="#b9805c"/><ellipse cx="32" cy="39" rx="7" ry="3" fill="#000" opacity=".3"/>
+<ellipse cx="21.200" cy="28" rx="1.800" ry="2.800" fill="url(#skad)"/><ellipse cx="42.800" cy="28" rx="1.800" ry="2.800" fill="url(#skad)"/>
+<ellipse cx="32" cy="27" rx="11" ry="12.500" fill="url(#skad)"/>
+<circle cx="24.500" cy="32" r="2.200" fill="#ff6b6b" opacity=".12"/><circle cx="39.500" cy="32" r="2.200" fill="#ff6b6b" opacity=".12"/>
+<ellipse cx="27.500" cy="28" rx="1.900" ry="1.300" fill="#fff"/><circle cx="27.500" cy="28" r="1.050" fill="#241810"/><circle cx="27.900" cy="27.600" r=".32" fill="#fff"/>
+<ellipse cx="36.500" cy="28" rx="1.900" ry="1.300" fill="#fff"/><circle cx="36.500" cy="28" r="1.050" fill="#241810"/><circle cx="36.900" cy="27.600" r=".32" fill="#fff"/>
+<path d="M24.500 24c1.500-1 3.500-1 5-.2M34.500 23.800c1.500-.8 3.500-.8 5 .2" stroke="#0f0b09" stroke-width="1.100" fill="none" stroke-linecap="round"/>
+<path d="M31.200 31.200c.8.6 1.800.6 2.600 0" stroke="#b9805c" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M28.500 33.800c2 1.300 5 1.300 7 0" stroke="#9a5a40" stroke-width="1.100" fill="none" stroke-linecap="round"/>
+<path d="M20.500 25c-1-10 4-16 11.500-16s13 5 11.500 16c-1-4-3-6.500-6-7.500-5 2-10 3-17 7.500z" fill="#15110f"/><path d="M24 14c3-2.500 8-3 13-1" stroke="#fff" stroke-opacity=".22" stroke-width="1.200" fill="none" stroke-linecap="round"/>
+<g fill="none" stroke="url(#mtad)" stroke-width="1.100"><rect x="23.500" y="25" width="8" height="6" rx="2"/><rect x="32.500" y="25" width="8" height="6" rx="2"/><path d="M31.500 27.500h1"/></g>
+<circle cx="47" cy="47" r="8" fill="url(#mtad)"/><circle cx="47" cy="47" r="6.600" fill="url(#tiad)"/><path d="M47 42.500l3.500 1.400v2.600c0 2-1.500 3.400-3.500 4.200-2-.8-3.500-2.200-3.500-4.200v-2.600z" fill="#fff"/><path d="M45.300 47l1.200 1.200 2.200-2.400" stroke="#2a52cc" stroke-width="1.200" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="32" cy="32" r="31" fill="none" stroke="url(#rgad)" stroke-width="1.800"/></svg>

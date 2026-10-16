@@ -63,7 +63,7 @@ function Chats({ userId }: { userId: string }) {
         ) : (
           messages.map((m, i) => (
             <div key={i} className={cn('rounded-lg px-3 py-2 text-sm', m.role === 'user' ? 'self-end bg-primary/15 max-w-[80%]' : 'bg-muted max-w-[90%]')}>
-              <span className="mb-1 block text-xs font-medium text-muted-foreground">{m.role === 'user' ? 'User' : 'Tut Agent'}</span>
+              <span className="mb-1 block text-xs font-medium text-muted-foreground">{m.role === 'user' ? 'User' : 'TuT Agent'}</span>
               <MarkdownRenderer>{m.content}</MarkdownRenderer>
             </div>
           ))
@@ -182,11 +182,11 @@ export default function AdminUserPage() {
                   <StatCard label="Sources" value={data.counts.sources} />
                   <StatCard label="Chats" value={data.counts.chats} />
                   <StatCard label="Files" value={data.counts.generations} hint={formatBytes(data.storage_bytes)} />
-                  <StatCard label="Requests" value={formatTokens((data.total_usage ?? data.usage).requests)} hint="MCIT AI and Tut Agent" />
+                  <StatCard label="Requests" value={formatTokens((data.total_usage ?? data.usage).requests)} hint="TuT AI and TuT Agent" />
                   <StatCard
                     label="Tokens"
                     value={formatTokens((data.total_usage ?? data.usage).input_tokens + (data.total_usage ?? data.usage).output_tokens)}
-                    hint="MCIT AI and Tut Agent"
+                    hint="TuT AI and TuT Agent"
                   />
                 </div>
 
@@ -195,7 +195,7 @@ export default function AdminUserPage() {
                     <TabsTrigger value="chats">Chats</TabsTrigger>
                     <TabsTrigger value="files">Generations</TabsTrigger>
                     <TabsTrigger value="usage">Usage</TabsTrigger>
-                    <TabsTrigger value="tut">Tut Agent</TabsTrigger>
+                    <TabsTrigger value="tut">TuT Agent</TabsTrigger>
                     <TabsTrigger value="activity">Activity</TabsTrigger>
                     <TabsTrigger value="account">Account</TabsTrigger>
                   </TabsList>

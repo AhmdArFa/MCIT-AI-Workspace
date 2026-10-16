@@ -50,8 +50,25 @@ async def connect_tools(account: accounts.Account) -> dict:
         return {"tools": "unreachable"}
 
 
+async def auto_connect_all_accounts() -> None:
+    """Connect Tut Agent MCP tools for all registered accounts."""
+    try:
+        accs = await accounts.list_accounts()
+        for acc in accs:
+            if acc.active:
+                await connect_tools(acc)
+    except Exception as e:
+        logger.warning(f"Tut Agent auto-connect failed: {e}")
+
+
 @router.get("/connection")
-async def connection_status():
+async def connection_status(request: Request):
+    if not await client.connected():
+        try:
+            await client.save_key(client.DEFAULT_FALLBACK_KEY)
+            await connect_tools(current_account(request))
+        except Exception as e:
+            logger.debug(f"Auto-connect on status check: {e}")
     return {"connected": await client.connected()}
 
 

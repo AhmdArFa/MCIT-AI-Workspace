@@ -70,12 +70,14 @@ const genGlobalStyle = ({ token }: { prefixCls: string; token: Theme }) => css`
     -moz-osx-font-smoothing: auto;
   }
 
+  html[data-theme='dark'] body,
   html.desktop[data-theme='dark'] body {
-    background-color: color-mix(in srgb, ${token.colorBgLayout} 50%, transparent);
+    background-color: #0b0d12;
   }
 
+  html[data-theme='light'] body,
   html.desktop[data-theme='light'] body {
-    background-color: color-mix(in srgb, ${token.colorBgLayout} 70%, transparent);
+    background-color: #ffffff;
   }
 
   ${MAC_WINDOW_FULLSCREEN_SELECTOR} {

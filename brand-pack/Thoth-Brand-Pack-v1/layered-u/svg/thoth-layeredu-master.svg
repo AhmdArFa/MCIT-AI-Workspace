@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 180 180" role="img" aria-label="Thoth layered-u mark, OLED edition">
+  <title>TuT Layered u — OLED master</title>
+  <desc>Extracted from concept D (TuT Logo Concepts). Nemes stripes folded into the u of TuT: three nested u arches. True black OLED background; Noir palette arches.</desc>
+  <rect x="0" y="0" width="180" height="180" fill="#000000"/>
+  <g fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 44V90a50 50 0 0 0 100 0V44" stroke="#F7EF8A"/>
+    <path d="M60 58V92a30 30 0 0 0 60 0V58" stroke="#16A6E9"/>
+    <path d="M80 72V94a10 10 0 0 0 20 0V72" stroke="#F8F5EC"/>
+  </g>
+</svg>

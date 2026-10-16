@@ -159,7 +159,7 @@ export function StudioDialog({ notebookId, open, onOpenChange }: StudioDialogPro
           <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
             <TutAvatar size={24} /> Studio
           </DialogTitle>
-          <DialogDescription>Tut Agent writes from this notebook; the document engines build and check every file.</DialogDescription>
+          <DialogDescription>TuT Agent writes from this notebook; the document engines build and check every file.</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
@@ -213,8 +213,24 @@ export function StudioDialog({ notebookId, open, onOpenChange }: StudioDialogPro
             )}
 
             {preset === 'presentation' && (
-              <Field label={`Slides: ${slideCount}`} hint="Cover and closing slides are added.">
-                <input type="range" min={4} max={20} value={slideCount} disabled={running} onChange={(e) => setSlideCount(Number(e.target.value))} className="accent-[var(--primary)]" aria-label="Number of slides" />
+              <Field
+                label={`Total Slides: ${slideCount}`}
+                hint={
+                  slideCount >= 6
+                    ? `${slideCount - 3} content slides + title cover, agenda & closing (${slideCount} total)`
+                    : `${slideCount - 2} content slides + title cover & closing (${slideCount} total)`
+                }
+              >
+                <input
+                  type="range"
+                  min={4}
+                  max={20}
+                  value={slideCount}
+                  disabled={running}
+                  onChange={(e) => setSlideCount(Number(e.target.value))}
+                  className="accent-[var(--primary)]"
+                  aria-label="Number of slides"
+                />
               </Field>
             )}
             {preset === 'report' && (
@@ -226,7 +242,7 @@ export function StudioDialog({ notebookId, open, onOpenChange }: StudioDialogPro
             <Field label="Audience">
               <Input value={audience} onChange={(e) => setAudience(e.target.value)} disabled={running} />
             </Field>
-            <Field label={preset === 'spreadsheet' ? 'Figures and instructions' : 'Instructions for Tut Agent'} hint={preset === 'spreadsheet' ? 'Paste your figures (a table, or one line per indicator). Tut enters them exactly; changes and totals are formulas.' : 'Optional: focus, sections to include, figures to highlight.'}>
+            <Field label={preset === 'spreadsheet' ? 'Figures and instructions' : 'Instructions for TuT Agent'} hint={preset === 'spreadsheet' ? 'Paste your figures (a table, or one line per indicator). TuT enters them exactly; changes and totals are formulas.' : 'Optional: focus, sections to include, figures to highlight.'}>
               <Textarea value={instructions} onChange={(e) => setInstructions(e.target.value)} disabled={running} rows={preset === 'spreadsheet' ? 6 : 3} className={preset === 'spreadsheet' ? 'font-mono text-xs' : undefined} />
             </Field>
 

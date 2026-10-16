@@ -150,7 +150,20 @@ const AppTheme = memo<AppThemeProps>(
 
     useEffect(() => {
       setCookie(TUT_THEME_PRIMARY_COLOR, primaryColor);
+      if (typeof window !== 'undefined' && window.parent && window.parent !== window && primaryColor) {
+        window.parent.postMessage({ type: 'MCIT_ACCENT_CHANGE', accent: primaryColor }, '*');
+      }
     }, [primaryColor]);
+
+    useEffect(() => {
+      const handleMessage = (e: MessageEvent) => {
+        if (e.data?.type === 'MCIT_ACCENT_CHANGE' && e.data?.accent) {
+          useUserStore.getState().setSettings({ general: { primaryColor: e.data.accent } });
+        }
+      };
+      window.addEventListener('message', handleMessage);
+      return () => window.removeEventListener('message', handleMessage);
+    }, []);
 
     useEffect(() => {
       setCookie(TUT_THEME_NEUTRAL_COLOR, neutralColor);

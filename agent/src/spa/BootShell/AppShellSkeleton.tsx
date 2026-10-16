@@ -161,7 +161,7 @@ const AppShellSkeleton = memo<AppShellSkeletonProps>(({ id }) => {
           >
             <div className={styles.contentBrand}>
               <div className={styles.brand}>
-                <ProductLogo size={44} type={'combine'} />
+                <ProductLogo size={44} type={'text'} />
                 {waiting && <LoadingHint />}
               </div>
             </div>

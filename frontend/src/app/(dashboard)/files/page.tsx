@@ -38,7 +38,12 @@ function FilesLibrary() {
   // Links from Tut Agent and Studio (/files?open=<id>) open the same file in the viewer
   useEffect(() => {
     const id = params.get('open')
-    if (id) openFile(id)
+    if (id) {
+      openFile(id)
+      if (params.get('embed') === 'true') {
+        useFilePanel.setState({ fullscreen: true })
+      }
+    }
   }, [params, openFile])
 
   const shown = useMemo(
@@ -67,7 +72,7 @@ function FilesLibrary() {
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold tracking-tight">Files</h1>
             <p className="text-sm text-muted-foreground">
-              Everything Studio and Tut Agent produced for you. Open a file to view it, or edit it in the office viewer.
+              Everything Studio and TuT Agent produced for you. Open a file to view it, or edit it in the office viewer.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -105,7 +110,7 @@ function FilesLibrary() {
             <div className="flex flex-col items-center gap-2 rounded-2xl border border-dashed py-16 text-center">
               <FolderOpen className="h-6 w-6 text-muted-foreground" />
               <p className="text-sm font-medium">No files yet</p>
-              <p className="text-sm text-muted-foreground">Open a notebook and use Studio, or ask Tut Agent.</p>
+              <p className="text-sm text-muted-foreground">Open a notebook and use Studio, or ask TuT Agent.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2">

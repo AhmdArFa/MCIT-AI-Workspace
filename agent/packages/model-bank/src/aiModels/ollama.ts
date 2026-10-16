@@ -9,7 +9,7 @@ const ollamaChatModels: AIChatModelCard[] = [
     },
     contextWindowTokens: 131_072,
     description:
-      'Gemma 4 e4b — Official local AI model for MCIT AI. Fast, accurate, and optimized for private enterprise deployments.',
+      'Gemma 4 e4b — Official local AI model for TuT AI. Fast, accurate, and optimized for private enterprise deployments.',
     displayName: 'Gemma 4 e4b (Default)',
     family: 'gemma',
     generation: 'gemma-4',

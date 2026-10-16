@@ -1,10 +1,14 @@
+import { resolveMcitPersona } from '@tut/const';
 import { createStaticStyles } from 'antd-style';
 import type { ReactNode } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useHomeDailyBrief } from '@/hooks/useHomeDailyBrief';
+import { useAgentStore } from '@/store/agent';
+import { agentSelectors } from '@/store/agent/selectors';
 
+import { useResolvedHomeAgentId } from '../AgentSelect/useResolvedHomeAgentId';
 import GreetingLine from '../GreetingLine';
 import { parseGreetingLine } from '../welcomeText';
 
@@ -15,27 +19,28 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     overflow: hidden;
     display: block;
 
-    max-width: 100%;
-    padding-block: 6px;
-    padding-inline: 12px;
+    max-width: 480px;
+    padding-block: 8px;
+    padding-inline: 14px;
     border: 1px solid ${cssVar.colorBorderSecondary};
-    border-radius: 14px;
+    border-radius: 16px;
 
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.5;
-    color: ${cssVar.colorTextSecondary};
+    color: ${cssVar.colorText};
 
     background: ${cssVar.colorBgContainer};
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   `,
   /**
-   * Match the 24px action row when a brief replaces an announcement. Limit
-   * prose to two lines so optional content cannot push the composer far down.
+   * Match the action row when a brief replaces an announcement. Limit
+   * prose to three lines so character greetings read comfortably without truncation.
    */
   line: css`
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
 
     min-height: 24px;
   `,
@@ -48,14 +53,18 @@ interface PortraitBubbleProps {
 const PortraitBubble = memo<PortraitBubbleProps>(({ promo }) => {
   const { t } = useTranslation('home');
   const { currentPair } = useHomeDailyBrief();
+  const { agentId } = useResolvedHomeAgentId();
+  const meta = useAgentStore(agentSelectors.getAgentMetaById(agentId ?? ''));
+  const persona = resolveMcitPersona(meta?.avatar || meta?.name);
 
-  const parsed = currentPair?.welcome ? parseGreetingLine(currentPair.welcome) : undefined;
+  const welcomeText =
+    meta?.openingMessage?.trim() || persona.welcome || t('dashboard.greeting.subtitle');
 
   return (
     <div className={styles.bubble}>
       {promo ?? (
         <div className={styles.line}>
-          {parsed?.plain ? <GreetingLine parsed={parsed} /> : t('dashboard.greeting.subtitle')}
+          {welcomeText}
         </div>
       )}
     </div>

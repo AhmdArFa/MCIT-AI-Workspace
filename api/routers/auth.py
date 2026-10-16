@@ -42,6 +42,13 @@ async def login(body: LoginRequest, request: Request):
         raise HTTPException(status_code=401, detail="Wrong username or password")
     session = accounts.issue_session(account)
     await accounts.audit("auth.login", actor=account.id)
+    try:
+        import asyncio
+        from api.routers.tut import connect_tools
+
+        asyncio.create_task(connect_tools(account))
+    except Exception:
+        pass
     response = JSONResponse(session)
     response.set_cookie(
         SESSION_COOKIE,

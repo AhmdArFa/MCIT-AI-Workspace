@@ -33,7 +33,7 @@ import { useIsAdmin } from '@/lib/stores/auth-store'
 import type { TFunction } from 'i18next'
 
 const getNavigationItems = (t: TFunction, isAdmin: boolean) => [
-  { name: 'Tut Agent', href: '/tut', icon: Book, keywords: ['agent', 'tut', 'assistant'] },
+  { name: 'TuT Agent', href: '/tut', icon: Book, keywords: ['agent', 'tut', 'tut agent', 'assistant'] },
   { name: 'Files', href: '/files', icon: FileText, keywords: ['documents', 'studio', 'downloads'] },
   { name: t('navigation.sources'), href: '/sources', icon: FileText, keywords: ['files', 'documents', 'upload'] },
   { name: t('navigation.notebooks'), href: '/notebooks', icon: Book, keywords: ['notes', 'research', 'projects'] },

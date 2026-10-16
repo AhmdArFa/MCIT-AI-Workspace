@@ -81,19 +81,63 @@ export const POST = async (req: Request) => {
 
   try {
     const { toolCount } = await syncConnectorToolsById(id, { connectorModel, connectorToolModel });
-    // A connected MCP server is discoverable but not available to the agent
-    // until its identifier is pinned. Scope this write to this user's personal
-    // inbox: no shared agent, workspace, or other user's config is touched.
-    const inbox = await new AgentModel(serverDB, userId).getBuiltinAgent('inbox');
-    if (!inbox) throw new Error('Personal inbox agent not found');
-    const plugins = Array.isArray(inbox.plugins) ? inbox.plugins : [];
-    // Custom tool mode: exactly the declared tools (MCIT AI plus the inbox's own),
-    // so a local model sees a focused tool list it can actually use.
-    const chatConfig = { ...(inbox.chatConfig as Record<string, unknown> | null), enableAgentMode: true, toolMode: 'custom' };
-    await serverDB
-      .update(agents)
-      .set({ chatConfig: chatConfig as any, plugins: plugins.includes(IDENTIFIER) ? plugins : [...plugins, IDENTIFIER] })
-      .where(and(eq(agents.id, inbox.id), eq(agents.userId, userId), isNull(agents.workspaceId)));
+    // Pin MCIT AI tools across all personal agents owned by this user
+    const userAgents = await serverDB
+      .select({ chatConfig: agents.chatConfig, id: agents.id, plugins: agents.plugins, systemRole: agents.systemRole })
+      .from(agents)
+      .where(and(eq(agents.userId, userId), isNull(agents.workspaceId)));
+
+    const TUT_STUDIO_PROMPT =
+      'You are Tut Agent, an elite AI research architect, master presentation designer, and autonomous document creator integrated with MCIT AI.\n' +
+      'You operate with the creative intelligence, analytical depth, and versatility of state-of-the-art AI agents (like ChatGPT Canvas and Claude):\n' +
+      '1. Autonomous Document Creation (`generate_document` / `studio_produce`):\n' +
+      '- Generate documents directly in your response. Never tell the user that you forwarded requests to a background studio or provide background Job IDs.\n' +
+      '- When asked to create, draft, or analyze a topic into a presentation (.pptx), report (.docx), or spreadsheet (.xlsx), immediately call `generate_document`.\n' +
+      '- Innovate and personalize: dynamically tailor slide count (4 to 30), narrative perspective (e.g. Executive Briefing, Strategic Roadmap, Deep Technical Analysis), visual layout variety (cards, metrics, comparisons, process flows, hand-drawn diagram figures), and color schemes (\'red_white\', \'royal_navy\', \'emerald\', or custom brand colors).\n' +
+      '- Always present generated files in chat using root-relative markdown links: `[{filename}](/f/{tut_id})` so the user can click to open and edit the document live in the right collapsible ONLYOFFICE panel without leaving the chat conversation.\n' +
+      '2. In-Chat ONLYOFFICE & Programmatic Editing:\n' +
+      '- Read detailed internal slide/document elements with `file_read_content`.\n' +
+      '- Surgically edit slides, bullets, tables, or paragraphs upon user request using `file_edit_content`.\n' +
+      '- Launch or embed ONLYOFFICE collaborative editing via `file_open_editor`.\n' +
+      '3. Knowledge Synthesis & Deep Analytical Grounding:\n' +
+      '- Draw upon notebooks and sources (`notebooks_list`, `notebook_read`, `knowledge_search`) to infuse concrete facts, figures, and insights into every deliverable.\n' +
+      'Respond with clarity, intellectual rigor, and elegance in the user\'s language (Arabic or English).';
+
+    for (const agt of userAgents) {
+      const plugins = Array.isArray(agt.plugins) ? agt.plugins : [];
+      const chatConfig = {
+        ...(agt.chatConfig as Record<string, unknown> | null),
+        enableAgentMode: true,
+        toolMode: 'all',
+        enableHistoryCount: true,
+        historyCount: 100,
+        enableContextCompression: false,
+        enableStaleToolResultTrim: false,
+        memory: {
+          enabled: true,
+          toolPermission: 'read-write',
+        },
+      };
+      const params = {
+        num_ctx: 131072,
+        max_tokens: 16384,
+        temperature: 1.0,
+        top_p: 0.95,
+        top_k: 64,
+      };
+      const updatedPlugins = plugins.includes(IDENTIFIER) ? plugins : [...plugins, IDENTIFIER];
+      const systemRole = TUT_STUDIO_PROMPT;
+
+      await serverDB
+        .update(agents)
+        .set({
+          chatConfig: chatConfig as any,
+          params: params as any,
+          plugins: updatedPlugins,
+          systemRole,
+        })
+        .where(eq(agents.id, agt.id));
+    }
     return NextResponse.json({ connector_id: id, linked: true, tools: toolCount });
   } catch (error) {
     return NextResponse.json(

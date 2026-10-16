@@ -12,6 +12,8 @@ import type {
   ChatStreamPayload,
   Embeddings,
   EmbeddingsPayload,
+  GenerateObjectOptions,
+  GenerateObjectPayload,
   ModelRequestOptions,
   OpenAIChatMessage,
   PullModelParams,
@@ -67,6 +69,7 @@ export class TutOllamaAI implements TutRuntimeAI {
         model: payload.model,
         options: {
           frequency_penalty: payload.frequency_penalty,
+          num_ctx: (payload as any).num_ctx || 32768,
           presence_penalty: payload.presence_penalty,
           temperature: payload.temperature !== undefined ? payload.temperature / 2 : undefined,
           top_p: payload.top_p,
@@ -142,6 +145,35 @@ export class TutOllamaAI implements TutRuntimeAI {
     return await Promise.all(promises);
   }
 
+  async generateObject(payload: GenerateObjectPayload, options?: GenerateObjectOptions) {
+    try {
+      const { messages, model, schema } = payload;
+      const formattedMessages = await this.buildOllamaMessages(messages as any);
+      const abort = () => {
+        this.client.abort();
+        options?.signal?.removeEventListener('abort', abort);
+      };
+      options?.signal?.addEventListener('abort', abort);
+
+      const response = await this.client.chat({
+        messages: formattedMessages,
+        model: model || 'gemma4:e4b',
+        format: schema ? (typeof schema === 'object' ? schema : 'json') : 'json',
+        stream: false,
+      });
+
+      const text = response.message?.content || '{}';
+      try {
+        return JSON.parse(text);
+      } catch {
+        return { content: text };
+      }
+    } catch (error) {
+      console.error('Ollama generateObject error:', error);
+      throw error;
+    }
+  }
+
   async models() {
     const { TUT_DEFAULT_MODEL_LIST } = await import('model-bank');
 
@@ -156,13 +188,13 @@ export class TutOllamaAI implements TutRuntimeAI {
         );
 
         return {
-          contextWindowTokens: knownModel?.contextWindowTokens ?? undefined,
-          displayName: knownModel?.displayName ?? undefined,
-          enabled: knownModel?.enabled || false,
-          functionCall: knownModel?.abilities?.functionCall || false,
+          contextWindowTokens: knownModel?.contextWindowTokens ?? 32768,
+          displayName: knownModel?.displayName ?? model.name,
+          enabled: true,
+          functionCall: knownModel?.abilities?.functionCall ?? true,
           id: model.name,
-          reasoning: knownModel?.abilities?.reasoning || false,
-          vision: knownModel?.abilities?.vision || false,
+          reasoning: knownModel?.abilities?.reasoning ?? false,
+          vision: knownModel?.abilities?.vision ?? false,
         };
       })
       .filter(Boolean) as ChatModelCard[];

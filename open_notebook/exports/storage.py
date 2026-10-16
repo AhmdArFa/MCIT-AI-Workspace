@@ -42,6 +42,7 @@ class StudioFile(BaseModel):
     audit_issues: List[str] = []
     preset: str = ""
     engine: str = ""
+    tut_id: Optional[str] = None
 
     @property
     def path(self) -> Path:
@@ -119,7 +120,27 @@ def list_files(notebook_id: Optional[str] = None) -> List[StudioFile]:
 
 
 def get_file(file_id: str) -> Optional[StudioFile]:
-    return next((i for i in _load() if i.id == file_id), None)
+    if not file_id:
+        return None
+    items = _load()
+    # 1. Exact ID
+    by_id = next((i for i in items if i.id == file_id), None)
+    if by_id:
+        return by_id
+    # 2. Match by tut_id
+    fid_clean = file_id.strip("/").split("/")[-1].lower()
+    by_tut = next(
+        (i for i in items if (getattr(i, "tut_id", None) or "").lower() in (fid_clean, file_id.lower())),
+        None,
+    )
+    if by_tut:
+        return by_tut
+    # 3. Exact filename match (case-insensitive)
+    by_fname = next((i for i in items if i.filename.lower() == fid_clean), None)
+    if by_fname:
+        return by_fname
+    # 4. Fuzzy filename match
+    return next((i for i in items if fid_clean in i.filename.lower() or i.filename.lower() in fid_clean), None)
 
 
 def delete_file(file_id: str) -> bool:

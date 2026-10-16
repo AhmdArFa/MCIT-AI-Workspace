@@ -39,9 +39,9 @@ export function when(iso?: string | null) {
 const ACTIONS: Record<string, string> = {
   'auth.login': 'Signed in',
   'auth.failed': 'Failed sign-in',
-  'auth.tut_agent_login': 'Opened Tut Agent',
+  'auth.tut_agent_login': 'Opened TuT Agent',
   'auth.password_changed': 'Changed password',
-  'auth.agent_token': 'Created a Tut Agent token',
+  'auth.agent_token': 'Created a TuT Agent token',
   'user.created': 'Account created',
   'admin.user_created': 'Created an account',
   'admin.user_updated': 'Updated an account',

@@ -1,7 +1,8 @@
 .env
 prompts/patterns/user/
 /notebooks/
-data/
+/data/
+!agent/**/data/
 .uploads/
 sqlite-db/
 surreal-data/
@@ -65,11 +66,12 @@ ipython_config.py
 # Environments
 .env
 .venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+/env/
+/venv/
+/ENV/
+/env.bak/
+/venv.bak/
+!agent/packages/env/
 
 # PyCharm
 .idea/

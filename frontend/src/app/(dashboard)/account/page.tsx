@@ -90,11 +90,11 @@ export default function AccountPage() {
 
           <Section
             title="Studio connection"
-            description="Studio drafts with your own Tut Agent, then the Craft engines build the files. Create a personal API key in Tut Agent with model:invoke, chat:write and agent:write scopes, then connect it here. The key is encrypted in your private workspace."
+            description="Studio drafts with your own TuT Agent, then the Craft engines build the files. Create a personal API key in TuT Agent with model:invoke, chat:write and agent:write scopes, then connect it here. The key is encrypted in your private workspace."
           >
             <p className="text-sm text-muted-foreground">
-              {tutConnected ? 'Tut Agent is connected for Studio.' : 'Connect Tut Agent before using Studio.'}{' '}
-              <Link href="/tut" className="text-primary underline">Open Tut Agent</Link>
+              {tutConnected ? 'TuT Agent is connected for Studio.' : 'Connect TuT Agent before using Studio.'}{' '}
+              <Link href="/tut" className="text-primary underline">Open TuT Agent</Link>
             </p>
             <form
               className="flex gap-2"
@@ -104,17 +104,17 @@ export default function AccountPage() {
                   await tutApi.connect(tutKey)
                   setTutKey('')
                   queryClient.invalidateQueries({ queryKey: ['tut-connection'] })
-                  toast.success('Tut Agent connected')
+                  toast.success('TuT Agent connected')
                 } catch {
-                  toast.error('Could not connect your Tut Agent key')
+                  toast.error('Could not connect your TuT Agent key')
                 }
               }}
             >
               <Input
                 type="password"
                 autoComplete="off"
-                aria-label="Tut Agent API key"
-                placeholder="Personal Tut Agent API key"
+                aria-label="TuT Agent API key"
+                placeholder="Personal TuT Agent API key"
                 value={tutKey}
                 onChange={(e) => setTutKey(e.target.value)}
               />
@@ -133,8 +133,8 @@ export default function AccountPage() {
           </Section>
 
           <Section
-            title="Connect Tut Agent to MCIT AI"
-            description="Add MCIT AI as an MCP server in Tut Agent (Settings, then MCP) so it can read your notebooks, search sources and produce Studio files. Craft engines run behind Studio."
+            title="Connect TuT Agent to TuT AI"
+            description="Add TuT AI as an MCP server in TuT Agent (Settings, then MCP) so it can read your notebooks, search sources and produce Studio files. Craft engines run behind Studio."
           >
             {!token ? (
               <Button variant="outline" className="self-start" onClick={async () => setToken(await accountApi.agentToken())}>

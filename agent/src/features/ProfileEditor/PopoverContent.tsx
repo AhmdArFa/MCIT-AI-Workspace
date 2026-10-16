@@ -11,7 +11,7 @@ import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwar
 
 import Empty from './Empty';
 
-const SKILL_ICON_SIZE = 20;
+const SKILL_ICON_SIZE = 24;
 
 const filterItems = (items: ItemType[], keyword: string): ItemType[] => {
   const lower = keyword.toLowerCase();

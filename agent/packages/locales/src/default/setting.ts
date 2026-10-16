@@ -1594,7 +1594,7 @@ export default {
   'skillStore.search': 'Search skills by name or keyword, press Enter to search…',
   'skillStore.tabs.community': 'Community',
   'skillStore.tabs.custom': 'Custom',
-  'skillStore.tabs.mcit': 'MCIT AI',
+  'skillStore.tabs.mcit': 'TuT Platform',
   'skillStore.tabs.mcp': 'MCP',
   'skillStore.tabs.skills': 'Skills',
   'skillStore.title': 'Skill Store',
@@ -3797,8 +3797,8 @@ When I am ___, I need ___
     'Browser automation CLI for AI agents. Use when tasks involve website or Electron interaction such as navigation, form filling, clicking, screenshot capture, scraping data, login flows, and end-to-end app testing.',
   'tools.builtins.tut-agent-browser.title': 'Agent Browser',
   'tools.builtins.mcit.description':
-    'Manage the MCIT AI platform via CLI — knowledge bases, memory, agents, files, search, generation, and more.',
-  'tools.builtins.mcit.title': 'MCIT AI',
+    'Manage the TuT AI platform via CLI — knowledge bases, memory, agents, files, search, generation, and more.',
+  'tools.builtins.mcit.title': 'TuT AI',
   'tools.builtins.task.description':
     'Task management and execution — create, track, review, and complete tasks via CLI.',
   'tools.builtins.task.title': 'Task',

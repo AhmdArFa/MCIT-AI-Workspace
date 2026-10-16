@@ -82,11 +82,110 @@ LIGHT = Theme(
     on_accent=WHITE,
 )
 
+# Executive Crimson / Red & White theme requested by leadership
+RED_WHITE = Theme(
+    mode="light",
+    bg="FFFFFF",
+    surface="F9FAFB",
+    border="E5E7EB",
+    text="111827",
+    muted="6B7280",
+    accent="C00000",
+    premium="8B0000",
+    series=("C00000", "8B0000", "EF4444", "4B5563"),
+    on_accent="FFFFFF",
+)
+
+# Diplomatic Royal Navy & Gold
+ROYAL_NAVY = Theme(
+    mode="dark",
+    bg="0B192C",
+    surface="1E3E62",
+    border="2D4059",
+    text="FFFFFF",
+    muted="CBD5E1",
+    accent="E2B659",
+    premium="FFD700",
+    series=("E2B659", "1E3E62", "4B70F5", "CBD5E1"),
+    on_accent="0B192C",
+)
+
+# Sovereign Emerald & Gold
+EMERALD = Theme(
+    mode="dark",
+    bg="0A1F17",
+    surface="113526",
+    border="1C4E39",
+    text="FFFFFF",
+    muted="94A3B8",
+    accent="10B981",
+    premium="D4AF37",
+    series=("10B981", "D4AF37", "059669", "CBD5E1"),
+    on_accent="FFFFFF",
+)
+
 
 def theme(mode: str | None) -> Theme:
     return LIGHT if mode == "light" else DARK
 
 
+def resolve_theme(
+    preset: str | None = None,
+    mode: str | None = None,
+    primary_color: str | None = None,
+    accent_color: str | None = None,
+    bg_color: str | None = None,
+    text_color: str | None = None,
+) -> Theme:
+    """Resolve theme with preset and custom color overrides."""
+    p = (preset or mode or "dark").lower().strip()
+    if any(k in p for k in ("red", "crimson", "ruby")):
+        base = RED_WHITE
+    elif any(k in p for k in ("navy", "royal", "blue")):
+        base = ROYAL_NAVY
+    elif any(k in p for k in ("emerald", "green", "saudi")):
+        base = EMERALD
+    elif "light" in p or "white" in p:
+        base = LIGHT
+    else:
+        base = DARK
+
+    # Clean hex helper
+    def _clean(h: str | None) -> str | None:
+        if not h:
+            return None
+        c = h.strip().lstrip("#").upper()
+        return c if len(c) in (6, 8) else None
+
+    bg = _clean(bg_color) or base.bg
+    accent = _clean(accent_color) or _clean(primary_color) or base.accent
+    text = _clean(text_color) or base.text
+
+    # Calculate background luminance if custom bg provided
+    r, g, b = hex_rgb(bg)
+    luminance = 0.299 * r + 0.587 * g + 0.114 * b
+    is_dark = luminance < 0.5
+    resolved_mode: Mode = "dark" if is_dark else "light"
+    surface = "111827" if is_dark else "F9FAFB"
+    border = "374151" if is_dark else "E5E7EB"
+    muted = "9CA3AF" if is_dark else "6B7280"
+
+    return Theme(
+        mode=resolved_mode,
+        bg=bg,
+        surface=base.surface if bg == base.bg else surface,
+        border=base.border if bg == base.bg else border,
+        text=text,
+        muted=base.muted if text == base.text else muted,
+        accent=accent,
+        premium=base.premium,
+        series=(accent, base.series[1], base.series[2], base.series[3]),
+        on_accent="FFFFFF" if is_dark else "000000",
+    )
+
+
 def hex_rgb(value: str) -> Tuple[float, float, float]:
     v = value.lstrip("#")
+    if len(v) < 6:
+        v = (v + "000000")[:6]
     return tuple(int(v[i : i + 2], 16) / 255 for i in (0, 2, 4))  # type: ignore[return-value]

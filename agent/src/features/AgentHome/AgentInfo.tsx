@@ -32,7 +32,7 @@ const AgentInfo = memo(() => {
   const fontSize = useUserStore(userGeneralSettingsSelectors.fontSize);
 
   const displayTitle = isInbox
-    ? agentDisplayName(meta, 'Tut Agent')
+    ? agentDisplayName(meta, 'TuT Agent')
     : agentDisplayName(meta, t('defaultSession', { ns: 'common' }));
 
   const message = useMemo(() => {
@@ -59,10 +59,11 @@ const AgentInfo = memo(() => {
       <Avatar
         avatar={isInbox ? meta.avatar || DEFAULT_INBOX_AVATAR : meta.avatar || DEFAULT_AVATAR}
         background={meta.backgroundColor}
-        responsive
         name={displayTitle}
+        responsive
         shape={'square'}
         size={96}
+        style={{ borderRadius: 16, overflow: 'hidden' }}
       />
       <Text fontSize={24} weight={'bold'}>
         {displayTitle}

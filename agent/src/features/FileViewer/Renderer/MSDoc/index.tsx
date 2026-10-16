@@ -45,46 +45,8 @@ interface MSDocViewerProps {
   url: string | null;
 }
 
-const MSDocViewer = memo<MSDocViewerProps>(({ fileName, fileType, url }) => {
-  const { blob, error, loading, tooLarge } = useBlobFileLoader(url);
-
-  if (loading)
-    return (
-      <Center height={'100%'} width={'100%'}>
-        <Spin size="large" />
-      </Center>
-    );
-
-  // Oversized or unreachable for an in-app render, but the online viewer only
-  // needs the URL — it downloads the file server-side.
-  if (!blob) {
-    if (url) return <OfficeOnlinePane url={url} />;
-
-    return (
-      <Flexbox height={'100%'} width={'100%'}>
-        {error && <AsyncError error={error} variant={'block'} />}
-        <NotSupport fileName={fileName} tooLarge={tooLarge} url={url} />
-      </Flexbox>
-    );
-  }
-
-  return (
-    <Suspense
-      fallback={
-        <Center height={'100%'} width={'100%'}>
-          <Spin size="large" />
-        </Center>
-      }
-    >
-      <DocumentPreview
-        blob={blob}
-        contentType={resolveContentType(fileType, fileName)}
-        filePath={fileName ?? ''}
-        isLocalFile={false}
-        sourceUrl={url}
-      />
-    </Suspense>
-  );
+const MSDocViewer = memo<MSDocViewerProps>(({ fileId, fileName, fileType, url }) => {
+  return <OfficeOnlinePane fileId={fileId} fileName={fileName} url={url ?? undefined} />;
 });
 
 MSDocViewer.displayName = 'MSDocViewer';

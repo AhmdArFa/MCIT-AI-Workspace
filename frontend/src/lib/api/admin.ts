@@ -7,9 +7,9 @@ export interface UserOverview {
   counts: { notebooks: number; sources: number; notes: number; chats: number; podcasts: number; generations: number }
   usage: { requests: number; input_tokens: number; output_tokens: number }
   storage_bytes: number
-  /** The person's Tut Agent workspace (Tut keeps its own store). */
+  /** The person's TuT Agent workspace (TuT keeps its own store). */
   tut?: TutOverview
-  /** MCIT AI and Tut Agent usage together. */
+  /** TuT AI and TuT Agent usage together. */
   total_usage?: { requests: number; input_tokens: number; output_tokens: number }
 }
 

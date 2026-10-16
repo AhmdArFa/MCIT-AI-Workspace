@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { TutAvatar } from '@/components/tut/TutAvatar'
+import { TuTBrandAvatar } from '@/components/common/TuTBrandIcon'
 
 export function LoginForm() {
   const [username, setUsername] = useState('')
@@ -46,10 +47,10 @@ export function LoginForm() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/mcit-logo.png" alt="Ministry of Communications and Information Technology" className="h-14 w-auto self-start object-contain" />
         <div className="flex flex-col gap-6 max-w-md">
-          <TutAvatar size={88} />
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground">MCIT AI</h1>
+          <TuTBrandAvatar size={88} />
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground">TuT AI</h1>
           <p className="text-base leading-relaxed text-muted-foreground">
-            Notebooks, Studio and Tut Agent in one workspace. Research your sources, chat with them, and produce
+            Notebooks, Studio and TuT Agent in one workspace. Research your sources, chat with them, and produce
             reports, decks, infographics and spreadsheets.
           </p>
         </div>
@@ -59,11 +60,11 @@ export function LoginForm() {
       <section className="flex items-center justify-center p-6">
         <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-6" aria-label="Sign in">
           <div className="flex flex-col gap-2">
-            <div className="lg:hidden mb-2"><TutAvatar size={56} /></div>
+            <div className="lg:hidden mb-2"><TuTBrandAvatar size={56} /></div>
             <h2 className="text-2xl font-semibold tracking-tight">Sign in</h2>
             <p className="text-sm text-muted-foreground">
               {next?.startsWith('/api/oidc/')
-                ? 'Sign in to continue to Tut Agent.'
+                ? 'Sign in to continue to TuT Agent.'
                 : 'Use the account your administrator created for you.'}
             </p>
           </div>

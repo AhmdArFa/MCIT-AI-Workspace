@@ -186,6 +186,13 @@ async def authorize(
             },
         )
     await accounts.audit("auth.tut_agent_login", actor=account.id)
+    try:
+        import asyncio
+        from api.routers.tut import connect_tools
+
+        asyncio.create_task(connect_tools(account))
+    except Exception:
+        pass
     params = {"code": code}
     if state:
         params["state"] = state

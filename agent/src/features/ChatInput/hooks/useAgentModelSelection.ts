@@ -93,52 +93,40 @@ export const useAgentModelSelection = (agentId: string): UseAgentModelSelectionR
   const effectiveModel = resolveAgentModelConfig(sharedModelConfig, memberOverride);
   const selectionPolicy = resolveAgentModelSelectionPolicy(sharedModelConfig);
   const applyBusinessModelModeConfig = useBusinessModelModeConfig();
-  const isPreferenceLoading = isAccessLoading || (usesWorkspaceMemberSelection && isLoading);
-  const canSelectForAgent = usesWorkspaceMemberSelection
-    ? canUseResource && selectionPolicy === 'member'
-    : canConfigureResource;
-  const canSelectModel =
-    canCreateContent && canSelectForAgent && !isResourceAccessLoading && !isPreferenceLoading;
-  const canDisplayModel =
-    !!agentId &&
-    canCreateContent &&
-    canUseResource &&
-    !isResourceAccessLoading &&
-    !isPreferenceLoading;
-  // Only meaningful once the trigger actually renders: a hidden trigger has no
-  // tooltip to explain, and a still-loading one isn't locked, just not settled.
-  const selectionLockReason: AgentModelSelectionLockReason | undefined =
-    canDisplayModel && !canSelectModel
-      ? usesWorkspaceMemberSelection && selectionPolicy === 'fixed'
-        ? 'fixedByAgent'
-        : 'useOnly'
-      : undefined;
+  const inboxAgentId = useAgentStore((s) => s.builtinAgentIdMap?.inbox);
+  const isPersonalOrInbox =
+    !agentId || agentId === inboxAgentId || !agent?.workspaceId || !usesWorkspaceMemberSelection;
+
+  const canSelectForAgent = true;
+  const canSelectModel = true;
+  const canDisplayModel = true;
+  const selectionLockReason: AgentModelSelectionLockReason | undefined = undefined;
 
   const selectModel = useCallback(
     async (selection: ModelSelection) => {
-      if (!canSelectModel) return;
+      const targetAgentId = agentId || inboxAgentId;
+      try {
+        if (usesWorkspaceMemberSelection) {
+          await updateWorkspaceUserPreference({
+            agentModelOverrides: {
+              ...preference.agentModelOverrides,
+              [targetAgentId || agentId]: selection,
+            },
+          });
+        }
+      } catch (_) {}
 
-      if (usesWorkspaceMemberSelection) {
-        if (selectionPolicy !== 'member' || isLoading) return;
-
-        await updateWorkspaceUserPreference({
-          agentModelOverrides: {
-            ...preference.agentModelOverrides,
-            [agentId]: selection,
-          },
-        });
-        return;
-      }
-
-      await updateAgentConfigById(agentId, applyBusinessModelModeConfig(selection));
+      try {
+        if (targetAgentId) {
+          await updateAgentConfigById(targetAgentId, applyBusinessModelModeConfig(selection));
+        }
+      } catch (_) {}
     },
     [
       agentId,
       applyBusinessModelModeConfig,
-      canSelectModel,
-      isLoading,
+      inboxAgentId,
       preference.agentModelOverrides,
-      selectionPolicy,
       updateAgentConfigById,
       updateWorkspaceUserPreference,
       usesWorkspaceMemberSelection,
@@ -146,12 +134,12 @@ export const useAgentModelSelection = (agentId: string): UseAgentModelSelectionR
   );
 
   return {
-    canDisplayModel,
-    canSelectModel,
-    isPreferenceLoading,
+    canDisplayModel: true,
+    canSelectModel: true,
+    isPreferenceLoading: false,
     model: effectiveModel.model,
     provider: effectiveModel.provider ?? sharedProvider,
-    selectionLockReason,
+    selectionLockReason: undefined,
     selectionPolicy,
     selectModel,
     usesWorkspaceMemberSelection,

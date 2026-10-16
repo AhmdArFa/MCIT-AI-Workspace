@@ -1,47 +1,120 @@
 'use client';
 
 import { Flexbox } from '@mcit-vendor/ui';
-import { createStaticStyles } from 'antd-style';
-import { memo } from 'react';
+import { ActionIcon } from '@mcit-vendor/ui/base-ui';
+import { createStaticStyles, cssVar } from 'antd-style';
+import { Download, ExternalLink, RotateCw } from 'lucide-react';
+import { memo, useMemo, useState } from 'react';
 
 const styles = createStaticStyles(({ css }) => ({
   container: css`
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     border-radius: 4px;
+    background: ${cssVar.colorBgContainer};
+  `,
+  toolbar: css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    background: ${cssVar.colorBgElevated};
+    border-bottom: 1px solid ${cssVar.colorBorderSecondary};
+    font-size: 12px;
+    font-weight: 500;
+  `,
+  title: css`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 60%;
+    color: ${cssVar.colorTextSecondary};
+  `,
+  actions: css`
+    display: flex;
+    gap: 8px;
+    align-items: center;
   `,
   frame: css`
-    position: absolute;
-    inset-block: -1px;
-    inset-inline-start: -1px;
-
-    width: calc(100% + 2px);
-    height: calc(100% + 2px);
+    flex: 1;
+    width: 100%;
+    height: 100%;
     border: 0;
   `,
 }));
 
 interface OfficeOnlinePaneProps {
-  /** Must be publicly fetchable — Microsoft's service downloads it server-side. */
-  url: string;
+  fileId?: string;
+  fileName?: string;
+  url?: string;
 }
 
-/**
- * Last-resort preview for legacy binary office formats (.doc / .ppt / .xls /
- * .odt), which no in-app renderer can parse. The file URL is handed to
- * Microsoft's embed service, so this only runs for uploaded files that already
- * carry a remote URL — never for a device's local file.
- */
-const OfficeOnlinePane = memo<OfficeOnlinePaneProps>(({ url }) => (
-  <Flexbox className={styles.container} height={'100%'} id="msdoc-renderer" width={'100%'}>
-    <iframe
-      className={styles.frame}
-      id="msdoc-iframe"
-      src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`}
-      title="msdoc-iframe"
-    />
-  </Flexbox>
-));
+const OfficeOnlinePane = memo<OfficeOnlinePaneProps>(({ fileId, fileName, url }) => {
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const embedUrl = useMemo(() => {
+    const target = fileName || fileId || '';
+    return `http://localhost:8502/files?open=${encodeURIComponent(target)}&embed=true`;
+  }, [fileId, fileName]);
+
+  const handleOpenExternal = () => {
+    const target = fileId || fileName || '';
+    window.open(`http://localhost:8502/files?open=${encodeURIComponent(target)}`, '_blank');
+  };
+
+  const handleDownload = () => {
+    if (url) {
+      const a = document.createElement('a');
+      a.href = url.includes('download=') ? url : `${url}${url.includes('?') ? '&' : '?'}download=1`;
+      a.download = fileName || 'document';
+      a.click();
+    }
+  };
+
+  return (
+    <Flexbox className={styles.container} height={'100%'} id="onlyoffice-renderer" width={'100%'}>
+      <div className={styles.toolbar}>
+        <span className={styles.title} title={fileName}>
+          {fileName || 'ONLYOFFICE Document'}
+        </span>
+        <div className={styles.actions}>
+          <ActionIcon
+            icon={RotateCw}
+            size={'small'}
+            title={'Reload Editor'}
+            onClick={() => setReloadKey((k) => k + 1)}
+          />
+          {url && (
+            <ActionIcon
+              icon={Download}
+              size={'small'}
+              title={'Download Document'}
+              onClick={handleDownload}
+            />
+          )}
+          <ActionIcon
+            icon={ExternalLink}
+            size={'small'}
+            title={'Open in Full Editor (New Tab)'}
+            onClick={handleOpenExternal}
+          />
+        </div>
+      </div>
+      <iframe
+        key={reloadKey}
+        allow="autoplay; camera; microphone; display-capture"
+        className={styles.frame}
+        id="onlyoffice-iframe"
+        src={embedUrl}
+        title={fileName || 'ONLYOFFICE Document'}
+      />
+    </Flexbox>
+  );
+});
 
 OfficeOnlinePane.displayName = 'OfficeOnlinePane';
 

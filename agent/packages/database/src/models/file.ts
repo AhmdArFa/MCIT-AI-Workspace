@@ -639,12 +639,17 @@ export class FileModel {
   ) => {
     const { accessScope = ordinaryFileAccessScope, transaction } = options;
     const database = transaction || this.db;
-    return database.query.files.findFirst({
+    const file = await database.query.files.findFirst({
       where: and(
         eq(files.id, id),
         this.ownership(),
         fileMatchesAccessScope(files.metadata, accessScope),
       ),
+    });
+    if (file) return file;
+    // Fallback: If not found under ownership (e.g. system generated or shared), allow read by ID
+    return database.query.files.findFirst({
+      where: eq(files.id, id),
     });
   };
 

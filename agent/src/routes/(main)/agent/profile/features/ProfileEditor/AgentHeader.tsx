@@ -1,5 +1,6 @@
 'use client';
 
+import { MCIT_AVATAR_GALLERY } from '@tut/const';
 import { agentSecondaryDisplayName } from '@tut/types';
 import { Flexbox, Tooltip } from '@mcit-vendor/ui';
 import { ActionIcon, Button, Text } from '@mcit-vendor/ui/base-ui';
@@ -31,6 +32,7 @@ const AgentHeader = memo(() => {
   /** Keeps the render-only fallback avatar out of generation references. */
   const storedAvatar = useAgentStore(agentSelectors.getAgentStoredAvatarById(agentId));
   const updateMetaById = useAgentStore((s) => s.updateAgentMetaById);
+  const updateAgentConfigById = useAgentStore((s) => s.updateAgentConfigById);
   const { autoName, naming } = useAutoName(agentId);
   const personalName = meta.name?.trim();
   const role = meta.title?.trim();
@@ -69,7 +71,21 @@ const AgentHeader = memo(() => {
         systemRole={config?.systemRole}
         title={meta.title}
         onAvatarChange={(avatar) => {
-          if (canEdit) void updateMetaById(agentId, { avatar });
+          const persona = MCIT_AVATAR_GALLERY.find((p) => p.src === avatar);
+          if (persona) {
+            void updateMetaById(agentId, {
+              avatar,
+              description: persona.title,
+              name: persona.label,
+              title: persona.title,
+            });
+            void updateAgentConfigById(agentId, {
+              openingMessage: persona.welcome,
+              systemRole: persona.systemRole,
+            });
+          } else {
+            void updateMetaById(agentId, { avatar });
+          }
         }}
         onBackgroundChange={(backgroundColor) => {
           if (canEdit) void updateMetaById(agentId, { backgroundColor });
@@ -148,6 +164,110 @@ const AgentHeader = memo(() => {
             </Tooltip>
           ) : null}
         </Flexbox>
+
+        {/* 9 Sovereign MCIT Personas & Avatars Option Switcher */}
+        {canEdit && (
+          <Flexbox gap={6} style={{ marginTop: 12, width: '100%' }}>
+            <Flexbox horizontal align={'center'} justify={'space-between'}>
+              <Text style={{ color: cssVar.colorTextSecondary, fontSize: 12, fontWeight: 600, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+                Sovereign Personas & Avatars
+              </Text>
+              <Text style={{ color: cssVar.colorTextTertiary, fontSize: 11 }}>
+                Switch avatar & name in 1 click
+              </Text>
+            </Flexbox>
+            <Flexbox
+              horizontal
+              gap={10}
+              style={{
+                flexWrap: 'wrap',
+                paddingBlock: 4,
+              }}
+            >
+              {MCIT_AVATAR_GALLERY.map((item) => {
+                const isSelected =
+                  meta.avatar === item.src ||
+                  meta.name?.toLowerCase() === item.label.toLowerCase() ||
+                  (!meta.avatar && item.isDefault);
+
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    title={`Switch to ${item.label}`}
+                    style={{
+                      alignItems: 'center',
+                      background: isSelected
+                        ? `color-mix(in srgb, ${cssVar.colorPrimary} 14%, ${cssVar.colorBgContainer})`
+                        : cssVar.colorBgElevated,
+                      border: isSelected
+                        ? `2px solid ${cssVar.colorPrimary}`
+                        : `1px solid ${cssVar.colorBorderSecondary}`,
+                      borderRadius: 12,
+                      boxShadow: isSelected ? `0 2px 8px color-mix(in srgb, ${cssVar.colorPrimary} 30%, transparent)` : 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      gap: 8,
+                      padding: '6px 12px 6px 8px',
+                      position: 'relative',
+                      transition: 'all 0.18s ease',
+                    }}
+                    onClick={() => {
+                      void updateMetaById(agentId, {
+                        avatar: item.src,
+                        description: item.welcome,
+                        name: item.label,
+                        title: item.title,
+                      });
+                      void updateAgentConfigById(agentId, {
+                        openingMessage: item.welcome,
+                        systemRole: item.systemRole,
+                      });
+                    }}
+                  >
+                    <img
+                      alt={item.label}
+                      src={item.src}
+                      style={{
+                        borderRadius: 8,
+                        display: 'block',
+                        flexShrink: 0,
+                        height: 36,
+                        objectFit: 'cover',
+                        width: 36,
+                      }}
+                    />
+                    <Flexbox align={'flex-start'} gap={1}>
+                      <span
+                        style={{
+                          color: isSelected ? cssVar.colorPrimary : cssVar.colorText,
+                          fontSize: 12,
+                          fontWeight: isSelected ? 600 : 500,
+                          lineHeight: 1.2,
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                      {isSelected ? (
+                        <span
+                          style={{
+                            color: cssVar.colorPrimary,
+                            fontSize: 10,
+                            fontWeight: 700,
+                            lineHeight: 1,
+                          }}
+                        >
+                          Active ✓
+                        </span>
+                      ) : null}
+                    </Flexbox>
+                  </button>
+                );
+              })}
+            </Flexbox>
+          </Flexbox>
+        )}
       </Flexbox>
     </Flexbox>
   );

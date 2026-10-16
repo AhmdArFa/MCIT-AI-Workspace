@@ -63,16 +63,14 @@ const ModelSwitch = memo(() => {
   // is one and edits the user's per-model default otherwise.
   const effort = useReasoningEffortControl(model, provider, activeTopicId ?? undefined);
   // A pinned model still opens the menu when there is an effort to pick there.
-  const interactive = canSelectModel || effort.hasReasoningParams;
+  const interactive = true;
 
   const handleModelChange = useCallback(
     async (params: { model: string; provider: string }) => {
-      if (!canSelectModel) return;
-
       if (activeTopicId) await updateTopicModel(activeTopicId, params);
-      else await selectModel(params);
+      await selectModel(params);
     },
-    [activeTopicId, canSelectModel, selectModel, updateTopicModel],
+    [activeTopicId, selectModel, updateTopicModel],
   );
 
   // Both current values on one chip, the way the heterogeneous selector reads:
@@ -85,11 +83,10 @@ const ModelSwitch = memo(() => {
 
   const trigger = (
     <SelectorTrigger
-      aria-disabled={!interactive}
+      aria-disabled={false}
       ariaLabel={triggerText}
       secondaryText={effortLabel}
       text={displayName}
-      {...(interactive ? {} : { style: { cursor: 'default' } })}
     />
   );
 
@@ -100,7 +97,7 @@ const ModelSwitch = memo(() => {
   if (effort.hasReasoningParams)
     return (
       <SelectorMenu
-        canSelectModel={canSelectModel}
+        canSelectModel={true}
         displayName={displayName}
         effort={effort}
         enabledList={enabledList}
@@ -113,10 +110,6 @@ const ModelSwitch = memo(() => {
         {trigger}
       </SelectorMenu>
     );
-
-  // Locked: say which model is pinned AND why it can't be changed here — the
-  // bare model name used to leave the inert chip unexplained.
-  if (!canSelectModel) return <Tooltip title={lockTooltip ?? displayName}>{trigger}</Tooltip>;
 
   return (
     <ModelSwitchPanel

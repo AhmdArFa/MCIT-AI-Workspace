@@ -109,6 +109,14 @@ async def office_config(file_id: str, request: Request, mode: str = "view", them
         raise HTTPException(status_code=503, detail="The office viewer is not configured")
     item = storage.get_file(file_id)
     if not item or not item.path.exists():
+        files = storage.list_files()
+        matched = next(
+            (f for f in files if f.filename == file_id or f.filename.lower() == file_id.lower() or f.id == file_id or file_id.lower() in f.filename.lower()),
+            None,
+        )
+        if matched and matched.path.exists():
+            item = matched
+    if not item or not item.path.exists():
         raise HTTPException(status_code=404, detail="File not found")
     ext = item.format.lower()
     if ext not in DOC_TYPES:

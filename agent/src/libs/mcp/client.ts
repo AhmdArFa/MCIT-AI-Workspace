@@ -25,7 +25,7 @@ const log = debug('tut-mcp:client');
 // Parse MCP_TOOL_TIMEOUT, only use if it's a valid positive number, otherwise fallback to default 60000
 const MCP_TOOL_TIMEOUT = (() => {
   const val = Number(process.env.MCP_TOOL_TIMEOUT);
-  return Number.isFinite(val) && val > 0 ? val : 60_000;
+  return Number.isFinite(val) && val > 0 ? val : 600_000;
 })();
 
 /**

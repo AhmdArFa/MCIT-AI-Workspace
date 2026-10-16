@@ -1,11 +1,13 @@
+import { ollamaChatModels } from '../aiModels/ollama';
 import type { ModelProviderCard } from '../types';
 
 const Ollama: ModelProviderCard = {
-  chatModels: [],
+  chatModels: ollamaChatModels,
   checkModel: 'gemma4:e4b',
   defaultShowBrowserRequest: true,
   description:
     'Ollama offers models across code generation, math, multilingual processing, and chat, supporting both enterprise and local deployments.',
+  enabled: true,
   id: 'ollama',
   modelList: { showModelFetcher: true },
   modelsUrl: 'https://ollama.com/library',
@@ -21,3 +23,4 @@ const Ollama: ModelProviderCard = {
 };
 
 export default Ollama;
+

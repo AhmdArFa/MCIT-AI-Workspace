@@ -231,6 +231,18 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Local model bootstrap skipped: {e}")
 
+    # Tut Agent: automatically connect MCP tools for all registered accounts in background
+    async def _delayed_tut_connect():
+        await asyncio.sleep(4)
+        try:
+            from api.routers.tut import auto_connect_all_accounts
+
+            await auto_connect_all_accounts()
+        except Exception as e:
+            logger.warning(f"Tut Agent auto-connect failed: {e}")
+
+    asyncio.create_task(_delayed_tut_connect())
+
     logger.success("API initialization completed successfully")
 
     # Yield control to the application
@@ -241,8 +253,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="MCIT AI API",
-    description="MCIT AI API",
+    title="TuT AI API",
+    description="TuT AI API",
     lifespan=lifespan,
 )
 
@@ -431,9 +443,9 @@ app.include_router(usage.router, prefix="/api", tags=["usage"])
 @app.get("/")
 async def root():
     return {
-        "message": "MCIT AI API is running",
-        "name": "MCIT AI",
-        "agent": "Tut Agent",
+        "message": "TuT AI API is running",
+        "name": "TuT AI",
+        "agent": "TuT Agent",
         "organization": "Ministry of Communications and Information Technology",
         "credit": "Developed by Eng Ahmed Arfa for MCIT",
     }

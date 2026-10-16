@@ -199,6 +199,125 @@ for (const sl of spec.slides) {
       if (side) s.addText(bulletRuns(sl.bullets, fs(14)), { x: W - M - 4.0, y: top, w: 4.0, h, valign: "top" });
       break;
     }
+    case "architecture":
+    case "stack":
+    case "layers": {
+      const layers = ((sl.steps && sl.steps.length) ? sl.steps : sl.bullets || []).slice(0, 5);
+      const n = Math.max(1, layers.length);
+      const gap = 0.2;
+      const lh = (h - gap * (n - 1)) / n;
+      layers.forEach((layerText, i) => {
+        const ly = top + i * (lh + gap);
+        s.addShape(pptx.ShapeType.roundRect, {
+          x: M, y: ly, w: W - 2 * M, h: lh, rectRadius: 0.08,
+          fill: { color: i === 0 ? t.surface : t.bg },
+          line: { color: i === 0 ? t.accent : t.border, width: i === 0 ? 1.5 : 0.75 }
+        });
+        s.addText(`LAYER ${i + 1}`, {
+          x: M + 0.3, y: ly + 0.1, w: 2.2, h: lh - 0.2,
+          fontSize: 13, fontFace: t.fontHead, bold: true, color: t.accent, valign: "middle"
+        });
+        s.addText(String(layerText), {
+          x: M + 2.6, y: ly + 0.1, w: W - 2 * M - 2.9, h: lh - 0.2,
+          fontSize: fs(15), ...body(), valign: "middle"
+        });
+      });
+      break;
+    }
+    case "matrix":
+    case "quadrant": {
+      const quads = (sl.bullets || []).slice(0, 4);
+      const qw = (W - 2 * M - 0.3) / 2;
+      const qh = (h - 0.3) / 2;
+      const qTitles = sl.left && sl.left.length ? [sl.left_title || "Pillar 1", sl.right_title || "Pillar 2", "Pillar 3", "Pillar 4"] : ["Strategic Focus 1", "Strategic Focus 2", "Strategic Focus 3", "Strategic Focus 4"];
+      quads.forEach((qText, i) => {
+        const qx = M + (i % 2) * (qw + 0.3);
+        const qy = top + Math.floor(i / 2) * (qh + 0.3);
+        card(s, qx, qy, qw, qh);
+        s.addText(qTitles[i] || `Quadrant ${i+1}`, {
+          x: qx + 0.25, y: qy + 0.2, w: qw - 0.5, h: 0.4,
+          fontSize: fs(17), fontFace: t.fontHead, bold: true, color: i === 0 ? t.accent : t.text
+        });
+        s.addText(String(qText), {
+          x: qx + 0.25, y: qy + 0.65, w: qw - 0.5, h: qh - 0.8,
+          fontSize: fs(14), ...body(), valign: "top"
+        });
+      });
+      break;
+    }
+    case "canvas":
+    case "custom":
+    case "freeform": {
+      if (Array.isArray(sl.elements) && sl.elements.length) {
+        for (const el of sl.elements) {
+          const ex = el.x !== undefined ? el.x : M;
+          const ey = el.y !== undefined ? el.y : top;
+          const ew = el.w !== undefined ? el.w : 3.0;
+          const eh = el.h !== undefined ? el.h : 2.0;
+          const eFill = el.fill || t.surface;
+          const eBorder = el.border || t.border;
+          const eColor = el.color || t.text;
+          const eAccent = el.accent || t.accent;
+
+          if (el.type === "card" || el.type === "shape" || el.type === "box") {
+            const shapeName = el.shape || "roundRect";
+            const shapeType = pptx.ShapeType[shapeName] || pptx.ShapeType.roundRect;
+            s.addShape(shapeType, {
+              x: ex, y: ey, w: ew, h: eh,
+              rectRadius: el.radius || 0.08,
+              fill: { color: eFill },
+              line: { color: eBorder, width: el.borderWidth || 0.75 }
+            });
+            if (el.title) {
+              s.addText(String(el.title), {
+                x: ex + 0.2, y: ey + 0.15, w: ew - 0.4, h: 0.4,
+                fontSize: el.titleSize || fs(16), fontFace: t.fontHead, bold: true, color: eAccent
+              });
+            }
+            if (el.text || el.content) {
+              s.addText(String(el.text || el.content), {
+                x: ex + 0.2, y: ey + (el.title ? 0.6 : 0.2), w: ew - 0.4, h: eh - (el.title ? 0.7 : 0.4),
+                fontSize: el.fontSize || fs(13), ...body({ color: eColor }), valign: "top"
+              });
+            }
+          } else if (el.type === "metric" || el.type === "stat") {
+            card(s, ex, ey, ew, eh);
+            s.addText(String(el.value || ""), {
+              x: ex + 0.15, y: ey + 0.15, w: ew - 0.3, h: eh * 0.55,
+              fontSize: el.valueSize || ft(32), fontFace: t.fontHead, bold: true, color: eAccent, fit: "shrink"
+            });
+            s.addText(String(el.label || ""), {
+              x: ex + 0.15, y: ey + eh * 0.6, w: ew - 0.3, h: eh * 0.35,
+              fontSize: el.labelSize || fs(13), ...body({ color: eColor }), valign: "top"
+            });
+          } else if (el.type === "text") {
+            s.addText(String(el.text || ""), {
+              x: ex, y: ey, w: ew, h: eh,
+              fontSize: el.fontSize || fs(14), fontFace: el.bold ? t.fontHead : t.fontBody,
+              bold: !!el.bold, color: eColor, valign: el.valign || "top"
+            });
+          } else if (el.type === "arrow" || el.type === "line" || el.type === "connector") {
+            s.addShape(pptx.ShapeType.line, {
+              x: ex, y: ey, w: ew, h: eh,
+              line: { color: eAccent, width: el.width || 1.5, dashType: el.dashed ? "dash" : "solid" }
+            });
+          } else if (el.type === "badge") {
+            s.addShape(pptx.ShapeType.roundRect, {
+              x: ex, y: ey, w: ew, h: eh,
+              rectRadius: 0.2, fill: { color: eAccent }
+            });
+            s.addText(String(el.text || ""), {
+              x: ex, y: ey, w: ew, h: eh,
+              fontSize: el.fontSize || 12, bold: true, color: t.onAccent, align: "center", valign: "middle"
+            });
+          }
+        }
+        break;
+      }
+      const n = (sl.bullets || []).length;
+      s.addText(bulletRuns(sl.bullets || [], fs(20)), { x: M, y: top, w: W - 2 * M, h, valign: "top" });
+      break;
+    }
     default: {
       const n = (sl.bullets || []).length;
       const size = n <= 3 ? 24 : n <= 5 ? 20 : 18;

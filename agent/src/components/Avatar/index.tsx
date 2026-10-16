@@ -3,6 +3,7 @@
 import { Avatar as TutAvatar, type AvatarProps as TutAvatarProps } from '@mcit-vendor/ui/base-ui';
 import { memo } from 'react';
 
+import { DEFAULT_AVATAR } from '@/const/meta';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 import { remoteAvatarSrc, resolveAvatar } from './fallback';
@@ -50,28 +51,40 @@ const Avatar = memo<AvatarProps>(
   }) => {
     const mobile = useIsMobile();
     const size = responsive ? responsiveAvatarSize(baseSize, mobile) : baseSize;
-    const src = remoteAvatarSrc(avatar);
+    const effectiveAvatar = avatar || DEFAULT_AVATAR;
+    const src = remoteAvatarSrc(effectiveAvatar);
     const [isBroken, markBroken] = useBrokenSrc(src);
 
+    const displaySrc = isBroken && src !== DEFAULT_AVATAR ? DEFAULT_AVATAR : src;
     const imgAlt = alt || name || title || 'avatar';
     const resolved = resolveAvatar({
       avatar:
-        src && !isBroken ? (
+        displaySrc ? (
           <img
             alt={imgAlt}
             draggable={false}
             height={size}
             loading={'lazy'}
-            src={src}
-            style={{ display: 'block', height: '100%', objectFit: 'cover', width: '100%' }}
+            src={displaySrc}
+            style={{
+              borderRadius: 'inherit',
+              display: 'block',
+              height: '100%',
+              objectFit: 'cover',
+              width: '100%',
+            }}
             width={size}
-            onError={markBroken}
+            onError={() => {
+              if (displaySrc !== DEFAULT_AVATAR) {
+                markBroken();
+              }
+            }}
           />
         ) : (
-          avatar
+          effectiveAvatar
         ),
       background,
-      isBroken,
+      isBroken: isBroken && displaySrc === DEFAULT_AVATAR,
       name,
       title,
     });
@@ -84,7 +97,12 @@ const Avatar = memo<AvatarProps>(
         background={resolved.background}
         size={size}
         // never squeezed by a flex row (long titles used to shrink it)
-        style={{ flex: 'none', ...style }}
+        style={{
+          borderRadius: rest.shape === 'circle' ? '50%' : 10,
+          flex: 'none',
+          overflow: 'hidden',
+          ...style,
+        }}
         title={title}
         unoptimized={unoptimized}
       />

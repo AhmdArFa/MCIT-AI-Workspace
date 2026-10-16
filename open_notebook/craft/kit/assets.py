@@ -44,6 +44,11 @@ FONT_FILES: Dict[str, Dict[str, str]] = {
         "Bold": "LibreFranklin-Bold.ttf",
     },
     "Inter": {"Regular": "Inter-Regular.ttf", "SemiBold": "Inter-SemiBold.ttf", "Bold": "Inter-Bold.ttf"},
+    "Caveat": {
+        "Regular": "Caveat-SemiBold.ttf",
+        "SemiBold": "Caveat-SemiBold.ttf",
+        "Bold": "Caveat-Bold.ttf",
+    },
 }
 
 # Nohemi is also accepted as .otf
@@ -65,6 +70,11 @@ def font_path(family: str, style: str = "Regular") -> Optional[Path]:
 def head_family() -> str:
     """Nohemi when installed; Libre Franklin keeps documents rendering otherwise."""
     return "Nohemi" if font_path("Nohemi", "Bold") else "Libre Franklin"
+
+
+def hand_family() -> str:
+    """Caveat when installed; keeps authentic handwritten styling."""
+    return "Caveat" if font_path("Caveat", "Bold") else head_family()
 
 
 @dataclass(frozen=True)

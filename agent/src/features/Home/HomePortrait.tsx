@@ -1,58 +1,93 @@
-import { DEFAULT_INBOX_AVATAR } from '@tut/const';
+import { MCIT_DEFAULT_AVATAR, resolveMcitPersona } from '@tut/const';
 import { createStaticStyles } from 'antd-style';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
-import { resolveChiefAgentArtwork } from '@/features/ChiefAgent/artwork';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 
 import { useResolvedHomeAgentId } from './AgentSelect/useResolvedHomeAgentId';
-import { HOME_PORTRAIT_INSET } from './portraitFraming';
 
-const styles = createStaticStyles(({ css }) => ({
-  /**
-   * The speech layout owns image dimensions and overlap. Both sizes reveal
-   * the same fraction used by the artwork studio preview, with the lower
-   * body passing behind the supporting card.
-   */
+const styles = createStaticStyles(({ css, cssVar }) => ({
+  card: css`
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-inline-start: auto;
+    margin-block-end: 2px;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 2px solid rgba(201, 162, 39, 0.45);
+    background: ${cssVar.colorBgContainer};
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.22),
+      0 0 16px rgba(201, 162, 39, 0.18);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow:
+        0 14px 36px rgba(0, 0, 0, 0.3),
+        0 0 22px rgba(201, 162, 39, 0.3);
+    }
+
+    @media (max-width: 576px) {
+      width: 88px;
+      height: 88px;
+      border-radius: 18px;
+    }
+  `,
   image: css`
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 10%;
     pointer-events: none;
-
-    position: absolute;
-    inset-block-end: var(--home-portrait-overlap);
-    inset-inline-end: ${HOME_PORTRAIT_INSET}px;
-
-    width: var(--home-portrait-width);
-    height: var(--home-portrait-height);
-
-    object-fit: contain;
-    object-position: bottom;
+    user-select: none;
   `,
   root: css`
     position: relative;
     height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
   `,
 }));
 
 const HomePortrait = memo(() => {
-  // The portrait depicts whoever home is addressing, so it follows the same
-  // selection the composer sends to — not the Inbox Agent it defaults to.
   const { agentId } = useResolvedHomeAgentId();
   const useFetchAgentConfig = useAgentStore((s) => s.useFetchAgentConfig);
-  // A freshly picked agent may not be in the store yet; without this the
-  // portrait would silently stay on the previous one's artwork.
   useFetchAgentConfig(true, agentId ?? '');
 
   const meta = useAgentStore(agentSelectors.getAgentMetaById(agentId ?? ''));
-  // An agent that has been through the artwork studio shows its own character;
-  // the built-in catalog covers everyone else.
-  const fullBodyArtwork = useAgentStore(agentSelectors.getAgentFullBodyArtworkById(agentId ?? ''));
-  const artwork = resolveChiefAgentArtwork(meta.avatar || DEFAULT_INBOX_AVATAR);
-  const hero = fullBodyArtwork || artwork.hero;
+  const persona = resolveMcitPersona(meta?.avatar || meta?.name);
+  const heroSrc = meta?.avatar || persona.src || MCIT_DEFAULT_AVATAR;
+
+  const [currentSrc, setCurrentSrc] = useState(heroSrc);
+
+  if (currentSrc !== heroSrc && heroSrc) {
+    setCurrentSrc(heroSrc);
+  }
+
+  const handleImageError = () => {
+    if (currentSrc !== MCIT_DEFAULT_AVATAR) {
+      setCurrentSrc(MCIT_DEFAULT_AVATAR);
+    }
+  };
 
   return (
     <div className={styles.root}>
-      <img aria-hidden alt="" className={styles.image} key={hero} src={hero} />
+      <div className={styles.card} title={`${persona.label} — ${persona.title}`}>
+        <img
+          alt={persona.label || meta?.title || 'Agent Avatar'}
+          className={styles.image}
+          key={currentSrc}
+          src={currentSrc}
+          onError={handleImageError}
+        />
+      </div>
     </div>
   );
 });

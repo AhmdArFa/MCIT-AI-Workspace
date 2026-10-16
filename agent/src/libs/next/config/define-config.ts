@@ -83,6 +83,8 @@ export function defineConfig(config: CustomNextConfig) {
       // refs: https://github.com/AhmdArFa/MCIT-Agent/pull/7430
       serverMinification: false,
       webVitalsAttribution: ['CLS', 'LCP'],
+      cpus: 2,
+      workerThreads: false,
       ...config.experimental,
     },
     async headers() {

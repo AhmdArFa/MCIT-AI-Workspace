@@ -1,133 +1,190 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import { formatDistanceToNow } from 'date-fns'
 
 import { AppShell } from '@/components/layout/AppShell'
-import { NotebookList } from './components/NotebookList'
-import { RecentlyViewed } from './components/RecentlyViewed'
-import { Button } from '@/components/ui/button'
-import { Plus, RefreshCw, LayoutGrid, List } from 'lucide-react'
 import { useNotebooks } from '@/lib/hooks/use-notebooks'
+import { notebooksApi } from '@/lib/api/notebooks'
 import { CreateNotebookDialog } from '@/components/notebooks/CreateNotebookDialog'
-import { Input } from '@/components/ui/input'
-import { useTranslation } from '@/lib/hooks/use-translation'
-import { useNotebookViewStore } from '@/lib/stores/notebook-view-store'
+import type { RecentlyViewedResponse } from '@/lib/types/api'
 
 export default function NotebooksPage() {
-  const { t } = useTranslation()
+  const router = useRouter()
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const viewMode = useNotebookViewStore((state) => state.viewMode)
-  const setViewMode = useNotebookViewStore((state) => state.setViewMode)
-  const { data: notebooks, isLoading, refetch } = useNotebooks(false)
-  const { data: archivedNotebooks } = useNotebooks(true)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+
+  const { data: notebooks = [] } = useNotebooks(false)
+  const { data: recentItems = [] } = useQuery<RecentlyViewedResponse[]>({
+    queryKey: ['recently-viewed', 8],
+    queryFn: () => notebooksApi.recentlyViewed(8),
+  })
 
   const normalizedQuery = searchTerm.trim().toLowerCase()
 
   const filteredActive = useMemo(() => {
-    if (!notebooks) {
-      return undefined
-    }
-    if (!normalizedQuery) {
-      return notebooks
-    }
-    return notebooks.filter((notebook) =>
-      notebook.name.toLowerCase().includes(normalizedQuery)
+    if (!notebooks) return []
+    if (!normalizedQuery) return notebooks
+    return notebooks.filter(
+      (nb) =>
+        nb.name.toLowerCase().includes(normalizedQuery) ||
+        (nb.description && nb.description.toLowerCase().includes(normalizedQuery))
     )
   }, [notebooks, normalizedQuery])
 
-  const filteredArchived = useMemo(() => {
-    if (!archivedNotebooks) {
-      return undefined
+  const formatRelativeTime = (dateString?: string) => {
+    if (!dateString) return 'recently'
+    try {
+      const date = new Date(dateString)
+      if (isNaN(date.getTime())) return 'recently'
+      return formatDistanceToNow(date, { addSuffix: true })
+    } catch (_) {
+      return 'recently'
     }
-    if (!normalizedQuery) {
-      return archivedNotebooks
-    }
-    return archivedNotebooks.filter((notebook) =>
-      notebook.name.toLowerCase().includes(normalizedQuery)
-    )
-  }, [archivedNotebooks, normalizedQuery])
-
-  const hasArchived = (archivedNotebooks?.length ?? 0) > 0
-  const isSearching = normalizedQuery.length > 0
+  }
 
   return (
     <AppShell>
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h1 className="font-display text-2xl font-bold tracking-tight">{t('notebooks.title')}</h1>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>
-              <RefreshCw className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <div className="flex items-center rounded-md border p-0.5">
-              <Button
-                variant={viewMode === 'tile' ? 'secondary' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('tile')}
-                aria-label={t('notebooks.tileView')}
-                aria-pressed={viewMode === 'tile'}
-                title={t('notebooks.tileView')}
-              >
-                <LayoutGrid className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'secondary' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('list')}
-                aria-label={t('notebooks.listView')}
-                aria-pressed={viewMode === 'list'}
-                title={t('notebooks.listView')}
-              >
-                <List className="h-4 w-4" />
-              </Button>
+      <section className="view nbv on" id="v-nb" style={{ overflowY: 'auto', flex: 1 }}>
+        <div className="in">
+          {/* Header */}
+          <div className="head">
+            <div className="sp" />
+            <div className="search">
+              <svg className="i" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+              <input
+                id="q"
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search notebooks…"
+              />
             </div>
-            <Input
-              id="notebook-search"
-              name="notebook-search"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder={t('notebooks.searchPlaceholder')}
-              autoComplete="off"
-              aria-label={t('common.accessibility.searchNotebooks') || "Search notebooks"}
-              className="w-full sm:w-64"
-            />
-            <Button onClick={() => setCreateDialogOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              {t('notebooks.newNotebook')}
-            </Button>
+            <div className="seg">
+              <button
+                type="button"
+                id="g"
+                className={viewMode === 'grid' ? 'on' : ''}
+                onClick={() => setViewMode('grid')}
+                title="Grid View"
+              >
+                <svg className="i" viewBox="0 0 24 24" style={{ width: 16 }}>
+                  <rect x="4" y="4" width="6" height="6" />
+                  <rect x="14" y="4" width="6" height="6" />
+                  <rect x="4" y="14" width="6" height="6" />
+                  <rect x="14" y="14" width="6" height="6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                id="l"
+                className={viewMode === 'list' ? 'on' : ''}
+                onClick={() => setViewMode('list')}
+                title="List View"
+              >
+                <svg className="i" viewBox="0 0 24 24" style={{ width: 16 }}>
+                  <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" />
+                </svg>
+              </button>
+            </div>
+            <button
+              type="button"
+              className="btn"
+              onClick={() => setCreateDialogOpen(true)}
+            >
+              <svg className="i" viewBox="0 0 24 24" style={{ width: 16 }}>
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              New Notebook
+            </button>
+          </div>
+
+          {/* Recently viewed */}
+          {recentItems.length > 0 && (
+            <>
+              <h3 className="sec">Recently viewed</h3>
+              <div className="rec" id="rec">
+                {recentItems.slice(0, 8).map((r, i) => {
+                  const isSource = r.type === 'source'
+                  const href = isSource
+                    ? `/sources/${encodeURIComponent(r.id)}`
+                    : `/notebooks/${encodeURIComponent(r.id)}`
+
+                  return (
+                    <Link
+                      key={r.id + i}
+                      href={href}
+                      className={`r ${isSource ? 's' : ''}`}
+                    >
+                      {isSource ? (
+                        <svg className="i" viewBox="0 0 24 24">
+                          <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5" />
+                        </svg>
+                      ) : (
+                        <svg className="i" viewBox="0 0 24 24">
+                          <path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z" />
+                        </svg>
+                      )}
+                      <span>{r.title}</span>
+                      <i className="k">{isSource ? 'SOURCE' : 'NOTEBOOK'}</i>
+                      <small>{formatRelativeTime(r.last_viewed_at)}</small>
+                    </Link>
+                  )
+                })}
+              </div>
+            </>
+          )}
+
+          {/* Active notebooks */}
+          <h3 className="sec">
+            Active notebooks · <span id="cnt">{filteredActive.length}</span>
+          </h3>
+
+          <div className={`grid ${viewMode === 'list' ? 'list' : ''}`} id="grid">
+            {filteredActive.map((nb) => (
+              <div
+                key={nb.id}
+                className="card"
+                onClick={() => router.push(`/notebooks/${encodeURIComponent(nb.id)}`)}
+              >
+                <div className="ic">
+                  <svg className="i" viewBox="0 0 24 24">
+                    <path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z" />
+                  </svg>
+                </div>
+                <h4>{nb.name}</h4>
+                <p>{nb.description || 'No description'}</p>
+                <div className="meta">
+                  <span>Updated {formatRelativeTime(nb.updated)}</span>
+                  <span>
+                    <svg className="i" viewBox="0 0 24 24" style={{ width: 13, verticalAlign: -2 }}>
+                      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5" />
+                    </svg>{' '}
+                    {nb.source_count ?? 1}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredActive.length === 0 && (
+            <p className="sub" style={{ marginTop: 16 }}>No notebooks found.</p>
+          )}
+
+          {/* Footer */}
+          <div className="foot">
+            <span>TuT AI · Ministry of Communications and Information Technology</span>
+            <span>Developed by Eng Ahmed Arfa for MCIT</span>
           </div>
         </div>
-        
-        <div className="space-y-8">
-          <RecentlyViewed />
-
-          <NotebookList 
-            notebooks={filteredActive} 
-            isLoading={isLoading}
-            title={t('notebooks.activeNotebooks')}
-            emptyTitle={isSearching ? t('common.noMatches') : undefined}
-            emptyDescription={isSearching ? t('common.tryDifferentSearch') : undefined}
-            onAction={!isSearching ? () => setCreateDialogOpen(true) : undefined}
-            actionLabel={!isSearching ? t('notebooks.newNotebook') : undefined}
-          />
-          
-          {hasArchived && (
-            <NotebookList 
-              notebooks={filteredArchived} 
-              isLoading={false}
-              title={t('notebooks.archivedNotebooks')}
-              collapsible
-              emptyTitle={isSearching ? t('common.noMatches') : undefined}
-              emptyDescription={isSearching ? t('common.tryDifferentSearch') : undefined}
-            />
-          )}
-        </div>
-        </div>
-      </div>
+      </section>
 
       <CreateNotebookDialog
         open={createDialogOpen}

@@ -74,7 +74,7 @@ export function NotebookHeader({ notebook }: NotebookHeaderProps) {
               <Button asChild size="sm" variant="outline">
                 <Link href={`/tut?notebook=${encodeURIComponent(notebook.id)}`} className="text-foreground">
                   <MessageSquareText className="h-4 w-4 mr-2" />
-                  Ask Tut Agent
+                  Ask TuT Agent
                 </Link>
               </Button>
               <Button size="sm" onClick={() => setStudioOpen(true)} className="font-medium">

@@ -84,7 +84,7 @@ RUN set -eu; \
                 wordcraft:${WORDCRAFT_VERSION}:wordcraft vectorcraft:${VECTORCRAFT_VERSION}:vectorcraft \
                 effectcraft:${EFFECTCRAFT_VERSION}:effectcraft pdfcraft:${PDFCRAFT_VERSION}:pdfcraft-cli; do \
       repo=${spec%%:*}; rest=${spec#*:}; ver=${rest%%:*}; asset=${rest#*:}; \
-      curl -fsSL --retry 5 -o pkg.tgz "https://github.com/storytold/${repo}/releases/download/v${ver}/${asset}-${ver}-linux-${arch}.tar.gz"; \
+      curl -fsSL --retry 10 --retry-delay 5 --retry-connrefused --retry-all-errors -o pkg.tgz "https://github.com/storytold/${repo}/releases/download/v${ver}/${asset}-${ver}-linux-${arch}.tar.gz"; \
       tar -xzf pkg.tgz; find . -type f -name "${repo}-cli" -exec install -m 0755 {} /opt/craft/bin/ \; ; \
       find . -type f \( -name 'LICENSE*' -o -name 'NOTICE' -o -name 'OFL-*' \) -exec cp -n {} /opt/craft/ \; 2>/dev/null || true; \
       rm -rf ./*; \
