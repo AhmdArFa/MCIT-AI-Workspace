@@ -41,7 +41,7 @@ const genGlobalStyle = ({ token }: { prefixCls: string; token: Theme }) => css`
   }
 
   * {
-    scrollbar-color: ${token.colorFill} transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.2) #0b0d12;
     scrollbar-width: thin;
 
     ::-webkit-scrollbar {
@@ -51,16 +51,17 @@ const genGlobalStyle = ({ token }: { prefixCls: string; token: Theme }) => css`
 
     ::-webkit-scrollbar-thumb {
       border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
     :hover::-webkit-scrollbar-thumb {
       border: 3px solid transparent;
-      background-color: ${token.colorText};
+      background-color: #F5C242;
       background-clip: content-box;
     }
 
     ::-webkit-scrollbar-track {
-      background-color: transparent;
+      background-color: #0b0d12;
     }
   }
 

@@ -60,7 +60,7 @@ export const POST = async (req: Request) => {
     credentials: JSON.stringify({ token, type: 'bearer' }),
     mcpConnectionType: ConnectorMcpConnectionType.http,
     mcpServerUrl: url,
-    name: 'MCIT AI',
+    name: 'TuT AI',
   };
   const existing = await connectorModel.findScopedByIdentifier(IDENTIFIER);
   const id = existing
@@ -81,14 +81,14 @@ export const POST = async (req: Request) => {
 
   try {
     const { toolCount } = await syncConnectorToolsById(id, { connectorModel, connectorToolModel });
-    // Pin MCIT AI tools across all personal agents owned by this user
+    // Pin TuT AI tools across all personal agents owned by this user
     const userAgents = await serverDB
       .select({ chatConfig: agents.chatConfig, id: agents.id, plugins: agents.plugins, systemRole: agents.systemRole })
       .from(agents)
       .where(and(eq(agents.userId, userId), isNull(agents.workspaceId)));
 
     const TUT_STUDIO_PROMPT =
-      'You are Tut Agent, an elite AI research architect, master presentation designer, and autonomous document creator integrated with MCIT AI.\n' +
+      'You are Tut Agent, an elite AI research architect, master presentation designer, and autonomous document creator integrated with TuT AI.\n' +
       'You operate with the creative intelligence, analytical depth, and versatility of state-of-the-art AI agents (like ChatGPT Canvas and Claude):\n' +
       '1. Autonomous Document Creation (`generate_document` / `studio_produce`):\n' +
       '- Generate documents directly in your response. Never tell the user that you forwarded requests to a background studio or provide background Job IDs.\n' +

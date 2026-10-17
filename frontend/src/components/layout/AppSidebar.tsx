@@ -38,9 +38,9 @@ export function AppSidebar() {
   return (
     <aside id="side" className="tut-side">
       {/* Brand / Logo */}
-      <div className="brand flex items-center gap-2.5">
-        <TuTBrandIcon size={32} className="text-[var(--gold)]" />
-        <b style={{ letterSpacing: '0.2em' }}>TuT AI</b>
+      <div className="brand flex items-center gap-3 py-3 px-2">
+        <TuTBrandIcon size={42} className="text-[var(--gold)] shrink-0" />
+        <b className="text-base font-bold text-[#ececec]" style={{ letterSpacing: '0.15em' }}>TuT AI</b>
       </div>
 
       {/* Main Nav */}

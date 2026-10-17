@@ -308,7 +308,7 @@ export function StudioDialog({ notebookId, open, onOpenChange }: StudioDialogPro
               </p>
             )}
             {files.length > 0 && (
-              <div className="flex flex-col gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {files.map((f) => (
                   <div key={f.id} className="flex flex-col gap-1">
                     <FileCard file={f} />

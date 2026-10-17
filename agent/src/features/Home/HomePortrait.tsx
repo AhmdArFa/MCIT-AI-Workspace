@@ -10,32 +10,31 @@ import { useResolvedHomeAgentId } from './AgentSelect/useResolvedHomeAgentId';
 const styles = createStaticStyles(({ css, cssVar }) => ({
   card: css`
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: auto;
+    height: 195px;
+    max-width: 220px;
     margin-inline-start: auto;
-    margin-block-end: 2px;
-    border-radius: 24px;
-    overflow: hidden;
-    border: 2px solid rgba(201, 162, 39, 0.45);
-    background: ${cssVar.colorBgContainer};
-    box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.22),
-      0 0 16px rgba(201, 162, 39, 0.18);
+    margin-block-end: -28px;
+    transform: translateY(22px);
+    border-radius: 0;
+    overflow: visible;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.65)) drop-shadow(0 4px 10px rgba(247, 239, 138, 0.25));
     transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      filter 0.3s ease;
+    pointer-events: auto;
 
     &:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow:
-        0 14px 36px rgba(0, 0, 0, 0.3),
-        0 0 22px rgba(201, 162, 39, 0.3);
+      transform: translateY(18px) scale(1.04);
+      filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.75)) drop-shadow(0 8px 18px rgba(247, 239, 138, 0.38));
     }
 
     @media (max-width: 576px) {
-      width: 88px;
-      height: 88px;
-      border-radius: 18px;
+      height: 110px;
+      max-width: 120px;
     }
   `,
   image: css`

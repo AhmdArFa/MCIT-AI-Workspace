@@ -10,6 +10,7 @@ import {
 import { chainCompressContext } from '@tut/prompts';
 import type {
   ChatAudioItem,
+  ChatFileItem,
   ChatImageItem,
   ChatTopicMetadata,
   ChatVideoItem,
@@ -1077,6 +1078,20 @@ export class ConversationLifecycleActionImpl {
         url: f.fileUrl || f.base64Url || f.previewUrl || '',
         alt: f.file?.name || f.id,
       }));
+    const tempFiles: ChatFileItem[] = filesForPreview
+      .filter(
+        (f) =>
+          !f.file?.type?.startsWith('image') &&
+          !f.file?.type?.startsWith('video') &&
+          !f.file?.type?.startsWith('audio'),
+      )
+      .map((f) => ({
+        fileType: f.file?.type || 'application/octet-stream',
+        id: f.id,
+        name: f.file?.name || f.id,
+        size: f.file?.size || 0,
+        url: f.fileUrl || f.base64Url || f.previewUrl || '',
+      }));
 
     const optimisticUserMessage = {
       content: message,
@@ -1089,6 +1104,7 @@ export class ConversationLifecycleActionImpl {
       topicId: operationContext.topicId ?? undefined,
       threadId: operationContext.threadId ?? undefined,
       audioList: tempAudios.length > 0 ? tempAudios : undefined,
+      fileList: tempFiles.length > 0 ? tempFiles : undefined,
       imageList: tempImages.length > 0 ? tempImages : undefined,
       videoList: tempVideos.length > 0 ? tempVideos : undefined,
       // Pass metadata for immediate display

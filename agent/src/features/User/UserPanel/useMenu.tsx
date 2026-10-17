@@ -2,7 +2,7 @@ import { TUT_CHAT_CLOUD, UTM_SOURCE } from '@tut/business-const';
 import { isDesktop } from '@tut/const';
 import { Flexbox, Hotkey, Icon } from '@mcit-vendor/ui';
 import { Tag } from '@mcit-vendor/ui/base-ui';
-import { BrainCircuit, Cloudy, Download, HardDriveDownload, LogOut, Settings2 } from 'lucide-react';
+import { BrainCircuit, Cloudy, Download, HardDriveDownload, LogOut, Settings2, Shield } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -72,6 +72,27 @@ export const useMenu = () => {
             {t(hasActiveWorkspace ? 'userPanel.workspaceSetting' : 'userPanel.setting')}
           </NewVersionBadge>
         </WorkspaceLink>
+      ),
+    },
+    {
+      icon: <Icon icon={Shield} />,
+      key: 'admin',
+      label: (
+        <a
+          href="/admin"
+          onClick={(e) => {
+            e.preventDefault();
+            if (typeof window !== 'undefined') {
+              if (window.parent && window.parent !== window) {
+                window.parent.location.href = '/admin';
+              } else {
+                window.location.href = '/admin';
+              }
+            }
+          }}
+        >
+          {t('admin', { defaultValue: 'Admin' })}
+        </a>
       ),
     },
     ...(userPanel.showMemory

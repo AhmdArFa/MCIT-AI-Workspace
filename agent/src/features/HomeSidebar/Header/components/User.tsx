@@ -60,7 +60,7 @@ const User = memo<{ lite?: boolean }>(({ lite }) => {
           avatarOverride={displayAvatar}
           nameOverride={activeIdentity?.name ?? undefined}
           shape={'square'}
-          size={28}
+          size={36}
         />
         {!lite && (
           <Flexbox horizontal align={'center'} gap={4} style={{ overflow: 'hidden' }}>

@@ -182,6 +182,7 @@ export const useSend = (mode: HomeMode = 'chat') => {
             await sendAsAgent({
               contextSelections,
               editorData,
+              files: fileList,
               message,
               pageSelections,
               workspaceSlug: activeWorkspaceSlug,
@@ -194,6 +195,7 @@ export const useSend = (mode: HomeMode = 'chat') => {
             await sendAsGroup({
               contextSelections,
               editorData,
+              files: fileList,
               message,
               pageSelections,
               workspaceSlug: activeWorkspaceSlug,
@@ -206,6 +208,7 @@ export const useSend = (mode: HomeMode = 'chat') => {
             await sendAsWrite({
               contextSelections,
               editorData,
+              files: fileList,
               message,
               pageSelections,
               workspaceSlug: activeWorkspaceSlug,

@@ -25,6 +25,7 @@ const n = setNamespace('homeInput');
 interface SendMessageWithEditorParams {
   contextSelections?: ContextSelection[];
   editorData?: Record<string, any>;
+  files?: any[];
   groupId?: string;
   message: string;
   pageSelections?: PageSelection[];
@@ -130,6 +131,7 @@ export class HomeInputActionImpl {
   sendAsAgent = async ({
     contextSelections,
     editorData,
+    files,
     groupId,
     message,
     pageSelections,
@@ -205,6 +207,7 @@ export class HomeInputActionImpl {
             },
             contextSelections,
             editorData,
+            files,
             message,
             pageSelections,
           });
@@ -223,6 +226,7 @@ export class HomeInputActionImpl {
   sendAsGroup = async ({
     contextSelections,
     editorData,
+    files,
     groupId,
     message,
     pageSelections,
@@ -290,6 +294,7 @@ export class HomeInputActionImpl {
           },
           contextSelections,
           editorData,
+          files,
           message,
           pageSelections,
         });
@@ -315,6 +320,7 @@ export class HomeInputActionImpl {
   sendAsWrite = async ({
     contextSelections,
     editorData,
+    files,
     message,
     pageSelections,
     workspaceSlug,
@@ -363,6 +369,7 @@ export class HomeInputActionImpl {
           },
           contextSelections,
           editorData,
+          files,
           message,
           pageSelections,
         });
