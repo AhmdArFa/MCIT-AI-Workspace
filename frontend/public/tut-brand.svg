@@ -1,15 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 180 180" role="img" aria-label="Thoth cartouche mark, OLED edition">
-  <title>TuT Cartouche — OLED master</title>
-  <desc>Extracted from concept E (TuT Logo Concepts). Royal cartouche ring spelled T u T. True black OLED background, pale gold ring, ivory letters.</desc>
-  <!-- OLED background: true black -->
-  <rect x="0" y="0" width="180" height="180" fill="#000000"/>
-  <!-- Cartouche ring + base bar: Pale Gold -->
-  <g fill="none" stroke="#F7EF8A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="22 40 134 100" role="img" aria-label="TuT AI Brand Mark">
+  <!-- Cartouche ring + base bar: Sovereign Royal Gold -->
+  <g fill="none" stroke="#F5C242" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
     <rect x="28" y="54" width="112" height="72" rx="36"/>
     <path d="M150 46V134"/>
   </g>
-  <!-- Letters T u T: Ivory -->
-  <g fill="none" stroke="#F8F5EC" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Letters T u T: Pure Crisp White -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M46 76H66M56 76V104"/>
     <path d="M76 84V94a8 8 0 0 0 16 0V84"/>
     <path d="M102 76H122M112 76V104"/>
