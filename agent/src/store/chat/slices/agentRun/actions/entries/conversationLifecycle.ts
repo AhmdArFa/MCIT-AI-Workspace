@@ -664,7 +664,9 @@ export class ConversationLifecycleActionImpl {
       ...(mintedTopicId ? { topicId: mintedTopicId } : {}),
     };
 
-    const fileIdList = files?.map((f) => f.id);
+    const fileIdList = files
+      ?.filter((f) => f.status === 'success' || !('status' in f))
+      .map((f) => f.id);
     const isLocalSystemEnabled =
       chatConfigByIdSelectors.isLocalSystemEnabledById(agentId)(getAgentStoreState());
     const canMaterializeLocalFiles =

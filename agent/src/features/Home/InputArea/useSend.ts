@@ -89,6 +89,8 @@ export const useSend = (mode: HomeMode = 'chat') => {
       // cache catches up and the empty-message guard would bail incorrectly.
       const typed = (getMarkdownContent?.() ?? inputMessage ?? '').trim();
       const fileList = fileChatSelectors.chatUploadFileList(useFileStore.getState());
+      const isUploading = fileChatSelectors.isUploadingFiles(useFileStore.getState());
+      if (isUploading) return;
       const contextList = fileChatSelectors.chatContextSelections(contextSelectionKey)(
         useFileStore.getState(),
       );

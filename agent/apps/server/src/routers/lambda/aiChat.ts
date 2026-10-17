@@ -25,6 +25,7 @@ import { unwrapPgError } from '@/server/modules/AgentRuntime/pgError';
 import { resolveContext } from '@/server/routers/lambda/_helpers/resolveContext';
 import { AiChatService } from '@/server/services/aiChat';
 import { AiGenerationService } from '@/server/services/aiGeneration';
+import { DocumentService } from '@/server/services/document';
 import { FileService } from '@/server/services/file';
 import { archiveToolResultIfNeeded } from '@/server/services/toolExecution/archiveToolResult';
 
@@ -134,6 +135,7 @@ const aiChatProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) =
       agentModel: new AgentModel(ctx.serverDB, ctx.userId, wsId),
       aiChatService: new AiChatService(ctx.serverDB, ctx.userId, wsId),
       aiGenerationService: new AiGenerationService(ctx.serverDB, ctx.userId, wsId),
+      documentService: new DocumentService(ctx.serverDB, ctx.userId, wsId),
       fileService: new FileService(ctx.serverDB, ctx.userId, wsId),
       messageModel: new MessageModel(ctx.serverDB, ctx.userId, wsId),
       threadModel: new ThreadModel(ctx.serverDB, ctx.userId, wsId),
@@ -494,6 +496,26 @@ export const aiChatRouter = router({
       log('user message created with id: %s', messageId);
 
       log('assistant message created with id: %s', assistantMessageItem.id);
+
+      // ensure all attached document files are parsed so documents table has their content
+      if (input.newUserMessage.files && input.newUserMessage.files.length > 0) {
+        log('ensuring attached files are parsed before querying messagesAndTopics');
+        await runTimedStage(
+          timingContext,
+          'lambda.aiChat.files.parseAttachments',
+          () =>
+            Promise.all(
+              input.newUserMessage.files!.map(async (fileId) => {
+                try {
+                  await ctx.documentService.parseFile(fileId);
+                } catch (error) {
+                  log('parseFile failed for fileId: %s, error: %O', fileId, error);
+                }
+              }),
+            ),
+          { fileCount: input.newUserMessage.files.length },
+        );
+      }
 
       // retrieve latest messages and topic with
       log('retrieving messages and topics');

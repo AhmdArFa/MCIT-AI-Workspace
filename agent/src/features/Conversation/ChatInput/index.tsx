@@ -416,11 +416,15 @@ const ChatInput = memo<ChatInputProps>(
         const { contextSelections, pageSelections } =
           buildMessageContextSelections(currentContextList);
 
+        const validFileList = currentFileList.filter(
+          (f) => f.status === 'success' || !('status' in f),
+        );
+
         // Fire and forget - send with captured message
         await sendMessage({
           contextSelections,
           editorData,
-          files: currentFileList,
+          files: validFileList,
           message,
           onPreflightFailure: () => {
             const store = useFileStore.getState();

@@ -412,7 +412,24 @@ export class FileActionImpl {
       // run parses it on the creator's account when the turn is set up.
       if (shareId) return;
 
-      await ragService.parseFileContent(fileResult.id);
+      // Keep status as 'processing' so isUploadingFiles remains true until parsing completes
+      dispatchChatUploadFileList({
+        id: fileResult.id,
+        type: 'updateFile',
+        value: { status: 'processing' },
+      });
+
+      try {
+        await ragService.parseFileContent(fileResult.id);
+      } catch (error) {
+        console.error('[uploadChatFiles] parseFileContent failed:', error);
+      } finally {
+        dispatchChatUploadFileList({
+          id: fileResult.id,
+          type: 'updateFile',
+          value: { status: 'success' },
+        });
+      }
     });
 
     await Promise.all(pools);
