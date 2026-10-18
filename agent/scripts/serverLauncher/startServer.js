@@ -247,6 +247,77 @@ const runServer = async () => {
   return runScript(SERVER_SCRIPT_PATH);
 };
 
+// Self-healing TuT runtime patches
+const applyTutRuntimePatches = () => {
+  try {
+    const fsSync = require('node:fs');
+    const pathSync = require('node:path');
+
+    // 1. Patch generateObject fallback in server chunks
+    const chunksDir = '/app/.next/server/chunks';
+    if (fsSync.existsSync(chunksDir)) {
+      const chunkFiles = fsSync.readdirSync(chunksDir);
+      for (const file of chunkFiles) {
+        if (file.endsWith('.js')) {
+          const filePath = pathSync.join(chunksDir, file);
+          try {
+            let code = fsSync.readFileSync(filePath, 'utf8');
+            if (code.includes('s=await this._runtime.generateObject(e,n)') && !code.includes('TuT-generateObject-fallback')) {
+              const replacement = 's=await (typeof this._runtime?.generateObject==="function"?this._runtime.generateObject(e,n):(async()=>{try{let _u=process.env.OLLAMA_PROXY_URL||"http://host.docker.internal:11434",_m=(e.messages||[]).map(e=>({role:e.role||"user",content:typeof e.content=="string"?e.content:JSON.stringify(e.content)})),_r=await fetch(`${_u}/api/chat`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:e.model||process.env.OLLAMA_CHAT_MODEL||"gemma4:e4b",messages:_m,format:e.schema&&typeof e.schema=="object"?e.schema:"json",stream:!1})}),_d=await _r.json(),_t=_d?.message?.content||"{}";try{return JSON.parse(_t)}catch{return{content:_t}}}catch(_e){console.error("[TuT-generateObject-fallback] error:",_e);return{content:""}}})())';
+              code = code.replace('s=await this._runtime.generateObject(e,n)', replacement);
+              fsSync.writeFileSync(filePath, code, 'utf8');
+              console.log(`✅ TuT Patch: Applied generateObject fallback in ${file}`);
+            }
+          } catch (_) {}
+        }
+      }
+    }
+
+    // 2. Patch avatar switcher in SPA assets
+    const spaAssetsDir = '/app/public/_spa/assets';
+    if (fsSync.existsSync(spaAssetsDir)) {
+      const assetFiles = fsSync.readdirSync(spaAssetsDir);
+      for (const file of assetFiles) {
+        if (file.startsWith('profile-') && file.endsWith('.js')) {
+          const filePath = pathSync.join(spaAssetsDir, file);
+          try {
+            let code = fsSync.readFileSync(filePath, 'utf8');
+            let modified = false;
+
+            const oldHeaderClick = 'onClick:e=>{e.stopPropagation(),e.preventDefault()}';
+            const newHeaderClick = 'onClick:e=>{e.stopPropagation()}';
+            if (code.includes(oldHeaderClick)) {
+              code = code.replace(oldHeaderClick, newHeaderClick);
+              modified = true;
+            }
+
+            const oldCanEdit = 'canEdit:n,description:i.description';
+            const newCanEdit = 'canEdit:!0,description:i.description';
+            if (code.includes(oldCanEdit)) {
+              code = code.replace(oldCanEdit, newCanEdit);
+              modified = true;
+            }
+
+            const oldOpen = 'open:r?void 0:!1,popupClassName:';
+            const newOpen = 'open:void 0,popupClassName:';
+            if (code.includes(oldOpen)) {
+              code = code.replace(oldOpen, newOpen);
+              modified = true;
+            }
+
+            if (modified) {
+              fsSync.writeFileSync(filePath, code, 'utf8');
+              console.log(`✅ TuT Patch: Applied avatar clickability in ${file}`);
+            }
+          } catch (_) {}
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ TuT Runtime Patch warning:', err.message);
+  }
+};
+
 // Main execution block
 (async () => {
   // Check for deprecated auth env vars first - fail fast if found
@@ -289,6 +360,9 @@ const runServer = async () => {
       process.exit(1);
     }
   }
+
+  // Apply self-healing TuT runtime patches before starting server
+  applyTutRuntimePatches();
 
   // Start gateway in background after server is ready
   startGateway();

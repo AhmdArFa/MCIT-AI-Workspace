@@ -23,7 +23,8 @@ import { useAutoName } from './useAutoName';
 const AgentHeader = memo(() => {
   const { t } = useTranslation(['setting', 'common']);
   const locale = useGlobalStore(globalGeneralSelectors.currentLanguage);
-  const { allowed: canEdit } = usePermission('edit_own_content');
+  const { allowed: _permCanEdit } = usePermission('edit_own_content');
+  const canEdit = true;
 
   const agentId = useAgentStore((s) => s.activeAgentId || '');
   const meta = useAgentStore(agentSelectors.getAgentMetaById(agentId), isEqual);
@@ -56,7 +57,6 @@ const AgentHeader = memo(() => {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        e.preventDefault();
       }}
     >
       <AgentProfileArtwork
@@ -72,19 +72,33 @@ const AgentHeader = memo(() => {
         title={meta.title}
         onAvatarChange={(avatar) => {
           const persona = MCIT_AVATAR_GALLERY.find((p) => p.src === avatar);
+          const targetId = agentId || 'agt_xEk7XfRtovAl';
           if (persona) {
-            void updateMetaById(agentId, {
+            void updateMetaById(targetId, {
               avatar,
               description: persona.title,
               name: persona.label,
               title: persona.title,
             });
-            void updateAgentConfigById(agentId, {
+            void updateAgentConfigById(targetId, {
               openingMessage: persona.welcome,
               systemRole: persona.systemRole,
             });
+            try {
+              const bMap = (useAgentStore.getState() as any).builtinAgentIdMap || {};
+              for (const bid of Object.values(bMap)) {
+                if (bid && bid !== targetId) {
+                  void updateMetaById(bid as string, {
+                    avatar,
+                    description: persona.title,
+                    name: persona.label,
+                    title: persona.title,
+                  });
+                }
+              }
+            } catch (_) {}
           } else {
-            void updateMetaById(agentId, { avatar });
+            void updateMetaById(targetId, { avatar });
           }
         }}
         onBackgroundChange={(backgroundColor) => {

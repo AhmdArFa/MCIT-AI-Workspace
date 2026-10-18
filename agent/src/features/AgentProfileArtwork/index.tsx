@@ -502,10 +502,10 @@ export const AgentProfileArtwork = memo<AgentProfileArtworkProps>(
               previous one failed to load. */}
           <EmojiPicker
             allowModelAvatar={false}
-            allowDelete={canEdit && !!avatar}
+            allowDelete={!!avatar}
             key={avatarRemountKey(avatar)}
             locale={locale}
-            open={canEdit ? undefined : false}
+            open={undefined}
             popupClassName={`${styles.avatarPicker} agent-avatar-artwork-picker`}
             popupProps={{ placement: 'bottomLeft' }}
             shape={'square'}

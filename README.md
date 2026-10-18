@@ -102,21 +102,37 @@ installed. `CRAFT_KIT_DIR` can point at a mounted copy of the kit instead.
 
 ## Quick start
 
-**Requirements:** Docker with Compose v2, 16 GB RAM (more for larger local models), about
-30 GB of free disk space.
+**Requirements:** Docker with Compose v2, 16 GB RAM (more for larger local models), about 30 GB of free disk space. Host Ollama with `gemma4:e4b` recommended for GPU acceleration.
+
+### One-Click Bootstrap (Recommended)
+
+Run the automated setup script which configures `.env`, launches the container stack, unlocks the 131k context window and full reasoning mode, and verifies all services:
 
 ```bash
-git clone https://github.com/AhmdArFa/MCIT-AI-Workspace.git
-cd MCIT-AI-Workspace
-cp .env.example .env          # replace every CHANGE_ME, e.g. with: openssl rand -hex 32
-docker compose up -d --build
+# Clone the repository
+git clone https://github.com/AhmdArFa/TuT-AI.git
+cd TuT-AI
+
+# On Windows (PowerShell):
+.\scripts\setup_tut_ai.ps1
+
+# On Linux / macOS (Bash):
+chmod +x ./scripts/setup_tut_ai.sh
+./scripts/setup_tut_ai.sh
 ```
 
-| Address | Service |
-|---|---|
-| http://localhost:8502 | MCIT AI |
-| http://localhost:3210 | Tut Agent ("Continue with MCIT AI" signs you in) |
-| http://localhost:8082 | Office editor (used by MCIT AI) |
+### Manual Start
+
+```bash
+cp .env.example .env          # replace CHANGE_ME if needed
+docker compose up -d
+```
+
+| Address | Service | Description |
+|---|---|---|
+| http://localhost:8502 | TuT AI Platform | Notebooks, 4-Card Squared Studio, Knowledge Base |
+| http://localhost:3210 | TuT Agent | Sovereign Egyptian AI Agent, 1-Click Avatar Switcher, In-Chat Documents |
+| http://localhost:8082 | Office Editor | Integrated ONLYOFFICE Docs for generated presentations, reports & spreadsheets |
 
 Sign in with the bootstrap administrator **`admin` / `1234`**, then change the password
 immediately in **Account** or the admin console.
