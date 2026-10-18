@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TuT AI — Executive Marketing Pitch Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0E17;
+      --card-bg: #111827;
+      --gold: #D4AF37;
+      --gold-light: #F5D673;
+      --cyan: #38BDF8;
+      --green: #34D399;
+      --white: #F8FAFC;
+      --muted: #94A3B8;
+      --border-subtle: rgba(212, 175, 55, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    /* Top Navigation Toolbar */
+    .deck-toolbar {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: var(--gold);
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #D4AF37, #B8860B);
+      color: #000;
+      border: none;
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      color: #000;
+    }
+
+    .counter {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 85px;
+      text-align: center;
+    }
+
+    /* Slide Stage */
+    .slide-stage {
+      width: 100%;
+      max-width: 1100px;
+      aspect-ratio: 16 / 9;
+      background: var(--bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 35px 45px;
+    }
+
+    .slide {
+      display: none;
+      height: 100%;
+      width: 100%;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Slide Header */
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      margin-bottom: 4px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .slide-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .slide-divider {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold) 0%, rgba(212, 175, 55, 0.1) 100%);
+      margin-bottom: 22px;
+    }
+
+    /* Slide Content Layouts */
+    .content-grid {
+      display: grid;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cols-showcase {
+      grid-template-columns: 1.45fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .showcase-preview {
+      background: var(--card-bg);
+      border: 1.5px solid var(--gold);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .showcase-preview.cyan-border {
+      border-color: var(--cyan);
+    }
+
+    .showcase-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .showcase-cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .card-compact {
+      padding: 12px 16px;
+    }
+
+    .card-compact .card-title {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .card-compact ul li {
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .card-badge {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      align-self: flex-start;
+      margin-bottom: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-gold { background: rgba(212, 175, 55, 0.15); color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.3); }
+    .badge-green { background: rgba(52, 211, 153, 0.15); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .badge-red { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card ul li {
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .card ul li::before {
+      content: "•";
+      color: var(--gold);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* Cover Slide */
+    .cover-slide {
+      justify-content: center;
+      padding-left: 40px;
+      position: relative;
+    }
+
+    .cover-slide::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 15%;
+      bottom: 15%;
+      width: 6px;
+      background: var(--gold);
+      border-radius: 4px;
+      box-shadow: 0 0 20px var(--gold);
+    }
+
+    .cover-meta {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .cover-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .cover-title span { color: var(--gold); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+
+    .cover-sub {
+      color: var(--cyan);
+      font-size: 17px;
+      max-width: 850px;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .cover-lead {
+      color: var(--gold-light);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* People Cards */
+    .person-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .person-lead {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--gold);
+    }
+
+    .person-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .person-name.lead-name {
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .person-role {
+      font-size: 11px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* Print styles */
+    @media print {
+      body { background: #fff; color: #000; padding: 0; }
+      .deck-toolbar { display: none; }
+      .slide-stage {
+        max-width: 100%;
+        border: none;
+        box-shadow: none;
+        aspect-ratio: auto;
+        padding: 0;
+      }
+      .slide {
+        display: flex !important;
+        opacity: 1 !important;
+        page-break-after: always;
+        height: 100vh;
+        padding: 40px;
+        background: #0A0E17;
+        color: #fff;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Controls Toolbar -->
+  <div class="deck-toolbar">
+    <div class="brand-title">🏛️ TuT AI — Sovereign Marketing Pitch Deck</div>
+    <div class="toolbar-actions">
+      <span class="counter" id="slideNum">Slide 1 of 12</span>
+      <button class="btn" onclick="prevSlide()">◀ Previous</button>
+      <button class="btn" onclick="nextSlide()">Next ▶</button>
+      <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+      <button class="btn btn-gold" onclick="window.print()">🖨️ Print / PDF</button>
+    </div>
+  </div>
+
+  <!-- Stage Canvas -->
+  <div class="slide-stage" id="slideStage">
+
+    <!-- Slide 1: Cover -->
+    <div class="slide cover-slide active">
+      <div class="cover-meta">Ministry of Communications and Information Technology (MCIT)</div>
+      <div class="cover-title">TuT AI: <span>Sovereign Local AI</span> Platform</div>
+      <div class="cover-sub">Strategic Pitch Deck — 100% Offline National Intelligence: Deep Summarization, Autonomous Presentations & Vector Infographics</div>
+      <div class="cover-lead">Principal Architect & Project Lead: Ahmed Gamal Sophi Arfa | Under the Supervision of MCIT Leadership</div>
+    </div>
+
+    <!-- Slide 2: Problem & Need -->
+    <div class="slide">
+      <div class="slide-tag">Challenge & Strategic Opportunity</div>
+      <div class="slide-title">The National Imperative: Why Sovereign Local AI Matters</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-3">
+        <div class="card">
+          <div class="card-badge badge-red">Data Vulnerability</div>
+          <div class="card-title">Cloud Privacy Risks</div>
+          <ul>
+            <li>Relying on foreign commercial clouds (OpenAI, Claude) transmits confidential state data abroad.</li>
+            <li>Strict government laws forbid storing ministerial decrees and citizen archives externally.</li>
+            <li>Threat of third-party model retraining on sensitive Egyptian intellectual property.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Operational Friction</div>
+          <div class="card-title">The Document Bottleneck</div>
+          <ul>
+            <li>Ministries process thousands of 100+ page technical specs, legal decrees, and briefs daily.</li>
+            <li>Human analysis and slide preparation takes hours or days, delaying key decisions.</li>
+            <li>Heavy SaaS subscription costs for disparate foreign tools.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">The Sovereign Solution</div>
+          <div class="card-title">TuT AI Platform</div>
+          <ul>
+            <li>100% On-Premise, Air-Gapped execution on local Egyptian infrastructure.</li>
+            <li>Zero cloud transmission — works completely offline without internet connectivity.</li>
+            <li>Unifies deep research, document drafting, slides, and spreadsheet audit in one single sign-on.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Three Powerhouses -->
+    <div class="slide">
+      <div class="slide-tag">Platform Capabilities</div>
+      <div class="slide-title">TuT AI Core Engine: Three Deliverable Powerhouses</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-3">
+        <div class="card">
+          <div class="card-badge badge-cyan">Research Engine</div>
+          <div class="card-title">📑 Deep Summarization</div>
+          <ul>
+            <li>Ingests 100+ page PDFs, Word docs, decrees, and spreadsheets into local notebooks.</li>
+            <li>Hierarchical multi-tier synthesis: Executive Brief, Chapter Breakdown, and Key Deliverables.</li>
+            <li>Grounded passage citations: Every bullet point is bound to exact numbered references.</li>
+            <li>Zero-Hallucination via local vector and full-text hybrid RAG.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">DeckCraft Studio</div>
+          <div class="card-title">📊 Autonomous Presentations</div>
+          <ul>
+            <li>Prompts in natural language directly generate complete 12+ slide PowerPoint decks (.pptx).</li>
+            <li>DeckCraft engine with strict MCIT branding, Nohemi typography, and royal gold accents.</li>
+            <li>5-pass automated layout audit loop fixes text overflow and visual balance.</li>
+            <li>Direct download in chat & instant editing via integrated ONLYOFFICE.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">VectorCraft Studio</div>
+          <div class="card-title">🎨 Vector Infographics</div>
+          <ul>
+            <li>Translates complex metrics, policy timelines, and architectures into visual sketchnotes.</li>
+            <li>VectorCraft engine integrates Open Doodles, structured flowchart arrows, and metric badges.</li>
+            <li>High-resolution exports in PNG, scalable SVG, and print-ready vector PDF.</li>
+            <li>Instantly embeds into official ministerial publications.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Deep Summarization -->
+    <div class="slide">
+      <div class="slide-tag">Core Feature Deep-Dive</div>
+      <div class="slide-title">Pillar 1: Intelligent Deep Summarization Engine</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-2">
+        <div class="card">
+          <div class="card-badge badge-cyan">Architecture</div>
+          <div class="card-title">Multi-Source Knowledge Digestion</div>
+          <ul>
+            <li><strong>Omni-Channel Ingestion:</strong> Scanned and text PDFs, Word (.docx), Excel spreadsheets, audio transcripts, and HTML portals.</li>
+            <li><strong>Local Chunking & Vectorization:</strong> Embeddings generated on-premise using nomic-embed-text via local Ollama bridge.</li>
+            <li><strong>SurrealDB Account Isolation:</strong> Each ministry department operates in a segregated, sandboxed database.</li>
+            <li><strong>Lightning Synthesis:</strong> Synthesizes complex multi-volume reports into an executive brief in under 20 seconds.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Verification</div>
+          <div class="card-title">Grounded Trust & Zero-Hallucination</div>
+          <ul>
+            <li><strong>Numbered Citation System:</strong> Summary sentences display [1], [2] clickable references pointing back to the exact passage.</li>
+            <li><strong>Context-Locked LLM:</strong> The model is strictly instructed to answer only from verified retrieved passages.</li>
+            <li><strong>Executive Summary Tiers:</strong> Switch between a 1-page High-Level Digest, a 5-page Comprehensive Study, or a Table of Deliverables.</li>
+            <li><strong>Arabic & English Mastery:</strong> Full bilingual comprehension of complex Egyptian administrative and legal phrasing.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Presentation Engine -->
+    <div class="slide">
+      <div class="slide-tag">Core Feature Deep-Dive</div>
+      <div class="slide-title">Pillar 2: Autonomous PowerPoint Presentation Engine</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-2">
+        <div class="card">
+          <div class="card-badge badge-gold">Conversational Flow</div>
+          <div class="card-title">End-to-End In-Chat Generation</div>
+          <ul>
+            <li><strong>Natural Language Prompting:</strong> Ask TuT Agent: "Create a 12-slide presentation on Egypt Vision 2030 digital pillars".</li>
+            <li><strong>Local MCP Protocol:</strong> Agent invokes the local deck generator tool via Model Context Protocol (MCP) in real-time.</li>
+            <li><strong>Production Deck Output:</strong> Produces a genuine, fully editable .pptx file directly in the conversation stream.</li>
+            <li><strong>Instant ONLYOFFICE Editing:</strong> Click to open in port :8082 without needing Microsoft Office installed on the PC.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-cyan">Design Rigor</div>
+          <div class="card-title">DeckCraft Design & Audit Pipeline</div>
+          <ul>
+            <li><strong>Approved MCIT Typography:</strong> Automatically embeds Nohemi headings, Libre Franklin body, and Inter covers.</li>
+            <li><strong>Royal Obsidian Theme:</strong> High-contrast midnight obsidian background with royal Egyptian gold framing (#D4AF37).</li>
+            <li><strong>Multi-Slide Typology:</strong> Hero cover slides, 3-pillar metric cards, timeline roadmaps, and closing executive summaries.</li>
+            <li><strong>Automated Layout Audit:</strong> Self-healing loop inspects slide text lengths and refactors cards to ensure zero visual overlap.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Infographics Studio -->
+    <div class="slide">
+      <div class="slide-tag">Core Feature Deep-Dive</div>
+      <div class="slide-title">Pillar 3: VectorCraft Infographics Studio</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-2">
+        <div class="card">
+          <div class="card-badge badge-green">Visual Design</div>
+          <div class="card-title">Visualizing Abstract Governmental Data</div>
+          <ul>
+            <li><strong>From Numbers to Art:</strong> Transforms dry tables and statistical metrics into intuitive visual sketchnotes.</li>
+            <li><strong>Process & Flow Mapping:</strong> Automatically draws sequential arrows, milestone containers, and dependency diagrams.</li>
+            <li><strong>Open Doodles & Vector Icons:</strong> Integrates approved human-centric vector doodles for friendly, modern appeal.</li>
+            <li><strong>Responsive Layouts:</strong> Generates square, portrait, and landscape compositions adapted for print, web, or mobile.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Production Formats</div>
+          <div class="card-title">Multi-Format Sovereign Export</div>
+          <ul>
+            <li><strong>Vector SVG Export:</strong> Infinitely scalable vector art suitable for billboards, official banners, and web publication.</li>
+            <li><strong>Ultra-HD PNG:</strong> High-DPI raster output for seamless embedding into Word reports, executive PDFs, and emails.</li>
+            <li><strong>Print-Ready PDF:</strong> Vector PDF output matching international A4 / A3 print standards.</li>
+            <li><strong>Zero Cloud Dependency:</strong> All rendering done via local Node.js VectorCraft engine inside Docker container.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Live Platform Showcase -->
+    <div class="slide">
+      <div class="slide-tag">Live System Interface</div>
+      <div class="slide-title">Live Platform Showcase: Knowledge Notebooks & Multi-Source RAG</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-showcase">
+        <div class="showcase-preview">
+          <img src="tut_ui_notebooks.png" onerror="this.src='images/tut_ui_notebooks.png'" alt="TuT AI Knowledge Platform Notebooks Dashboard">
+        </div>
+        <div class="showcase-cards-stack">
+          <div class="card card-compact">
+            <div class="card-badge badge-gold">Data Ingestion</div>
+            <div class="card-title">Multi-Source Knowledge Ingestion</div>
+            <ul>
+              <li><strong>Governmental PDFs & Decrees:</strong> Ingests large reports (e.g. WEF Global Risks 2024) and administrative manuals.</li>
+              <li><strong>Local Vectorization:</strong> Embeddings generated and searched 100% on local hardware.</li>
+            </ul>
+          </div>
+          <div class="card card-compact">
+            <div class="card-badge badge-cyan">Security & Isolation</div>
+            <div class="card-title">Departmental Notebook Sandboxing</div>
+            <ul>
+              <li><strong>Confidential Workspaces:</strong> Dedicated isolated notebooks (<code>dsc</code>, <code>klh</code>, <code>arfa</code>, <code>eg</code>).</li>
+              <li><strong>Zero Cross-Leakage:</strong> Multi-tenant database partitioning ensures strict privacy.</li>
+            </ul>
+          </div>
+          <div class="card card-compact">
+            <div class="card-badge badge-green">MCIT Provenance</div>
+            <div class="card-title">Sovereign National Attribution</div>
+            <ul>
+              <li><strong>Purpose-Built for Egypt:</strong> Tailored specifically for state ministry operations.</li>
+              <li><strong>Verified Attribution:</strong> Platform watermark: <em>"Developed by Eng Ahmed Arfa for MCIT"</em>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Live Agent Showcase -->
+    <div class="slide">
+      <div class="slide-tag">Conversational Intelligence</div>
+      <div class="slide-title">Live Agent Showcase: In-Chat Deck Generation & 3D Avatar</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-showcase">
+        <div class="showcase-preview cyan-border">
+          <img src="tut_ui_agent.png" onerror="this.src='images/tut_ui_agent.png'" alt="TuT Agent Conversational Workspace with 3D Holographic Avatar">
+        </div>
+        <div class="showcase-cards-stack">
+          <div class="card card-compact">
+            <div class="card-badge badge-gold">Sovereign Identity</div>
+            <div class="card-title">3D Holographic Sovereign Avatar</div>
+            <ul>
+              <li><strong>Interactive 3D Cartouche:</strong> High-tech King Tut persona embodying Egyptian pride.</li>
+              <li><strong>Dynamic State Reactivity:</strong> Visual feedback for retrieval, thinking, and code execution.</li>
+            </ul>
+          </div>
+          <div class="card card-compact">
+            <div class="card-badge badge-cyan">DeckCraft Engine</div>
+            <div class="card-title">In-Chat Autonomous Presentation Engine</div>
+            <ul>
+              <li><strong>Natural Arabic Prompting:</strong> Direct prompt-to-presentation generation pipeline.</li>
+              <li><strong>True Editable .pptx:</strong> Produces formatted PowerPoint files directly in conversation.</li>
+            </ul>
+          </div>
+          <div class="card card-compact">
+            <div class="card-badge badge-green">GPU Acceleration</div>
+            <div class="card-title">Pinned Local Gemma 4 Engine</div>
+            <ul>
+              <li><strong>NVIDIA RTX GPU:</strong> Pinned Gemma 4 e4b weights for instant first-token velocity.</li>
+              <li><strong>100% Offline:</strong> Full privacy without data passing through third-party servers.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Technical Breakthroughs -->
+    <div class="slide">
+      <div class="slide-tag">Engineering Rigor</div>
+      <div class="slide-title">Technical Breakthroughs: 131k Context & GPU Acceleration</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-3">
+        <div class="card">
+          <div class="card-badge badge-cyan">Model Capacity</div>
+          <div class="card-title">131k Context Window</div>
+          <ul>
+            <li>PostgreSQL tables unlocked to 131,072 context tokens.</li>
+            <li>16,384 maximum output tokens for exhaustive document generation.</li>
+            <li>Eliminates memory truncation: Ingest entire decree books without losing context.</li>
+            <li>Reasoning mode: 'pro' with 8,192 dedicated thinking budget.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Velocity</div>
+          <div class="card-title">NVIDIA RTX 4050 GPU</div>
+          <ul>
+            <li>Pinned local gemma4:e4b weights in dedicated 5.1 GB GPU VRAM.</li>
+            <li>Configured keep_alive: '-1' to completely eliminate cold-start unloading.</li>
+            <li>Instant response velocity: First token streamed in milliseconds.</li>
+            <li>Optimized for smooth pair programming and multi-turn conversational agents.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">Resilience</div>
+          <div class="card-title">Self-Healing Stack</div>
+          <ul>
+            <li>11 isolated Docker services: Agent, Platform, ONLYOFFICE, SurrealDB, Postgres, Redis, Kokoro.</li>
+            <li>Built-in runtime self-patching in startServer.js guarantees TRPC stability on container boot.</li>
+            <li>Turnkey 1-click bootstrap scripts (.ps1 and .sh) launch the full ecosystem in under 15 seconds.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: The Development Journey -->
+    <div class="slide">
+      <div class="slide-tag">Engineering Milestones</div>
+      <div class="slide-title">The Development Journey: 4 Evolutionary Phases</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-2">
+        <div class="card">
+          <div class="card-badge badge-gold">Phase 1: Inception</div>
+          <div class="card-title">1. Foundation & Sovereign Identity</div>
+          <ul>
+            <li>Transitioned away from generic third-party code to 100% Egyptian sovereign platform.</li>
+            <li>Engineered the TuT AI identity: 10 historical personas & 3D holographic cartouche.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-cyan">Phase 2: Architecture</div>
+          <div class="card-title">2. Core Engines & Resilient Fixes</div>
+          <ul>
+            <li>Engineered the 3 pillars: Deep Summarization, DeckCraft (.pptx), and VectorCraft (infographics).</li>
+            <li>Resolved TRPC runtime crashes via intelligent local Ollama fallback proxy.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">Phase 3: Intelligence</div>
+          <div class="card-title">3. Model Intelligence & GPU Velocity</div>
+          <ul>
+            <li>Unlocked database to 131,072 context tokens, 16,384 output tokens, and 'pro' reasoning.</li>
+            <li>Pinned gemma4:e4b into NVIDIA RTX 4050 GPU VRAM (keep_alive: '-1') for instant streaming.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Phase 4: Production</div>
+          <div class="card-title">4. Turnkey Production & GitHub Release</div>
+          <ul>
+            <li>Built self-healing Docker architecture and turnkey 1-click setup scripts (.ps1 and .sh).</li>
+            <li>Integrated ONLYOFFICE document server and published full production repo to GitHub.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Strategic Impact -->
+    <div class="slide">
+      <div class="slide-tag">Institutional Value</div>
+      <div class="slide-title">Strategic & Economic Impact for MCIT & Government</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-3">
+        <div class="card">
+          <div class="card-badge badge-green">Sovereignty</div>
+          <div class="card-title">100% Data Sovereignty</div>
+          <ul>
+            <li>Zero cloud leakage: Classified ministerial files remain within the state firewall.</li>
+            <li>Full compliance with national cybersecurity and data protection frameworks.</li>
+            <li>Immune to foreign sanctions, cloud pricing hikes, or global connection blackouts.</li>
+            <li>Total ownership of code, weights, data, and fine-tuned models.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Productivity</div>
+          <div class="card-title">10x Operational Speed</div>
+          <ul>
+            <li>Reduces 4-hour document reading to a 30-second verified executive summary.</li>
+            <li>Eliminates external design delays: Generates ready-to-present PowerPoint decks on demand.</li>
+            <li>Instant ONLYOFFICE co-editing: Staff collaborate inside the platform without license costs.</li>
+            <li>Empowers leadership with real-time strategic briefs during meetings.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-cyan">Cost Efficiency</div>
+          <div class="card-title">Zero Recurring SaaS</div>
+          <ul>
+            <li>No per-seat licensing fees (saving thousands of dollars annually on Copilot / ChatGPT Plus).</li>
+            <li>Runs on existing departmental GPUs and workstations without expensive cloud clusters.</li>
+            <li>Built on robust open-source foundations (SurrealDB, ParadeDB, Next.js, Fastify).</li>
+            <li>Future-proof modularity: swap underlying open models seamlessly.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Future Roadmap -->
+    <div class="slide">
+      <div class="slide-tag">Evolution</div>
+      <div class="slide-title">Strategic Future Roadmap: Expanding TuT AI</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-2">
+        <div class="card">
+          <div class="card-badge badge-cyan">Speed</div>
+          <div class="card-title">1. Ultra-Fast Inference via vLLM</div>
+          <ul>
+            <li>Integrate containerized vLLM with PagedAttention to achieve 60–80+ tokens/sec on RTX GPUs.</li>
+            <li>Support concurrent multi-user streaming for entire ministerial departments.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Specialization</div>
+          <div class="card-title">2. Egyptian Administrative LoRA Fine-Tuning</div>
+          <ul>
+            <li>Fine-tune specialized LoRA adapters on official ministerial circulars, decrees, and laws.</li>
+            <li>Guarantees 100% authentic Egyptian administrative protocol and terminology.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">Vision</div>
+          <div class="card-title">3. Multimodal Vision for Scanned PDFs</div>
+          <ul>
+            <li>Deploy Qwen2-VL or Llama-3.2-Vision to process historical Arabic manuscripts, stamps, and blueprints.</li>
+            <li>Direct table extraction from paper scans directly into Excel and charts.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-cyan">Multi-Agent</div>
+          <div class="card-title">4. Autonomous Multi-Agent Swarms</div>
+          <ul>
+            <li>Autonomous delegation: Thoth researches, Imhotep audits data, and TuT delivers the final slides.</li>
+            <li>Zero human micromanagement on complex multi-step state projects.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Leadership & Team -->
+    <div class="slide">
+      <div class="slide-tag">People & Governance</div>
+      <div class="slide-title">Project Leadership & Development Team</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-2">
+        <!-- Ministry Supervision -->
+        <div class="card" style="border-color: var(--gold);">
+          <div class="card-badge badge-gold">MINISTRY HEADS & SUPERVISION</div>
+          <div class="card-title">Leadership & Guidance</div>
+          <div style="margin-top: 15px;">
+            <div class="person-row">
+              <span style="font-size: 16px;">🎖️</span>
+              <div class="person-name" style="font-size: 15px;">Dr. Mohamed Rehan</div>
+            </div>
+            <div class="person-row">
+              <span style="font-size: 16px;">🎖️</span>
+              <div class="person-name" style="font-size: 15px;">Eng. Reham Metwally</div>
+            </div>
+            <div class="person-row">
+              <span style="font-size: 16px;">🎖️</span>
+              <div class="person-name" style="font-size: 15px;">Eng. Mohamed Khalid Mohamed Roshdy</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Development Team -->
+        <div class="card" style="border-color: var(--cyan);">
+          <div class="card-badge badge-cyan">ENGINEERING & DEVELOPMENT TEAM</div>
+          <div class="card-title">TuT AI Core Team</div>
+          <div style="margin-top: 10px;">
+            <!-- Ahmed Gamal Sophi Arfa ALWAYS FIRST -->
+            <div class="person-row person-lead">
+              <span style="font-size: 16px;">⭐</span>
+              <div class="person-name lead-name" style="font-size: 14.5px;">Ahmed Gamal Sophi Arfa (Project Lead)</div>
+            </div>
+            <div class="person-row">
+              <span>•</span>
+              <div class="person-name">Abdelrhman Mahmoud Fawzy</div>
+            </div>
+            <div class="person-row">
+              <span>•</span>
+              <div class="person-name">Saja Raafat Gaber</div>
+            </div>
+            <div class="person-row">
+              <span>•</span>
+              <div class="person-name">Mohamed Hamdy Abdelazez</div>
+            </div>
+            <div class="person-row">
+              <span>•</span>
+              <div class="person-name">Asmaa Samy Hagag</div>
+            </div>
+            <div class="person-row">
+              <span>•</span>
+              <div class="person-name">Mohamed Abd elhgani el kwatihy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Conclusion -->
+    <div class="slide cover-slide">
+      <div class="cover-meta">Sovereignty is Not an Option — It is Our Foundation</div>
+      <div class="cover-title">TuT AI is Ready for <span>State Deployment</span></div>
+      <div class="cover-sub">Securing national administrative sovereignty, autonomous PowerPoint creation, deep document summarization, and vector infographics on local Egyptian hardware.</div>
+      <div class="cover-lead" style="font-size: 15px; line-height: 1.8;">
+        GitHub Repository: <a href="https://github.com/AhmdArFa/TuT-AI" target="_blank" style="color: var(--cyan);">github.com/AhmdArFa/TuT-AI</a><br>
+        Local Access: <span style="color: var(--gold);">http://localhost:3210</span> (TuT Agent) | <span style="color: var(--gold);">http://localhost:8502</span> (Platform)
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      document.getElementById('slideNum').textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleFullscreen() {
+      const stage = document.getElementById('slideStage');
+      if (!document.fullscreenElement) {
+        stage.requestFullscreen().catch(err => alert(err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>
