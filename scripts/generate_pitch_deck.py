@@ -1,0 +1,612 @@
+import os
+import sys
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.enum.shapes import MSO_SHAPE
+
+def create_presentation():
+    prs = Presentation()
+    # Widescreen 16:9
+    prs.slide_width = Inches(13.333)
+    prs.slide_height = Inches(7.5)
+    blank_layout = prs.slide_layouts[6]
+
+    # Colors
+    c_bg = RGBColor(10, 14, 23)        # #0A0E17 Deep Midnight Obsidian
+    c_card = RGBColor(17, 24, 39)      # #111827 Dark Card
+    c_card_inner = RGBColor(23, 32, 51)# #172033 Card inner
+    c_gold = RGBColor(212, 175, 55)    # #D4AF37 Royal Egyptian Gold
+    c_gold_light = RGBColor(245, 214, 115) # #F5D673 Soft Gold
+    c_cyan = RGBColor(56, 189, 248)    # #38BDF8 Electric Cyan
+    c_green = RGBColor(52, 211, 153)   # #34D399 Mint Green
+    c_white = RGBColor(248, 250, 252)  # #F8FAFC Crisp White
+    c_muted = RGBColor(148, 163, 184)  # #94A3B8 Silver Gray
+
+    def add_bg(slide):
+        bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), prs.slide_width, prs.slide_height)
+        bg.fill.solid()
+        bg.fill.fore_color.rgb = c_bg
+        bg.line.fill.background()
+        return bg
+
+    def add_top_bar(slide, title_text, category="TuT AI — SOVEREIGN INTELLIGENCE PLATFORM"):
+        # Category tag
+        cat_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.7), Inches(0.4))
+        tf = cat_box.text_frame
+        tf.word_wrap = True
+        p = tf.paragraphs[0]
+        p.text = category.upper()
+        p.font.name = "Arial"
+        p.font.size = Pt(11)
+        p.font.bold = True
+        p.font.color.rgb = c_gold
+
+        # Main Title
+        title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.75), Inches(11.7), Inches(0.7))
+        tf2 = title_box.text_frame
+        tf2.word_wrap = True
+        p2 = tf2.paragraphs[0]
+        p2.text = title_text
+        p2.font.name = "Arial"
+        p2.font.size = Pt(24)
+        p2.font.bold = True
+        p2.font.color.rgb = c_white
+
+        # Divider line
+        line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.5), Inches(11.733), Inches(0.02))
+        line.fill.solid()
+        line.fill.fore_color.rgb = c_gold
+        line.line.fill.background()
+
+    def add_card(slide, left, top, width, height, title, items, badge="", accent_color=c_gold):
+        card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, width, height)
+        card.fill.solid()
+        card.fill.fore_color.rgb = c_card
+        card.line.color.rgb = accent_color
+        card.line.width = Pt(1.2)
+
+        tf = card.text_frame
+        tf.word_wrap = True
+        tf.margin_left = Inches(0.25)
+        tf.margin_right = Inches(0.25)
+        tf.margin_top = Inches(0.25)
+        tf.margin_bottom = Inches(0.2)
+
+        if badge:
+            p_badge = tf.paragraphs[0]
+            p_badge.text = badge.upper()
+            p_badge.font.name = "Arial"
+            p_badge.font.size = Pt(10)
+            p_badge.font.bold = True
+            p_badge.font.color.rgb = accent_color
+            p_badge.space_after = Pt(4)
+            p_title = tf.add_paragraph()
+        else:
+            p_title = tf.paragraphs[0]
+
+        p_title.text = title
+        p_title.font.name = "Arial"
+        p_title.font.size = Pt(16)
+        p_title.font.bold = True
+        p_title.font.color.rgb = c_white
+        p_title.space_after = Pt(10)
+
+        for itm in items:
+            p = tf.add_paragraph()
+            p.text = f"•  {itm}"
+            p.font.name = "Arial"
+            p.font.size = Pt(12)
+            p.font.color.rgb = c_muted
+            p.space_after = Pt(6)
+
+        return card
+
+    # =========================================================================
+    # SLIDE 1: COVER
+    # =========================================================================
+    s1 = prs.slides.add_slide(blank_layout)
+    add_bg(s1)
+
+    # Accent decorative box
+    gold_bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.8), Inches(0.12), Inches(3.8))
+    gold_bar.fill.solid()
+    gold_bar.fill.fore_color.rgb = c_gold
+    gold_bar.line.fill.background()
+
+    tb = s1.shapes.add_textbox(Inches(1.2), Inches(1.6), Inches(11), Inches(4))
+    tf = tb.text_frame
+    tf.word_wrap = True
+
+    p_badge = tf.paragraphs[0]
+    p_badge.text = "MINISTRY OF COMMUNICATIONS AND INFORMATION TECHNOLOGY (MCIT)"
+    p_badge.font.name = "Arial"
+    p_badge.font.size = Pt(12)
+    p_badge.font.bold = True
+    p_badge.font.color.rgb = c_gold
+    p_badge.space_after = Pt(12)
+
+    p_main = tf.add_paragraph()
+    p_main.text = "TuT AI: Sovereign Local AI Platform"
+    p_main.font.name = "Arial"
+    p_main.font.size = Pt(42)
+    p_main.font.bold = True
+    p_main.font.color.rgb = c_white
+    p_main.space_after = Pt(10)
+
+    p_sub = tf.add_paragraph()
+    p_sub.text = "Strategic Pitch Deck — 100% Offline National Intelligence, Deep Summarization, Autonomous Presentations & Vector Infographics"
+    p_sub.font.name = "Arial"
+    p_sub.font.size = Pt(18)
+    p_sub.font.color.rgb = c_cyan
+    p_sub.space_after = Pt(28)
+
+    p_lead = tf.add_paragraph()
+    p_lead.text = "Project Lead: Ahmed Gamal Sophi Arfa | Under the Supervision of MCIT Leadership"
+    p_lead.font.name = "Arial"
+    p_lead.font.size = Pt(13)
+    p_lead.font.bold = True
+    p_lead.font.color.rgb = c_gold_light
+
+    # =========================================================================
+    # SLIDE 2: THE PROBLEM & SOVEREIGN IMPERATIVE
+    # =========================================================================
+    s2 = prs.slides.add_slide(blank_layout)
+    add_bg(s2)
+    add_top_bar(s2, "The Strategic Imperative: Why Sovereign Local AI Matters", "Challenge & Opportunity")
+
+    add_card(s2, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "1. Severe Data Security Risks",
+             [
+                 "Relying on foreign commercial clouds (OpenAI, Claude) means confidential state data leaves Egypt.",
+                 "Strict government data laws forbid storing ministerial decrees and citizen archives abroad.",
+                 "Risk of third-party model retraining on sensitive Egyptian intellectual property.",
+                 "Cloud services remain vulnerable to international outages, embargoes, and rate limits."
+             ],
+             badge="Vulnerability", accent_color=RGBColor(239, 68, 68))
+
+    add_card(s2, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "2. The Document Bottleneck",
+             [
+                 "Ministries process thousands of 100+ page technical specs, legal decrees, and briefs daily.",
+                 "Human summarization takes hours or days, causing executive bottlenecks in decision-making.",
+                 "Building slide presentations and executive infographics requires multiple manual designers.",
+                 "High recurring SaaS subscription fees for disparate design and AI editing platforms."
+             ],
+             badge="Operational Friction", accent_color=RGBColor(245, 158, 11))
+
+    add_card(s2, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "3. The TuT AI Breakthrough",
+             [
+                 "100% On-Premise, Air-Gapped execution on local Egyptian infrastructure.",
+                 "Zero cloud transmission — works completely offline without internet connectivity.",
+                 "Unifies deep research, document drafting, slides, and spreadsheet audit in one single sign-on.",
+                 "Maximizes local hardware via dedicated NVIDIA GPU acceleration."
+             ],
+             badge="Sovereign Solution", accent_color=c_green)
+
+    # =========================================================================
+    # SLIDE 3: THREE CORE POWERHOUSES
+    # =========================================================================
+    s3 = prs.slides.add_slide(blank_layout)
+    add_bg(s3)
+    add_top_bar(s3, "TuT AI Core Engine: Three Deliverable Powerhouses", "Platform Capabilities")
+
+    add_card(s3, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "📑 Deep Summarization",
+             [
+                 "Ingests 100+ page PDFs, Word docs, decrees, and raw spreadsheets into local notebooks.",
+                 "Hierarchical multi-tier synthesis: Executive Brief, Chapter Breakdown, and Key Deliverables.",
+                 "Grounded passage citations: Every bullet point is bound to exact numbered passage references.",
+                 "Guaranteed Zero-Hallucination via local vector and full-text hybrid RAG retrieval."
+             ],
+             badge="Research Engine", accent_color=c_cyan)
+
+    add_card(s3, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "📊 Autonomous Presentations",
+             [
+                 "Prompts in natural language directly generate complete 12+ slide PowerPoint decks (.pptx).",
+                 "DeckCraft local engine with strict MCIT branding, Nohemi typography, and royal gold accents.",
+                 "5-pass automated layout audit loop fixes text overflow, card alignment, and visual balance.",
+                 "Direct download in chat & instant editing via integrated ONLYOFFICE Document Server."
+             ],
+             badge="DeckCraft Studio", accent_color=c_gold)
+
+    add_card(s3, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "🎨 Vector Infographics",
+             [
+                 "Translates complex metrics, policy timelines, and architectures into visual sketchnotes.",
+                 "VectorCraft engine integrates Open Doodles, structured flowchart arrows, and metric badges.",
+                 "High-resolution exports in PNG, scalable SVG, and print-ready vector PDF.",
+                 "Instantly embeds into official ministerial publications and social media briefs."
+             ],
+             badge="VectorCraft Studio", accent_color=c_green)
+
+    # =========================================================================
+    # SLIDE 4: DEEP DIVE: SUMMARIZATION
+    # =========================================================================
+    s4 = prs.slides.add_slide(blank_layout)
+    add_bg(s4)
+    add_top_bar(s4, "Pillar 1: Intelligent Deep Summarization Engine", "Core Feature Deep-Dive")
+
+    add_card(s4, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "Multi-Source Knowledge Digestion",
+             [
+                 "Omni-Channel Ingestion: Scanned and text PDFs, Word (.docx), Excel spreadsheets, audio transcripts, and HTML portals.",
+                 "Local Chunking & Vectorization: Embeddings generated on-premise using nomic-embed-text via local Ollama bridge.",
+                 "SurrealDB Account Isolation: Each ministry department and user operates in a segregated, sandboxed database.",
+                 "Lightning Synthesis: Synthesizes complex multi-volume reports into an executive brief in under 20 seconds."
+             ],
+             badge="Architecture", accent_color=c_cyan)
+
+    add_card(s4, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "Grounded Trust & Zero-Hallucination",
+             [
+                 "Numbered Citation System: Summary sentences display [1], [2] clickable references pointing back to the exact passage.",
+                 "Context-Locked LLM: The model is strictly instructed to answer only from verified retrieved passages.",
+                 "Executive Summary Tiers: Switch between a 1-page High-Level Digest, a 5-page Comprehensive Study, or a Table of Deliverables.",
+                 "Arabic & English Mastery: Full bilingual comprehension of complex Egyptian administrative and legal phrasing."
+             ],
+             badge="Verification", accent_color=c_gold)
+
+    # =========================================================================
+    # SLIDE 5: DEEP DIVE: PRESENTATION ENGINE
+    # =========================================================================
+    s5 = prs.slides.add_slide(blank_layout)
+    add_bg(s5)
+    add_top_bar(s5, "Pillar 2: Autonomous PowerPoint Presentation Engine", "Core Feature Deep-Dive")
+
+    add_card(s5, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "End-to-End In-Chat Generation",
+             [
+                 "Natural Language Prompting: Ask TuT Agent: 'Create a 12-slide presentation on Egypt Vision 2030 digital pillars'.",
+                 "Local MCP Protocol: Agent invokes the local deck generator tool via Model Context Protocol (MCP) in real-time.",
+                 "Production Deck Output: Produces a genuine, fully editable .pptx file (5+ MB) directly in the conversation stream.",
+                 "Instant ONLYOFFICE Editing: Click to open in port :8082 without needing Microsoft Office installed on the PC."
+             ],
+             badge="Conversational Flow", accent_color=c_gold)
+
+    add_card(s5, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "DeckCraft Design & Audit Pipeline",
+             [
+                 "Approved MCIT Typography: Automatically embeds Nohemi headings, Libre Franklin body, and Inter covers.",
+                 "Royal Obsidian Theme: High-contrast midnight obsidian background with royal Egyptian gold framing (#D4AF37).",
+                 "Multi-Slide Typology: Hero cover slides, 3-pillar metric cards, timeline roadmaps, and closing executive summaries.",
+                 "Automated Layout Audit: Self-healing loop inspects slide text lengths and refactors cards to ensure zero visual overlap."
+             ],
+             badge="Design Rigor", accent_color=c_cyan)
+
+    # =========================================================================
+    # SLIDE 6: DEEP DIVE: INFOGRAPHICS STUDIO
+    # =========================================================================
+    s6 = prs.slides.add_slide(blank_layout)
+    add_bg(s6)
+    add_top_bar(s6, "Pillar 3: VectorCraft Infographics Studio", "Core Feature Deep-Dive")
+
+    add_card(s6, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "Visualizing Abstract Governmental Data",
+             [
+                 "From Numbers to Art: Transforms dry tables and statistical metrics into intuitive visual sketchnotes.",
+                 "Process & Flow Mapping: Automatically draws sequential arrows, milestone containers, and dependency diagrams.",
+                 "Open Doodles & Custom Vector Icons: Integrates approved human-centric vector doodles for friendly, modern appeal.",
+                 "Responsive Layouts: Generates square, portrait, and landscape compositions adapted for print, web, or mobile."
+             ],
+             badge="Visual Design", accent_color=c_green)
+
+    add_card(s6, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "Multi-Format Sovereign Export",
+             [
+                 "Vector SVG Export: Infinitely scalable vector art suitable for billboards, official banners, and web publication.",
+                 "Ultra-HD PNG: High-DPI raster output for seamless embedding into Word reports, executive PDFs, and emails.",
+                 "Print-Ready PDF: Vector PDF output matching international A4 / A3 print standards.",
+                 "Zero Cloud Dependency: All rendering done via local Node.js VectorCraft engine inside Docker container."
+             ],
+             badge="Production Formats", accent_color=c_gold)
+
+    # =========================================================================
+    # SLIDE 7: TECHNICAL ARCHITECTURE & SPEED
+    # =========================================================================
+    s7 = prs.slides.add_slide(blank_layout)
+    add_bg(s7)
+    add_top_bar(s7, "Technical Breakthroughs: 131k Context & GPU Acceleration", "Engineering Rigor")
+
+    add_card(s7, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "131k Context Window",
+             [
+                 "PostgreSQL database tables unlocked to 131,072 context tokens.",
+                 "16,384 maximum output tokens for exhaustive document generation.",
+                 "Eliminates memory truncation: Ingest entire decree books without losing context.",
+                 "Reasoning mode: 'pro' with 8,192 dedicated thinking budget."
+             ],
+             badge="Model Capacity", accent_color=c_cyan)
+
+    add_card(s7, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "NVIDIA RTX 4050 GPU VRAM",
+             [
+                 "Pinned local gemma4:e4b weights in dedicated 5.1 GB GPU VRAM.",
+                 "Configured keep_alive: '-1' to completely eliminate cold-start unloading.",
+                 "Instant response velocity: First token streamed in milliseconds.",
+                 "Optimized for smooth pair programming and multi-turn conversational agents."
+             ],
+             badge="Velocity", accent_color=c_gold)
+
+    add_card(s7, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "Self-Healing Docker Stack",
+             [
+                 "11 isolated Docker services: Agent, Platform, ONLYOFFICE, SurrealDB, Postgres, Redis, Kokoro.",
+                 "Built-in runtime self-patching in startServer.js guarantees TRPC stability on container boot.",
+                 "Turnkey 1-click bootstrap scripts (.ps1 and .sh) launch the full ecosystem in under 15 seconds.",
+                 "All source code versioned on GitHub: AhmdArFa/TuT-AI."
+             ],
+             badge="Resilience", accent_color=c_green)
+
+    # =========================================================================
+    # SLIDE 8: EGYPTIAN SOVEREIGN PERSONAS
+    # =========================================================================
+    s8 = prs.slides.add_slide(blank_layout)
+    add_bg(s8)
+    add_top_bar(s8, "Egyptian Sovereign Persona Suite & Cultural Alignment", "Identity & Heritage")
+
+    add_card(s8, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "10 Sovereign Egyptian Historical Personas",
+             [
+                 "Rooted in Heritage: Completely replaced generic western AI branding with iconic figures of Egyptian history.",
+                 "King Tut: The Sovereign Prime Agent — strategic leadership, presentation compiler, and executive director.",
+                 "Imhotep: Chief Architect & Engineer — data structures, code analysis, mathematical auditing, and spreadsheets.",
+                 "Thoth: The Scribe of Wisdom — research synthesis, deep summarization, document validation, and historical records.",
+                 "Horus, Akhenaten, Nefertiti: Specialized defense, governance, and administrative communication agents."
+             ],
+             badge="Persona Gallery", accent_color=c_gold)
+
+    add_card(s8, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+             "Holographic 3D Portrait & Quick-Switcher",
+             [
+                 "3D Transparent Holographic Avatar: Modeled with an obsidian cartouche and royal gold illuminated rim.",
+                 "1-Click Avatar Switcher: A dedicated horizontal selector bar in the header allows instantaneous switching between all 10 personas.",
+                 "Universal Synchronization: Switching the persona synchronizes the avatar, role title, system prompt, and greeting across all platform agents.",
+                 "No-Permission Blockers: Fully editable and clickable for all team members."
+             ],
+             badge="User Experience", accent_color=c_cyan)
+
+    # =========================================================================
+    # SLIDE 9: STRATEGIC IMPACT FOR MCIT
+    # =========================================================================
+    s9 = prs.slides.add_slide(blank_layout)
+    add_bg(s9)
+    add_top_bar(s9, "Strategic & Economic Impact for MCIT & Government", "Institutional Value")
+
+    add_card(s9, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "100% Data Sovereignty",
+             [
+                 "Zero cloud leakage: Classified ministerial files remain within the state firewall.",
+                 "Full compliance with national cybersecurity and data protection frameworks.",
+                 "Immune to foreign sanctions, cloud pricing hikes, or global connection blackouts.",
+                 "Total ownership of code, weights, data, and fine-tuned domain models."
+             ],
+             badge="Sovereignty", accent_color=c_green)
+
+    add_card(s9, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "10x Operational Speed",
+             [
+                 "Reduces 4-hour document reading to a 30-second verified executive summary.",
+                 "Eliminates external design delays: Generates ready-to-present PowerPoint decks on demand.",
+                 "Instant ONLYOFFICE co-editing: Staff collaborate inside the platform without license costs.",
+                 "Empowers leadership with real-time strategic briefs during meetings."
+             ],
+             badge="Productivity", accent_color=c_gold)
+
+    add_card(s9, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "Zero Recurring SaaS Costs",
+             [
+                 "No per-seat licensing fees (saving thousands of dollars annually on Copilot / ChatGPT Plus).",
+                 "Runs on existing departmental GPUs and workstations without expensive cloud clusters.",
+                 "Built on robust open-source foundations (SurrealDB, ParadeDB, Next.js, Fastify).",
+                 "Future-proof modularity: swap underlying open models seamlessly."
+             ],
+             badge="Cost Efficiency", accent_color=c_cyan)
+
+    # =========================================================================
+    # SLIDE 10: FUTURE ROADMAP
+    # =========================================================================
+    s10 = prs.slides.add_slide(blank_layout)
+    add_bg(s10)
+    add_top_bar(s10, "Strategic Future Roadmap: Expanding TuT AI", "Evolution")
+
+    add_card(s10, Inches(0.8), Inches(1.8), Inches(5.7), Inches(2.4),
+             "1. Ultra-Fast Inference via vLLM",
+             [
+                 "Integrate containerized vLLM with PagedAttention to achieve 60–80+ tokens/sec on RTX GPUs.",
+                 "Support concurrent multi-user streaming for entire ministerial departments."
+             ],
+             badge="Speed", accent_color=c_cyan)
+
+    add_card(s10, Inches(6.8), Inches(1.8), Inches(5.7), Inches(2.4),
+             "2. Egyptian Governmental LoRA Fine-Tuning",
+             [
+                 "Fine-tune specialized LoRA adapters on official ministerial circulars, decrees, and laws.",
+                 "Guarantees 100% authentic Egyptian administrative protocol and terminology."
+             ],
+             badge="Specialization", accent_color=c_gold)
+
+    add_card(s10, Inches(0.8), Inches(4.4), Inches(5.7), Inches(2.4),
+             "3. Multimodal Vision for Scanned PDFs",
+             [
+                 "Deploy Qwen2-VL or Llama-3.2-Vision to process historical Arabic manuscripts, stamps, and blueprints.",
+                 "Direct table extraction from paper scans directly into Excel and charts."
+             ],
+             badge="Vision", accent_color=c_green)
+
+    add_card(s10, Inches(6.8), Inches(4.4), Inches(5.7), Inches(2.4),
+             "4. Autonomous Multi-Agent Swarms",
+             [
+                 "Autonomous delegation: Thoth researches, Imhotep audits data, and TuT delivers the final slides.",
+                 "Zero human micromanagement on complex multi-step state projects."
+             ],
+             badge="Multi-Agent", accent_color=RGBColor(245, 158, 11))
+
+    # =========================================================================
+    # SLIDE 11: LEADERSHIP & PROJECT TEAM
+    # =========================================================================
+    s11 = prs.slides.add_slide(blank_layout)
+    add_bg(s11)
+    add_top_bar(s11, "Project Leadership & Development Team", "People & Governance")
+
+    # Leadership Box
+    card_lead = s11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    card_lead.fill.solid()
+    card_lead.fill.fore_color.rgb = c_card
+    card_lead.line.color.rgb = c_gold
+    card_lead.line.width = Pt(1.5)
+
+    tf_lead = card_lead.text_frame
+    tf_lead.word_wrap = True
+    tf_lead.margin_left = Inches(0.3)
+    tf_lead.margin_top = Inches(0.3)
+
+    p = tf_lead.paragraphs[0]
+    p.text = "MINISTRY HEADS & SUPERVISION"
+    p.font.name = "Arial"
+    p.font.size = Pt(11)
+    p.font.bold = True
+    p.font.color.rgb = c_gold
+    p.space_after = Pt(8)
+
+    p = tf_lead.add_paragraph()
+    p.text = "Ministry Leadership & Guidance"
+    p.font.name = "Arial"
+    p.font.size = Pt(18)
+    p.font.bold = True
+    p.font.color.rgb = c_white
+    p.space_after = Pt(18)
+
+    supervisors = [
+        ("Dr. Mohamed Rehan", "Ministry Leadership & Project Sponsor"),
+        ("Eng. Reham Metwally", "Technical Oversight & Ministerial Direction"),
+        ("Eng. Mohamed Khalid Mohamed Roshdy", "Strategic Engineering & Systems Supervision")
+    ]
+
+    for name, title in supervisors:
+        p1 = tf_lead.add_paragraph()
+        p1.text = f"🎖️  {name}"
+        p1.font.name = "Arial"
+        p1.font.size = Pt(14)
+        p1.font.bold = True
+        p1.font.color.rgb = c_gold_light
+
+        p2 = tf_lead.add_paragraph()
+        p2.text = f"     {title}"
+        p2.font.name = "Arial"
+        p2.font.size = Pt(11)
+        p2.font.color.rgb = c_muted
+        p2.space_after = Pt(10)
+
+    # Team Box
+    card_team = s11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    card_team.fill.solid()
+    card_team.fill.fore_color.rgb = c_card
+    card_team.line.color.rgb = c_cyan
+    card_team.line.width = Pt(1.5)
+
+    tf_team = card_team.text_frame
+    tf_team.word_wrap = True
+    tf_team.margin_left = Inches(0.3)
+    tf_team.margin_top = Inches(0.3)
+
+    p = tf_team.paragraphs[0]
+    p.text = "ENGINEERING & DEVELOPMENT TEAM"
+    p.font.name = "Arial"
+    p.font.size = Pt(11)
+    p.font.bold = True
+    p.font.color.rgb = c_cyan
+    p.space_after = Pt(8)
+
+    p = tf_team.add_paragraph()
+    p.text = "TuT AI Core Contributors"
+    p.font.name = "Arial"
+    p.font.size = Pt(18)
+    p.font.bold = True
+    p.font.color.rgb = c_white
+    p.space_after = Pt(12)
+
+    team_members = [
+        ("Ahmed Gamal Sophi Arfa", "Project Lead & Core AI Architect (Lead)"),
+        ("Abdelrhman Mahmoud Fawzy", "Systems & Fullstack Engineer"),
+        ("Saja Raafat Gaber", "Data Engineering & Research Workflows"),
+        ("Mohamed Hamdy Abdelazez", "Backend & Integration Specialist"),
+        ("Asmaa Samy Hagag", "UI/UX & Frontend Platform Specialist"),
+        ("Mohamed Abd elhgani el kwatihy", "DevOps & Infrastructure Engineer")
+    ]
+
+    for name, role in team_members:
+        p1 = tf_team.add_paragraph()
+        is_lead = "Ahmed" in name
+        p1.text = f"{'⭐' if is_lead else '•'}  {name}"
+        p1.font.name = "Arial"
+        p1.font.size = Pt(12)
+        p1.font.bold = True
+        p1.font.color.rgb = c_gold if is_lead else c_white
+
+        p2 = tf_team.add_paragraph()
+        p2.text = f"     {role}"
+        p2.font.name = "Arial"
+        p2.font.size = Pt(10)
+        p2.font.color.rgb = c_muted
+        p2.space_after = Pt(4)
+
+    # =========================================================================
+    # SLIDE 12: CONCLUSION & CALL TO ACTION
+    # =========================================================================
+    s12 = prs.slides.add_slide(blank_layout)
+    add_bg(s12)
+
+    tb = s12.shapes.add_textbox(Inches(1.5), Inches(1.5), Inches(10.33), Inches(4.5))
+    tf = tb.text_frame
+    tf.word_wrap = True
+
+    p = tf.paragraphs[0]
+    p.text = "SOVEREIGNTY IS OUR FOUNDATION"
+    p.font.name = "Arial"
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = c_gold
+    p.alignment = PP_ALIGN.CENTER
+    p.space_after = Pt(16)
+
+    p = tf.add_paragraph()
+    p.text = "TuT AI is Ready for Institutional Deployment"
+    p.font.name = "Arial"
+    p.font.size = Pt(36)
+    p.font.bold = True
+    p.font.color.rgb = c_white
+    p.alignment = PP_ALIGN.CENTER
+    p.space_after = Pt(18)
+
+    p = tf.add_paragraph()
+    p.text = "Delivering national data security, autonomous PowerPoint presentations, deep document summarization, and vector infographics on local Egyptian hardware."
+    p.font.name = "Arial"
+    p.font.size = Pt(16)
+    p.font.color.rgb = c_cyan
+    p.alignment = PP_ALIGN.CENTER
+    p.space_after = Pt(32)
+
+    p = tf.add_paragraph()
+    p.text = "GitHub Repository: https://github.com/AhmdArFa/TuT-AI\nLocal Endpoints: http://localhost:3210 (TuT Agent) | http://localhost:8502 (Platform)"
+    p.font.name = "Arial"
+    p.font.size = Pt(14)
+    p.font.bold = True
+    p.font.color.rgb = c_gold_light
+    p.alignment = PP_ALIGN.CENTER
+
+    # Save to Desktop
+    desktop_path = r"C:\Users\abdoh\OneDrive\Documents\Desktop\TuT_AI_Marketing_Pitch_Deck.pptx"
+    prs.save(desktop_path)
+    print(f"SUCCESS: Saved presentation to {desktop_path}")
+
+    # Also save inside project docs
+    project_doc_path = r"C:\MCIT AI Final\docs\TuT_AI_Marketing_Pitch_Deck.pptx"
+    prs.save(project_doc_path)
+    print(f"SUCCESS: Saved copy to {project_doc_path}")
+
+if __name__ == "__main__":
+    create_presentation()
