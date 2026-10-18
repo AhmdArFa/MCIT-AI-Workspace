@@ -143,7 +143,7 @@ def create_presentation():
     p_sub.space_after = Pt(28)
 
     p_lead = tf.add_paragraph()
-    p_lead.text = "Project Lead: Ahmed Gamal Sophi Arfa | Under the Supervision of MCIT Leadership"
+    p_lead.text = "Principal Architect & Project Lead: Ahmed Gamal Sophi Arfa | Under the Supervision of MCIT Leadership"
     p_lead.font.name = "Arial"
     p_lead.font.size = Pt(13)
     p_lead.font.bold = True
@@ -530,17 +530,17 @@ def create_presentation():
     p.space_after = Pt(12)
 
     team_members = [
-        ("Ahmed Gamal Sophi Arfa", "Project Lead & Core AI Architect (Lead)"),
-        ("Abdelrhman Mahmoud Fawzy", "Systems & Fullstack Engineer"),
-        ("Saja Raafat Gaber", "Data Engineering & Research Workflows"),
-        ("Mohamed Hamdy Abdelazez", "Backend & Integration Specialist"),
-        ("Asmaa Samy Hagag", "UI/UX & Frontend Platform Specialist"),
-        ("Mohamed Abd elhgani el kwatihy", "DevOps & Infrastructure Engineer")
+        ("Ahmed Gamal Sophi Arfa", "Project Lead, Principal Architect & Full-Stack Creator (End-to-End Platform)"),
+        ("Abdelrhman Mahmoud Fawzy", "RAG Specialist (Retrieval-Augmented Generation & Vector Search)"),
+        ("Saja Raafat Gaber", "Infographics Specialist (VectorCraft Studio & Visual Storytelling)"),
+        ("Mohamed Hamdy Abdelazez", "Presentation Engine Specialist (DeckCraft & Slide Generation)"),
+        ("Asmaa Samy Hagag", "Presentation Design Specialist (DeckCraft & Slide Layouts)"),
+        ("Mohamed Abd elhgani el kwatihy", "RAG Pipeline Specialist (Knowledge Ingestion & Chunking)")
     ]
 
     for name, role in team_members:
         p1 = tf_team.add_paragraph()
-        is_lead = "Ahmed" in name
+        is_lead = "Ahmed Gamal Sophi Arfa" in name
         p1.text = f"{'⭐' if is_lead else '•'}  {name}"
         p1.font.name = "Arial"
         p1.font.size = Pt(12)
@@ -551,7 +551,7 @@ def create_presentation():
         p2.text = f"     {role}"
         p2.font.name = "Arial"
         p2.font.size = Pt(10)
-        p2.font.color.rgb = c_muted
+        p2.font.color.rgb = c_gold_light if is_lead else c_muted
         p2.space_after = Pt(4)
 
     # =========================================================================
