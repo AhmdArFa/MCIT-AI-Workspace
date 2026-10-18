@@ -1,32 +1,47 @@
 <p align="center">
-  <img src="mcit-logo.png" alt="Ministry of Communications and Information Technology (MCIT)" width="220" />
+  <img src="mcit-logo.png" alt="Ministry of Communications and Information Technology (MCIT)" width="260" />
 </p>
 
 <h1 align="center">TuT AI: Sovereign Local AI Platform</h1>
 
 <p align="center">
-  <b>100% Offline Sovereign Intelligence Workspace engineered for the Ministry of Communications and Information Technology (MCIT).</b><br/>
-  Deep Document Summarization, Autonomous PowerPoint Generation, Vector Infographics, and 3D Holographic Persona on Local Egyptian Infrastructure.
+  <b>100% Offline Sovereign Intelligence Workspace Engineered for the Ministry of Communications and Information Technology (MCIT).</b><br/>
+  Deep Document Summarization, Autonomous PowerPoint Generation, Vector Infographics, and 3D Holographic Cartouche on Local Egyptian Hardware.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Security-Private%20Repository-red.svg" alt="Private Repo" />
-  <img src="https://img.shields.io/badge/Data%20Privacy-100%25%20Air--Gapped%20%2F%20Offline-green.svg" alt="Air-Gapped" />
-  <img src="https://img.shields.io/badge/Context%20Window-131%2C072%20Tokens-blue.svg" alt="131k Context" />
-  <img src="https://img.shields.io/badge/GPU%20Acceleration-NVIDIA%20RTX%20VRAM%20Pinned-gold.svg" alt="GPU Accelerated" />
-  <img src="https://img.shields.io/badge/Organization-MCIT%20Egypt-purple.svg" alt="MCIT Egypt" />
+  <a href="https://github.com/MCIT-DEPI/DEPI-PPTX"><img src="https://img.shields.io/badge/Repository-MCIT--DEPI%20%2F%20DEPI--PPTX-111827?style=for-the-badge&logo=github&logoColor=D4AF37" alt="Repo" /></a>
+  <img src="https://img.shields.io/badge/Security-100%25%20Air--Gapped%20%2F%20Offline-059669?style=for-the-badge&logo=shield&logoColor=white" alt="Air-Gapped" />
+  <img src="https://img.shields.io/badge/Context%20Window-131%2C072%20Tokens-0284C7?style=for-the-badge&logo=probot&logoColor=white" alt="131k Context" />
+  <img src="https://img.shields.io/badge/GPU%20Acceleration-NVIDIA%20RTX%204050%20VRAM-76B900?style=for-the-badge&logo=nvidia&logoColor=white" alt="NVIDIA RTX" />
 </p>
+
+<p align="center">
+  <a href="#-executive-summary">Overview</a> •
+  <a href="#-project-leadership--governance">Leadership & Team</a> •
+  <a href="#-live-platform--agent-showcase">Live Showcase</a> •
+  <a href="#-the-three-core-powerhouses">Core Pillars</a> •
+  <a href="#️-the-development-journey">Development Journey</a> •
+  <a href="#-system-architecture">Architecture</a> •
+  <a href="#-quick-start--turnkey-deployment">Quick Start</a> •
+  <a href="#-official-pitch-deck-deliverables">Pitch Decks</a>
+</p>
+
+---
+
+> [!IMPORTANT]
+> **Complete Data Sovereignty Guaranteed:** All vector indexing, database storage, document compilation, and large language model inference run 100% locally on on-premise Egyptian infrastructure. Zero data packets ever leave the state firewall.
 
 ---
 
 ## 🏛️ Executive Summary
 
-**TuT AI** is Egypt's sovereign enterprise AI platform, purpose-built for the **Ministry of Communications and Information Technology (MCIT)**. Designed from the ground up to operate with zero cloud reliance, TuT AI guarantees complete data sovereignty, immune to external cloud outages, international pricing fluctuations, or data privacy compromises.
+**TuT AI** is Egypt's sovereign enterprise AI platform, purpose-built for the **Ministry of Communications and Information Technology (MCIT)** under the Digital Egypt Pioneers Initiative (DEPI). Designed from first principles to operate with zero commercial cloud dependency, TuT AI guarantees absolute data privacy, full immunity against foreign SaaS disruptions, and uncapped on-premise processing speed.
 
-Operating behind an air-gapped departmental perimeter, TuT AI delivers three mission-critical operational pillars:
-1. **Intelligent Deep Summarization (Hybrid RAG):** Digests 100+ page ministerial decrees, technical specifications, and legal reports into grounded executive briefs with numbered citations and zero hallucination.
-2. **Autonomous PowerPoint Presentation Engine (DeckCraft):** Direct in-chat prompting generates complete, fully editable `.pptx` decks matching official MCIT typography and midnight obsidian styling, integrated with ONLYOFFICE for live co-editing.
-3. **VectorCraft Infographics Studio:** Transforms complex ministerial datasets and policy timelines into clear visual sketchnotes, scalable vector art (SVG), and print-ready vector PDFs.
+### Core Deliverables at a Glance:
+- **📑 Pillar 1 — Intelligent Deep Summarization:** Ingests massive ministerial decrees, legal codes, and 100+ page reports into structured executive digests backed by verifiable, numbered passage citations `[1]`, `[2]`.
+- **📊 Pillar 2 — Autonomous PowerPoint Engine (DeckCraft):** In-chat natural language prompting generates complete, fully editable `.pptx` presentations styled with MCIT typography, royal gold framing, and automated layout auditing.
+- **🎨 Pillar 3 — VectorCraft Infographics Studio:** Automatically translates statistical metrics and policy timelines into clear visual sketchnotes, scalable vector art (`.svg`), and print-ready vector PDFs.
 
 ---
 
@@ -34,104 +49,94 @@ Operating behind an air-gapped departmental perimeter, TuT AI delivers three mis
 
 Under the auspices and strategic supervision of the **Ministry of Communications and Information Technology (MCIT)**:
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                      PEOPLE & GOVERNANCE                                │
-│                                                                        │
-│   MINISTRY HEADS & SUPERVISION        ENGINEERING & DEVELOPMENT TEAM   │
-│   ----------------------------        ------------------------------   │
-│   🎖️ Dr. Mohamed Rehan                 ⭐ Ahmed Gamal Sophi Arfa         │
-│   🎖️ Eng. Reham Metwally           
-│   🎖️ Eng. Mohamed Khalid              • Abdelrhman Mahmoud Fawzy       │
-│      Mohamed Roshdy                   • Saja Raafat Gaber              │
-│                                       • Mohamed Hamdy Abdelazez        │
-│                                       • Asmaa Samy Hagag               │
-│                                       • Mohamed Abd elhgani el kwatihy │
-└────────────────────────────────────────────────────────────────────────┘
-```
-
-### 🎖️ Ministry Supervision & Guidance
-- **Dr. Mohamed Rehan** — Ministry Leadership & Academic Oversight
-- **Eng. Reham Metwally** — Ministry Leadership & Technical Guidance
-- **Eng. Mohamed Khalid Mohamed Roshdy** — Ministry Leadership & Strategic Direction
+### 🎖️ Ministry Supervision & Strategic Guidance
+| Leader | Role & Responsibility | Institutional Affiliation |
+|---|---|---|
+| **Dr. Mohamed Rehan** | **Ministry Leadership & Academic Oversight** | Ministry of Communications and Information Technology (MCIT) |
+| **Eng. Reham Metwally** | **Ministry Leadership & Technical Guidance** | Ministry of Communications and Information Technology (MCIT) |
+| **Eng. Mohamed Khalid Mohamed Roshdy** | **Ministry Leadership & Strategic Direction** | Ministry of Communications and Information Technology (MCIT) |
 
 ### ⭐ TuT AI Core Engineering Team
-- **⭐ Ahmed Gamal Sophi Arfa** — **Project Lead & Principal System Architect**
-- **Abdelrhman Mahmoud Fawzy** — Core Team Engineer
-- **Saja Raafat Gaber** — Core Team Engineer
-- **Mohamed Hamdy Abdelazez** — Core Team Engineer
-- **Asmaa Samy Hagag** — Core Team Engineer
-- **Mohamed Abd elhgani el kwatihy** — Core Team Engineer
+| Engineer | Role & Contribution | Status |
+|---|---|---|
+| **⭐ Ahmed Gamal Sophi Arfa** | **Project Lead & Principal System Architect** | ⭐ **Lead** |
+| **Abdelrhman Mahmoud Fawzy** | Core Engineering Team | Member |
+| **Saja Raafat Gaber** | Core Engineering Team | Member |
+| **Mohamed Hamdy Abdelazez** | Core Engineering Team | Member |
+| **Asmaa Samy Hagag** | Core Engineering Team | Member |
+| **Mohamed Abd elhgani el kwatihy** | Core Engineering Team | Member |
 
 ---
 
 ## 📸 Live Platform & Agent Showcase
 
-### 1. TuT AI Knowledge Platform & Departmental Notebooks (`:8502`)
-*Multi-source knowledge ingestion, full-text vector embeddings, and sandboxed departmental workspaces.*
+### 1. TuT AI Knowledge Platform & Departmental Notebooks (`http://localhost:8502`)
+*Multi-source knowledge digestion, full-text vector embeddings, and sandboxed departmental notebooks.*
 
-![TuT AI Knowledge Platform](docs/images/tut_ui_notebooks.png)
+<p align="center">
+  <img src="docs/images/tut_ui_notebooks.png" alt="TuT AI Knowledge Platform Dashboard" width="880" />
+</p>
 
-- **Isolated Departmental Notebooks:** Dedicated sandboxed workspaces (`dsc`, `klh`, `arfa`, `eg`) ensuring complete zero-leakage security across administrative branches.
-- **Deep Document Ingestion:** Processes multi-volume governmental PDFs (such as WEF Global Risks Report 2024), Excel datasets, and Word documents in seconds.
-- **Official MCIT Provenance:** Verified system attribution: *"Developed by Eng Ahmed Arfa for MCIT"*.
+- **Departmental Notebook Sandboxing:** Dedicated isolated workspaces (`dsc`, `klh`, `arfa`, `eg`) guaranteeing strict account-level data segregation across departments.
+- **Multi-Source Knowledge Ingestion:** Digests complex multi-volume PDFs (such as the *WEF Global Risks Report 2024* shown above), Excel matrices, and official circulars in seconds.
+- **Sovereign Attribution:** Official platform watermark: *"Developed by Eng Ahmed Arfa for MCIT"*.
 
 ---
 
-### 2. TuT Agent Conversational Workspace (`:3210`)
+### 2. TuT Agent Conversational Workspace (`http://localhost:3210`)
 *3D Holographic Sovereign Avatar with in-chat autonomous presentation generation.*
 
-![TuT Agent Conversational Workspace](docs/images/tut_ui_agent.png)
+<p align="center">
+  <img src="docs/images/tut_ui_agent.png" alt="TuT Agent Conversational Workspace" width="880" />
+</p>
 
-- **3D Sovereign Cartouche:** Real-time 3D King Tut avatar blending Egyptian cultural pride with next-generation conversational AI.
-- **In-Chat DeckCraft Engine:** Translates natural Arabic prompts (e.g. *"اعمل بريزنتيشن عن التغير المناخي في مصر"*) directly into genuine, fully formatted PowerPoint decks (`.pptx`).
+- **3D Sovereign Cartouche:** Real-time 3D King Tut avatar blending Egyptian national pride with state-of-the-art conversational AI.
+- **In-Chat DeckCraft Engine:** Translates natural Arabic prompts (e.g. *"اعمل بريزنتيشن عن التغير المناخي في مصر وتاثيره علي الاقتصاد المصري"*) directly into genuine, fully formatted PowerPoint decks (`.pptx`).
 - **GPU VRAM Pinned Velocity:** Pinned local `Gemma 4 e4b` weights in dedicated NVIDIA RTX 4050 GPU VRAM (`keep_alive: -1`) for instantaneous first-token streaming.
 
 ---
 
 ## 🚀 The Three Core Powerhouses
 
-| Feature | Engine | Capabilities | Production Output |
+| Feature | Engine & Protocol | Operational Capabilities | Verified Deliverable |
 |---|---|---|---|
-| **📑 Deep Summarization** | **SurrealRAG & Hybrid Search** | • Ingests 100+ page PDFs, Word docs, Excel sheets.<br/>• Numbered inline citations `[1]`, `[2]` bound to exact passages.<br/>• Multi-tiered summaries: Executive Digest, Chapter Analysis, Action Matrix.<br/>• 100% Zero-Hallucination via context-locking. | Grounded Markdown, Interactive Chat, Exportable Briefs |
-| **📊 Autonomous Presentations** | **DeckCraft & MCP Protocol** | • Natural language prompting to finished slide decks.<br/>• Approved MCIT typography (Nohemi, Libre Franklin, Inter).<br/>• Royal Egyptian Gold (`#D4AF37`) & Midnight Obsidian palette.<br/>• 5-pass automated layout audit loop preventing text overlap. | Editable `.pptx`, Ultra-HD `.pdf`, ONLYOFFICE live editing |
+| **📑 Deep Summarization** | **SurrealRAG & Hybrid Search** | • Ingests 100+ page PDFs, Word documents, and spreadsheets.<br/>• Numbered inline citations `[1]`, `[2]` bound to exact passages.<br/>• Multi-tiered summaries: Executive Digest, Chapter Breakdown, Action Matrix.<br/>• Context-locked zero-hallucination verification. | Grounded Markdown, Interactive Chat, Official Briefs |
+| **📊 Autonomous Presentations** | **DeckCraft & MCP Protocol** | • Natural language prompt-to-presentation generation pipeline.<br/>• Approved MCIT typography (Nohemi headings, Libre Franklin body, Inter covers).<br/>• Royal Egyptian Gold (`#D4AF37`) & Midnight Obsidian palette.<br/>• 5-pass automated layout audit loop preventing text overlap. | Editable `.pptx`, Ultra-HD `.pdf`, ONLYOFFICE live editing |
 | **🎨 Vector Infographics** | **VectorCraft Studio** | • Turns numerical data and dry tables into visual sketchnotes.<br/>• Open Doodles and structured flowchart iconography.<br/>• Process flows, dependency timelines, and milestone cards.<br/>• Adapts dynamically to landscape, portrait, and square layouts. | Scalable Vector `.svg`, 300-DPI `.png`, Print-Ready `.pdf` |
 
 ---
 
 ## 🛠️ The Development Journey (مراحل التطوير)
 
-The evolution of TuT AI followed four structured engineering milestones:
+```mermaid
+flowchart LR
+    P1["<b>Phase 1: Inception</b><br/>• Sovereign Identity<br/>• 10 Historical Personas<br/>• 3D Holographic Avatar"] 
+    --> P2["<b>Phase 2: Architecture</b><br/>• 3 Core Deliverable Pillars<br/>• DeckCraft (.pptx) Engine<br/>• TRPC Fallback Proxy"]
+    --> P3["<b>Phase 3: Intelligence</b><br/>• 131k Context Tokens<br/>• 16k Output Tokens<br/>• RTX GPU VRAM Pinning"]
+    --> P4["<b>Phase 4: Production</b><br/>• 11 Docker Services<br/>• 1-Click Bootstrap Setup<br/>• DEPI-PPTX Release"]
 
+    style P1 fill:#111827,stroke:#D4AF37,stroke-width:2px,color:#fff
+    style P2 fill:#111827,stroke:#38BDF8,stroke-width:2px,color:#fff
+    style P3 fill:#111827,stroke:#34D399,stroke-width:2px,color:#fff
+    style P4 fill:#111827,stroke:#F59E0B,stroke-width:2px,color:#fff
 ```
-  ┌────────────────────────────────────────────────────────────────────────┐
-  │ Phase 1: Foundation & Sovereign Identity                               │
-  │ • Purged third-party code; built 100% Egyptian sovereign platform.     │
-  │ • Created TuT identity: 10 historical personas & 3D holographic avatar.│
-  └───────────────────────────────────┬────────────────────────────────────┘
-                                      │
-  ┌───────────────────────────────────▼────────────────────────────────────┐
-  │ Phase 2: Core Engines & Resilient Architecture                         │
-  │ • Built the 3 pillars: Deep Summarizer, DeckCraft (.pptx), VectorCraft.│
-  │ • Resolved TRPC runtime crashes via intelligent local Ollama fallback. │
-  └───────────────────────────────────┬────────────────────────────────────┘
-                                      │
-  ┌───────────────────────────────────▼────────────────────────────────────┐
-  │ Phase 3: Model Intelligence & GPU Velocity                             │
-  │ • Database unlocked to 131,072 context tokens & 16,384 output tokens.  │
-  │ • Pinned gemma4:e4b in NVIDIA RTX 4050 GPU VRAM for instant streaming. │
-  └───────────────────────────────────┬────────────────────────────────────┘
-                                      │
-  ┌───────────────────────────────────▼────────────────────────────────────┐
-  │ Phase 4: Turnkey Production & GitHub Release                           │
-  │ • Self-healing 11-container Docker stack with 1-click bootstrap scripts│
-  │ • Integrated ONLYOFFICE suite & published production release to GitHub.│
-  └────────────────────────────────────────────────────────────────────────┘
-```
+
+1. **Phase 1: Foundation & Sovereign Identity:**
+   - Eliminated reliance on generic third-party codebases to engineer a 100% Egyptian sovereign platform.
+   - Built the TuT AI identity: 10 historical personas, 3D cartouche, and approved MCIT branding.
+2. **Phase 2: Core Engines & Resilient Fixes:**
+   - Engineered the 3 core powerhouses: Deep Summarization, DeckCraft (.pptx), and VectorCraft (infographics).
+   - Resolved boot-time TRPC handshake crashes through an intelligent local Ollama fallback proxy.
+3. **Phase 3: Model Intelligence & GPU Velocity:**
+   - Unlocked PostgreSQL and model configuration tables to 131,072 context tokens and 16,384 output tokens.
+   - Pinned `gemma4:e4b` into NVIDIA RTX 4050 GPU VRAM (`keep_alive: -1`) for instantaneous token streaming.
+4. **Phase 4: Turnkey Production & DEPI Release:**
+   - Built a self-healing 11-container Docker architecture with turnkey 1-click bootstrap scripts (`.ps1` and `.sh`).
+   - Integrated ONLYOFFICE document server and published the production release to `MCIT-DEPI/DEPI-PPTX`.
 
 ---
 
-## ⚡ Technical Breakthroughs & Architecture
+## ⚡ System Architecture
 
 ```
                     Local Browser / Ministerial Client
@@ -149,10 +154,10 @@ The evolution of TuT AI followed four structured engineering milestones:
       SurrealDB (Isolated Departmental DBs) ◄──► Local Ollama Bridge (NVIDIA RTX 4050)
 ```
 
-- **131,072 Context Tokens:** Fully unlocked PostgreSQL and model configuration tables enable digesting entire ministerial code books without context truncation.
-- **16,384 Output Tokens:** Uncapped generation budget allows synthesizing exhaustive multi-chapter whitepapers and complete slide decks in a single execution pass.
-- **Sub-Second First Token:** Dedicated GPU VRAM allocation (`keep_alive: -1`) keeps model weights resident in GPU memory, eliminating cold starts.
-- **Self-Healing Docker Architecture:** 11 microservices with automatic runtime monkey-patching in `startServer.js` preventing boot-time TRPC handshake failures.
+- **131,072 Context Window:** Ingests entire decree books and multi-volume national laws without truncation.
+- **16,384 Output Tokens:** Uncapped generation budget permits drafting exhaustive multi-chapter whitepapers and complete slide decks in a single pass.
+- **Sub-Second Streaming:** GPU memory residency eliminates model reloading cold-starts.
+- **Self-Healing Stack:** Built-in runtime self-patching in `startServer.js` guarantees TRPC stability on container boot.
 
 ---
 
@@ -160,13 +165,13 @@ The evolution of TuT AI followed four structured engineering milestones:
 
 ### System Prerequisites
 - **OS:** Windows 10/11 (with WSL2 / PowerShell) or Ubuntu 22.04 LTS.
-- **Hardware:** 16 GB RAM minimum; NVIDIA RTX GPU (4 GB+ VRAM) strongly recommended for instant acceleration.
-- **Dependencies:** Docker with Compose v2, local Ollama engine.
+- **Hardware:** 16 GB RAM minimum; NVIDIA RTX GPU (4 GB+ VRAM) strongly recommended for maximum speed.
+- **Software:** Docker Desktop with Compose v2, local Ollama engine.
 
 ### 1-Click Bootstrap Script
 
 ```powershell
-# Clone the private repository
+# Clone the repository
 git clone https://github.com/MCIT-DEPI/DEPI-PPTX.git
 cd DEPI-PPTX
 
@@ -180,21 +185,31 @@ chmod +x ./scripts/setup_tut_ai.sh
 
 ### Active Port Endpoints
 
-| Endpoint | Service | Purpose |
+| Endpoint | Service | Operational Description |
 |---|---|---|
 | `http://localhost:8502` | **TuT AI Platform** | Multi-source knowledge notebooks, departmental RAG, and document craft |
 | `http://localhost:3210` | **TuT Agent** | Conversational workspace, 3D holographic avatar, in-chat presentation generator |
 | `http://localhost:8082` | **ONLYOFFICE Docs** | In-browser document editor for generated `.pptx`, `.docx`, and `.xlsx` |
 
-*Default Administrator Credentials:* `admin` / `1234` *(Please change upon initial sign-in)*.
+> [!TIP]
+> **Default Admin Sign-In:** Username `admin` | Password `1234` *(Please update immediately in Account Settings after initial login)*.
 
 ---
 
+## 📊 Official Pitch Deck Deliverables
 
+| Deliverable | Format | Access Location |
+|---|---|---|
+| **Executive PowerPoint Presentation** | `.pptx` (14 Slides) | [📥 `TuT_AI_Marketing_Pitch_Deck.pptx`](TuT_AI_Marketing_Pitch_Deck.pptx) |
+| **Interactive Web Presentation Deck** | `.html` (Standalone) | [🌐 `TuT_AI_Marketing_Pitch_Deck.html`](TuT_AI_Marketing_Pitch_Deck.html) |
+| **Automated Slide Generator** | Python (`python-pptx`) | [⚙️ `scripts/generate_pitch_deck.py`](scripts/generate_pitch_deck.py) |
+| **Official Team & Governance Roster** | Markdown | [👥 `TEAM.md`](TEAM.md) |
 
-## 🔒 Confidentiality & License
+---
+
+## 🔒 Confidentiality & Sovereign License
 
 **CONFIDENTIAL — PROPRIETARY TO MCIT EGYPT.**
 
 Copyright © 2024–2026 Ministry of Communications and Information Technology (MCIT).  
-All rights reserved. Unauthorized reproduction, distribution, or external deployment is strictly prohibited under national data sovereignty regulations.
+All intellectual property, model configurations, and architecture are protected under Egyptian data sovereignty laws. Unauthorized copying, distribution, or external hosting is strictly prohibited.
