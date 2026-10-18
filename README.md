@@ -190,15 +190,7 @@ chmod +x ./scripts/setup_tut_ai.sh
 
 ---
 
-## 📊 Strategic Deliverables & Pitch Decks
 
-The executive pitch decks detailing TuT AI's business value, ROI, and technical roadmap are available directly within this repository:
-
-- 📊 **PowerPoint Presentation:** [`TuT_AI_Marketing_Pitch_Deck.pptx`](TuT_AI_Marketing_Pitch_Deck.pptx) *(Copy in [`docs/TuT_AI_Marketing_Pitch_Deck.pptx`](docs/TuT_AI_Marketing_Pitch_Deck.pptx))*
-- 🌐 **Interactive Web Presentation Deck:** [`TuT_AI_Marketing_Pitch_Deck.html`](TuT_AI_Marketing_Pitch_Deck.html) *(Copy in [`docs/TuT_AI_Marketing_Pitch_Deck.html`](docs/TuT_AI_Marketing_Pitch_Deck.html))*
-- ⚙️ **Automated Deck Generator Script:** [`scripts/generate_pitch_deck.py`](scripts/generate_pitch_deck.py)
-
----
 
 ## 🔒 Confidentiality & License
 
