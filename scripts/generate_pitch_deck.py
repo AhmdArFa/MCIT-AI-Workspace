@@ -342,32 +342,43 @@ def create_presentation():
              badge="Resilience", accent_color=c_green)
 
     # =========================================================================
-    # SLIDE 8: EGYPTIAN SOVEREIGN PERSONAS
+    # SLIDE 8: THE DEVELOPMENT JOURNEY (مراحل التطوير)
     # =========================================================================
     s8 = prs.slides.add_slide(blank_layout)
     add_bg(s8)
-    add_top_bar(s8, "Egyptian Sovereign Persona Suite & Cultural Alignment", "Identity & Heritage")
+    add_top_bar(s8, "The Development Journey: 4 Evolutionary Phases", "Engineering Milestones")
 
-    add_card(s8, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
-             "10 Sovereign Egyptian Historical Personas",
+    add_card(s8, Inches(0.8), Inches(1.8), Inches(5.7), Inches(2.4),
+             "Phase 1: Foundation & Sovereign Identity",
              [
-                 "Rooted in Heritage: Completely replaced generic western AI branding with iconic figures of Egyptian history.",
-                 "King Tut: The Sovereign Prime Agent — strategic leadership, presentation compiler, and executive director.",
-                 "Imhotep: Chief Architect & Engineer — data structures, code analysis, mathematical auditing, and spreadsheets.",
-                 "Thoth: The Scribe of Wisdom — research synthesis, deep summarization, document validation, and historical records.",
-                 "Horus, Akhenaten, Nefertiti: Specialized defense, governance, and administrative communication agents."
+                 "Transitioned away from generic third-party code to 100% Egyptian sovereign platform.",
+                 "Engineered the TuT AI identity: 10 historical personas & 3D holographic cartouche."
              ],
-             badge="Persona Gallery", accent_color=c_gold)
+             badge="Phase 1: Inception", accent_color=c_gold)
 
-    add_card(s8, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
-             "Holographic 3D Portrait & Quick-Switcher",
+    add_card(s8, Inches(6.8), Inches(1.8), Inches(5.7), Inches(2.4),
+             "Phase 2: Core Engines & Resilient Fixes",
              [
-                 "3D Transparent Holographic Avatar: Modeled with an obsidian cartouche and royal gold illuminated rim.",
-                 "1-Click Avatar Switcher: A dedicated horizontal selector bar in the header allows instantaneous switching between all 10 personas.",
-                 "Universal Synchronization: Switching the persona synchronizes the avatar, role title, system prompt, and greeting across all platform agents.",
-                 "No-Permission Blockers: Fully editable and clickable for all team members."
+                 "Engineered the 3 pillars: Deep Summarization, DeckCraft (.pptx), and VectorCraft (infographics).",
+                 "Resolved TRPC runtime crashes via intelligent local Ollama fallback proxy."
              ],
-             badge="User Experience", accent_color=c_cyan)
+             badge="Phase 2: Architecture", accent_color=c_cyan)
+
+    add_card(s8, Inches(0.8), Inches(4.4), Inches(5.7), Inches(2.4),
+             "Phase 3: Model Intelligence & GPU Velocity",
+             [
+                 "Unlocked database to 131,072 context tokens, 16,384 output tokens, and 'pro' reasoning.",
+                 "Pinned gemma4:e4b into NVIDIA RTX 4050 GPU VRAM (keep_alive: '-1') for instant streaming."
+             ],
+             badge="Phase 3: Intelligence", accent_color=c_green)
+
+    add_card(s8, Inches(6.8), Inches(4.4), Inches(5.7), Inches(2.4),
+             "Phase 4: Turnkey Production & GitHub Release",
+             [
+                 "Built self-healing Docker architecture and turnkey 1-click setup scripts (.ps1 and .sh).",
+                 "Integrated ONLYOFFICE document server and published full production repo to GitHub."
+             ],
+             badge="Phase 4: Production", accent_color=RGBColor(245, 158, 11))
 
     # =========================================================================
     # SLIDE 9: STRATEGIC IMPACT FOR MCIT
@@ -481,25 +492,19 @@ def create_presentation():
     p.space_after = Pt(18)
 
     supervisors = [
-        ("Dr. Mohamed Rehan", "Ministry Leadership & Project Sponsor"),
-        ("Eng. Reham Metwally", "Technical Oversight & Ministerial Direction"),
-        ("Eng. Mohamed Khalid Mohamed Roshdy", "Strategic Engineering & Systems Supervision")
+        "Dr. Mohamed Rehan",
+        "Eng. Reham Metwally",
+        "Eng. Mohamed Khalid Mohamed Roshdy"
     ]
 
-    for name, title in supervisors:
+    for name in supervisors:
         p1 = tf_lead.add_paragraph()
         p1.text = f"🎖️  {name}"
         p1.font.name = "Arial"
-        p1.font.size = Pt(14)
+        p1.font.size = Pt(15)
         p1.font.bold = True
         p1.font.color.rgb = c_gold_light
-
-        p2 = tf_lead.add_paragraph()
-        p2.text = f"     {title}"
-        p2.font.name = "Arial"
-        p2.font.size = Pt(11)
-        p2.font.color.rgb = c_muted
-        p2.space_after = Pt(10)
+        p1.space_after = Pt(20)
 
     # Team Box
     card_team = s11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
@@ -522,37 +527,31 @@ def create_presentation():
     p.space_after = Pt(8)
 
     p = tf_team.add_paragraph()
-    p.text = "TuT AI Core Contributors"
+    p.text = "TuT AI Core Team"
     p.font.name = "Arial"
     p.font.size = Pt(18)
     p.font.bold = True
     p.font.color.rgb = c_white
-    p.space_after = Pt(12)
+    p.space_after = Pt(16)
 
     team_members = [
-        ("Ahmed Gamal Sophi Arfa", "Project Lead, Principal Architect & Full-Stack Creator (End-to-End Platform)"),
-        ("Abdelrhman Mahmoud Fawzy", "RAG Specialist (Retrieval-Augmented Generation & Vector Search)"),
-        ("Saja Raafat Gaber", "Infographics Specialist (VectorCraft Studio & Visual Storytelling)"),
-        ("Mohamed Hamdy Abdelazez", "Presentation Engine Specialist (DeckCraft & Slide Generation)"),
-        ("Asmaa Samy Hagag", "Presentation Design Specialist (DeckCraft & Slide Layouts)"),
-        ("Mohamed Abd elhgani el kwatihy", "RAG Pipeline Specialist (Knowledge Ingestion & Chunking)")
+        "Ahmed Gamal Sophi Arfa",
+        "Abdelrhman Mahmoud Fawzy",
+        "Saja Raafat Gaber",
+        "Mohamed Hamdy Abdelazez",
+        "Asmaa Samy Hagag",
+        "Mohamed Abd elhgani el kwatihy"
     ]
 
-    for name, role in team_members:
+    for name in team_members:
         p1 = tf_team.add_paragraph()
         is_lead = "Ahmed Gamal Sophi Arfa" in name
         p1.text = f"{'⭐' if is_lead else '•'}  {name}"
         p1.font.name = "Arial"
-        p1.font.size = Pt(12)
+        p1.font.size = Pt(14 if is_lead else 13)
         p1.font.bold = True
         p1.font.color.rgb = c_gold if is_lead else c_white
-
-        p2 = tf_team.add_paragraph()
-        p2.text = f"     {role}"
-        p2.font.name = "Arial"
-        p2.font.size = Pt(10)
-        p2.font.color.rgb = c_gold_light if is_lead else c_muted
-        p2.space_after = Pt(4)
+        p1.space_after = Pt(12 if is_lead else 8)
 
     # =========================================================================
     # SLIDE 12: CONCLUSION & CALL TO ACTION
