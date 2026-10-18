@@ -416,7 +416,7 @@
   <div class="deck-toolbar">
     <div class="brand-title">🏛️ TuT AI — Sovereign Marketing Pitch Deck</div>
     <div class="toolbar-actions">
-      <span class="counter" id="slideNum">Slide 1 of 12</span>
+      <span class="counter" id="slideNum">Slide 1 of 16</span>
       <button class="btn" onclick="prevSlide()">◀ Previous</button>
       <button class="btn" onclick="nextSlide()">Next ▶</button>
       <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
@@ -435,7 +435,88 @@
       <div class="cover-sub">Strategic Pitch Deck — 100% Offline National Intelligence: Deep Summarization, Autonomous Presentations & Vector Infographics</div>
     </div>
 
-    <!-- Slide 2: Problem & Need -->
+
+    <!-- Slide 2: System Execution & 1-Click Turnkey Deployment -->
+    <div class="slide">
+      <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
+      <div class="slide-tag">System Runtime & Setup</div>
+      <div class="slide-title">System Execution: 1-Click Turnkey Deployment & Local Setup</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-3">
+        <div class="card">
+          <div class="card-badge badge-cyan">Environment</div>
+          <div class="card-title">1. Air-Gapped Prerequisites</div>
+          <ul>
+            <li><strong>100% Offline Execution:</strong> Runs completely on local hardware with zero internet required.</li>
+            <li><strong>Hardware Sizing:</strong> 16 GB RAM minimum; NVIDIA RTX GPU recommended for instant token acceleration.</li>
+            <li><strong>Software Stack:</strong> Docker Desktop (Compose v2) + Local Ollama engine running on host.</li>
+            <li><strong>Zero SaaS Dependencies:</strong> No OpenAI/Claude API keys, no seat fees, and zero cloud data leaks.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-gold">Execution Routine</div>
+          <div class="card-title">2. Automated 1-Click Launch</div>
+          <ul>
+            <li><strong>Single PowerShell Command:</strong> <code>.\scripts\setup_tut_ai.ps1</code> (or <code>./scripts/setup_tut_ai.sh</code>).</li>
+            <li><strong>Automated Cluster Boot:</strong> Copies .env, runs DB migrations, and spins up 11 microservices in &lt;15s.</li>
+            <li><strong>Runtime Self-Patching:</strong> Unlocks 131,072 context tokens in Postgres and patches TRPC stability automatically.</li>
+            <li><strong>GPU VRAM Residency:</strong> Pins <code>gemma4:e4b</code> into GPU memory (<code>keep_alive: -1</code>) to eliminate cold starts.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">Port Endpoints</div>
+          <div class="card-title">3. Active Endpoints & Sign-In</div>
+          <ul>
+            <li><strong>http://localhost:8502:</strong> TuT AI Platform (Multi-source knowledge notebooks & craft studio).</li>
+            <li><strong>http://localhost:3210:</strong> TuT Agent (3D sovereign cartouche avatar & in-chat document generation).</li>
+            <li><strong>http://localhost:8082:</strong> ONLYOFFICE Docs (Integrated in-browser document editing server).</li>
+            <li><strong>Default Administrator:</strong> Username: <code>admin</code> | Password: <code>1234</code> (fully local auth).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Operational Workflow: End-to-End System Execution -->
+    <div class="slide">
+      <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
+      <div class="slide-tag">Practical Workflow</div>
+      <div class="slide-title">Operational Workflow: End-to-End System Execution in Practice</div>
+      <div class="slide-divider"></div>
+      <div class="content-grid cols-3">
+        <div class="card">
+          <div class="card-badge badge-gold">Step 1: Ingestion</div>
+          <div class="card-title">Step 1: Ingest & Sandboxing</div>
+          <ul>
+            <li><strong>Sign In to Platform (:8502):</strong> Navigate to sovereign knowledge portal with admin credentials.</li>
+            <li><strong>Departmental Sandboxing:</strong> Select or create an isolated notebook workspace (e.g., 'dsc', 'klh', 'eg').</li>
+            <li><strong>Drag-and-Drop Ingestion:</strong> Ingest 100+ page ministerial decrees, complex PDFs (WEF 2024), Word, or Excel.</li>
+            <li><strong>Local Hybrid RAG:</strong> Extracts full-text passages and computes embeddings locally via <code>nomic-embed-text</code>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-cyan">Step 2: Task Prompting</div>
+          <div class="card-title">Step 2: Conversational Tasking</div>
+          <ul>
+            <li><strong>Open TuT Agent (:3210):</strong> Engage with the 3D Holographic Cartouche avatar in natural language.</li>
+            <li><strong>Bilingual Arabic/English:</strong> Ask: 'لخص تقرير المخاطر واستخرج بنود الطاقة' or 'Create a 12-slide presentation'.</li>
+            <li><strong>Sub-Second Response:</strong> Pinned local Gemma 4 streams first tokens in milliseconds on RTX GPU VRAM.</li>
+            <li><strong>Zero-Hallucination:</strong> Strictly context-locked to retrieved passages with clickable citations [1], [2].</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-green">Step 3: Deliverable & Edit</div>
+          <div class="card-title">Step 3: Autonomous Output</div>
+          <ul>
+            <li><strong>Autonomous MCP Execution:</strong> Agent triggers local DeckCraft (.pptx) or VectorCraft (.svg) tools in real time.</li>
+            <li><strong>In-Chat Delivery:</strong> Complete, professional PowerPoint decks and infographics are delivered right in chat.</li>
+            <li><strong>Instant ONLYOFFICE Editing:</strong> 1-click opens port :8082 to preview, edit, and co-author without MS Office.</li>
+            <li><strong>Ministerial Production:</strong> Ready for high-stakes executive briefings, state publications, or print.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Problem & Need -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Challenge & Strategic Opportunity</div>
@@ -472,7 +553,7 @@
       </div>
     </div>
 
-    <!-- Slide 3: Three Powerhouses -->
+    <!-- Slide 5: Three Powerhouses -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Platform Capabilities</div>
@@ -512,7 +593,7 @@
       </div>
     </div>
 
-    <!-- Slide 4: Deep Summarization -->
+    <!-- Slide 6: Deep Summarization -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Core Feature Deep-Dive</div>
@@ -542,7 +623,7 @@
       </div>
     </div>
 
-    <!-- Slide 5: Presentation Engine -->
+    <!-- Slide 7: Presentation Engine -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Core Feature Deep-Dive</div>
@@ -572,7 +653,7 @@
       </div>
     </div>
 
-    <!-- Slide 6: Infographics Studio -->
+    <!-- Slide 8: Infographics Studio -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Core Feature Deep-Dive</div>
@@ -602,7 +683,7 @@
       </div>
     </div>
 
-    <!-- Slide 7: Live Platform Showcase -->
+    <!-- Slide 9: Live Platform Showcase -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Live System Interface</div>
@@ -641,7 +722,7 @@
       </div>
     </div>
 
-    <!-- Slide 8: Live Agent Showcase -->
+    <!-- Slide 10: Live Agent Showcase -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Conversational Intelligence</div>
@@ -680,7 +761,7 @@
       </div>
     </div>
 
-    <!-- Slide 9: Technical Breakthroughs -->
+    <!-- Slide 11: Technical Breakthroughs -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Engineering Rigor</div>
@@ -719,7 +800,7 @@
       </div>
     </div>
 
-    <!-- Slide 10: The Development Journey -->
+    <!-- Slide 12: The Development Journey -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Engineering Milestones</div>
@@ -761,7 +842,7 @@
       </div>
     </div>
 
-    <!-- Slide 11: Strategic Impact -->
+    <!-- Slide 13: Strategic Impact -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Institutional Value</div>
@@ -801,7 +882,7 @@
       </div>
     </div>
 
-    <!-- Slide 12: Future Roadmap -->
+    <!-- Slide 14: Future Roadmap -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">Evolution</div>
@@ -843,7 +924,7 @@
       </div>
     </div>
 
-    <!-- Slide 13: Leadership & Team -->
+    <!-- Slide 15: Leadership & Team -->
     <div class="slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="MCIT" class="mcit-logo-top">
       <div class="slide-tag">People & Governance</div>
@@ -878,7 +959,7 @@
             <!-- Ahmed Gamal Sophi Arfa ALWAYS FIRST -->
             <div class="person-row person-lead">
               <span style="font-size: 16px;">⭐</span>
-              <div class="person-name lead-name" style="font-size: 14.5px;">Ahmed Gamal Sophi Arfa (Project Lead)</div>
+              <div class="person-name lead-name" style="font-size: 14.5px;">Ahmed Gamal Sophi Arfa</div>
             </div>
             <div class="person-row">
               <span>•</span>
@@ -905,7 +986,7 @@
       </div>
     </div>
 
-    <!-- Slide 14: Conclusion -->
+    <!-- Slide 16: Conclusion -->
     <div class="slide cover-slide">
       <img src="mcit-logo.png" onerror="this.src='docs/mcit-logo.png'" alt="Ministry of Communications and Information Technology (MCIT)" class="mcit-cover-logo" style="margin-bottom: 20px;">
       <div class="cover-meta">Sovereignty is Not an Option — It is Our Foundation</div>

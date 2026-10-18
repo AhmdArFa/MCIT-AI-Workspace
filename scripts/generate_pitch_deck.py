@@ -221,13 +221,87 @@ def create_presentation():
     p_sub.space_after = Pt(16)
 
     # =========================================================================
-    # SLIDE 2: THE PROBLEM & SOVEREIGN IMPERATIVE
+    # SLIDE 2: SYSTEM EXECUTION & 1-CLICK LOCAL DEPLOYMENT (DOCTOR MANDATE)
     # =========================================================================
     s2 = prs.slides.add_slide(blank_layout)
     add_bg(s2)
-    add_top_bar(s2, "The Strategic Imperative: Why Sovereign Local AI Matters", "Challenge & Opportunity")
+    add_top_bar(s2, "System Execution: 1-Click Turnkey Deployment & Local Setup", "System Runtime & Setup")
 
     add_card(s2, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "1. Air-Gapped Prerequisites",
+             [
+                 "100% Offline Local Execution: Operates entirely on on-premise hardware without internet connectivity.",
+                 "Hardware Sizing: 16 GB RAM minimum; NVIDIA RTX GPU recommended for instant GPU token acceleration.",
+                 "Software Prerequisites: Docker Desktop with Compose v2 + Local Ollama engine running on host machine.",
+                 "Zero External SaaS: No OpenAI/Claude API keys, no monthly seat fees, and zero cloud data leakage."
+             ],
+             badge="Environment", accent_color=c_cyan)
+
+    add_card(s2, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "2. Automated 1-Click Launch",
+             [
+                 "Single PowerShell Command: .\\scripts\\setup_tut_ai.ps1 (or ./scripts/setup_tut_ai.sh on Linux/WSL).",
+                 "Automated Cluster Boot: Copies .env, runs DB migrations, and spins up 11 microservices in <15 seconds.",
+                 "Runtime Self-Patching: Automatically unlocks 131,072 context tokens in Postgres and patches TRPC stability.",
+                 "GPU VRAM Residency: Automatically pins gemma4:e4b into GPU memory (keep_alive: -1) to eliminate cold starts."
+             ],
+             badge="Execution Routine", accent_color=c_gold)
+
+    add_card(s2, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "3. Active Endpoints & Sign-In",
+             [
+                 "http://localhost:8502: TuT AI Platform (Multi-source knowledge notebooks & document craft studio).",
+                 "http://localhost:3210: TuT Agent (3D sovereign cartouche avatar & in-chat document generation).",
+                 "http://localhost:8082: ONLYOFFICE Docs (Integrated in-browser document editing server).",
+                 "Default Administrator: Username: admin | Password: 1234 (fully managed via local auth)."
+             ],
+             badge="Port Endpoints", accent_color=c_green)
+
+    # =========================================================================
+    # SLIDE 3: OPERATIONAL WORKFLOW: END-TO-END EXECUTION IN PRACTICE
+    # =========================================================================
+    s3 = prs.slides.add_slide(blank_layout)
+    add_bg(s3)
+    add_top_bar(s3, "Operational Workflow: End-to-End System Execution in Practice", "Practical Workflow")
+
+    add_card(s3, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "Step 1: Ingest & Sandboxing",
+             [
+                 "Sign In to Platform (:8502): Open browser and navigate to the sovereign knowledge portal.",
+                 "Departmental Sandboxing: Select or create an isolated notebook workspace (e.g., 'dsc', 'klh', 'eg').",
+                 "Drag-and-Drop Ingestion: Upload 100+ page ministerial decrees, complex PDFs (WEF 2024), Word, or Excel.",
+                 "Local Hybrid RAG: Extracts full-text passages and computes vector embeddings locally via nomic-embed-text."
+             ],
+             badge="Step 1: Ingestion", accent_color=c_gold)
+
+    add_card(s3, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "Step 2: Conversational Tasking",
+             [
+                 "Open TuT Agent (:3210): Engage with the 3D Holographic Cartouche avatar in natural language.",
+                 "Bilingual Arabic/English: Ask: 'لخص تقرير المخاطر واستخرج بنود الطاقة' or 'Create a 12-slide presentation'.",
+                 "Sub-Second Response: Pinned local Gemma 4 streams first tokens in milliseconds on RTX GPU VRAM.",
+                 "Zero-Hallucination: Strictly context-locked to retrieved passages with clickable numbered citations [1], [2]."
+             ],
+             badge="Step 2: Task Prompting", accent_color=c_cyan)
+
+    add_card(s3, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+             "Step 3: Autonomous Output",
+             [
+                 "Autonomous MCP Execution: Agent triggers local DeckCraft (.pptx) or VectorCraft (.svg) tools in real time.",
+                 "In-Chat Delivery: Complete, professional PowerPoint decks and infographics are delivered right in chat.",
+                 "Instant ONLYOFFICE Editing: 1-click opens port :8082 to preview, edit, and co-author without MS Office.",
+                 "Ministerial Production: Ready for high-stakes executive briefings, state publications, or print."
+             ],
+             badge="Step 3: Deliverable & Edit", accent_color=c_green)
+
+    # =========================================================================
+    # SLIDE 4: THE PROBLEM & SOVEREIGN IMPERATIVE
+    # =========================================================================
+    s4 = prs.slides.add_slide(blank_layout)
+    add_bg(s4)
+    add_top_bar(s4, "The Strategic Imperative: Why Sovereign Local AI Matters", "Challenge & Opportunity")
+
+    add_card(s4, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "1. Severe Data Security Risks",
              [
                  "Relying on foreign commercial clouds (OpenAI, Claude) means confidential state data leaves Egypt.",
@@ -237,7 +311,7 @@ def create_presentation():
              ],
              badge="Vulnerability", accent_color=RGBColor(239, 68, 68))
 
-    add_card(s2, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s4, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "2. The Document Bottleneck",
              [
                  "Ministries process thousands of 100+ page technical specs, legal decrees, and briefs daily.",
@@ -247,7 +321,7 @@ def create_presentation():
              ],
              badge="Operational Friction", accent_color=RGBColor(245, 158, 11))
 
-    add_card(s2, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s4, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "3. The TuT AI Breakthrough",
              [
                  "100% On-Premise, Air-Gapped execution on local Egyptian infrastructure.",
@@ -258,13 +332,13 @@ def create_presentation():
              badge="Sovereign Solution", accent_color=c_green)
 
     # =========================================================================
-    # SLIDE 3: THREE CORE POWERHOUSES
+    # SLIDE 5: THREE CORE POWERHOUSES
     # =========================================================================
-    s3 = prs.slides.add_slide(blank_layout)
-    add_bg(s3)
-    add_top_bar(s3, "TuT AI Core Engine: Three Deliverable Powerhouses", "Platform Capabilities")
+    s5 = prs.slides.add_slide(blank_layout)
+    add_bg(s5)
+    add_top_bar(s5, "TuT AI Core Engine: Three Deliverable Powerhouses", "Platform Capabilities")
 
-    add_card(s3, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s5, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "📑 Deep Summarization",
              [
                  "Ingests 100+ page PDFs, Word docs, decrees, and raw spreadsheets into local notebooks.",
@@ -274,7 +348,7 @@ def create_presentation():
              ],
              badge="Research Engine", accent_color=c_cyan)
 
-    add_card(s3, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s5, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "📊 Autonomous Presentations",
              [
                  "Prompts in natural language directly generate complete 12+ slide PowerPoint decks (.pptx).",
@@ -284,7 +358,7 @@ def create_presentation():
              ],
              badge="DeckCraft Studio", accent_color=c_gold)
 
-    add_card(s3, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s5, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "🎨 Vector Infographics",
              [
                  "Translates complex metrics, policy timelines, and architectures into visual sketchnotes.",
@@ -295,13 +369,13 @@ def create_presentation():
              badge="VectorCraft Studio", accent_color=c_green)
 
     # =========================================================================
-    # SLIDE 4: DEEP DIVE: SUMMARIZATION
+    # SLIDE 6: DEEP DIVE: SUMMARIZATION
     # =========================================================================
-    s4 = prs.slides.add_slide(blank_layout)
-    add_bg(s4)
-    add_top_bar(s4, "Pillar 1: Intelligent Deep Summarization Engine", "Core Feature Deep-Dive")
+    s6 = prs.slides.add_slide(blank_layout)
+    add_bg(s6)
+    add_top_bar(s6, "Pillar 1: Intelligent Deep Summarization Engine", "Core Feature Deep-Dive")
 
-    add_card(s4, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+    add_card(s6, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
              "Multi-Source Knowledge Digestion",
              [
                  "Omni-Channel Ingestion: Scanned and text PDFs, Word (.docx), Excel spreadsheets, audio transcripts, and HTML portals.",
@@ -311,7 +385,7 @@ def create_presentation():
              ],
              badge="Architecture", accent_color=c_cyan)
 
-    add_card(s4, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+    add_card(s6, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
              "Grounded Trust & Zero-Hallucination",
              [
                  "Numbered Citation System: Summary sentences display [1], [2] clickable references pointing back to the exact passage.",
@@ -322,13 +396,13 @@ def create_presentation():
              badge="Verification", accent_color=c_gold)
 
     # =========================================================================
-    # SLIDE 5: DEEP DIVE: PRESENTATION ENGINE
+    # SLIDE 7: DEEP DIVE: PRESENTATION ENGINE
     # =========================================================================
-    s5 = prs.slides.add_slide(blank_layout)
-    add_bg(s5)
-    add_top_bar(s5, "Pillar 2: Autonomous PowerPoint Presentation Engine", "Core Feature Deep-Dive")
+    s7 = prs.slides.add_slide(blank_layout)
+    add_bg(s7)
+    add_top_bar(s7, "Pillar 2: Autonomous PowerPoint Presentation Engine", "Core Feature Deep-Dive")
 
-    add_card(s5, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+    add_card(s7, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
              "End-to-End In-Chat Generation",
              [
                  "Natural Language Prompting: Ask TuT Agent: 'Create a 12-slide presentation on Egypt Vision 2030 digital pillars'.",
@@ -338,7 +412,7 @@ def create_presentation():
              ],
              badge="Conversational Flow", accent_color=c_gold)
 
-    add_card(s5, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+    add_card(s7, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
              "DeckCraft Design & Audit Pipeline",
              [
                  "Approved MCIT Typography: Automatically embeds Nohemi headings, Libre Franklin body, and Inter covers.",
@@ -349,13 +423,13 @@ def create_presentation():
              badge="Design Rigor", accent_color=c_cyan)
 
     # =========================================================================
-    # SLIDE 6: DEEP DIVE: INFOGRAPHICS STUDIO
+    # SLIDE 8: DEEP DIVE: INFOGRAPHICS STUDIO
     # =========================================================================
-    s6 = prs.slides.add_slide(blank_layout)
-    add_bg(s6)
-    add_top_bar(s6, "Pillar 3: VectorCraft Infographics Studio", "Core Feature Deep-Dive")
+    s8 = prs.slides.add_slide(blank_layout)
+    add_bg(s8)
+    add_top_bar(s8, "Pillar 3: VectorCraft Infographics Studio", "Core Feature Deep-Dive")
 
-    add_card(s6, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
+    add_card(s8, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0),
              "Visualizing Abstract Governmental Data",
              [
                  "From Numbers to Art: Transforms dry tables and statistical metrics into intuitive visual sketchnotes.",
@@ -365,7 +439,7 @@ def create_presentation():
              ],
              badge="Visual Design", accent_color=c_green)
 
-    add_card(s6, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
+    add_card(s8, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0),
              "Multi-Format Sovereign Export",
              [
                  "Vector SVG Export: Infinitely scalable vector art suitable for billboards, official banners, and web publication.",
@@ -376,19 +450,19 @@ def create_presentation():
              badge="Production Formats", accent_color=c_gold)
 
     # =========================================================================
-    # SLIDE 7: LIVE PLATFORM SHOWCASE: KNOWLEDGE NOTEBOOKS & MULTI-SOURCE RAG
+    # SLIDE 9: LIVE PLATFORM SHOWCASE: KNOWLEDGE NOTEBOOKS & MULTI-SOURCE RAG
     # =========================================================================
-    s7 = prs.slides.add_slide(blank_layout)
-    add_bg(s7)
-    add_top_bar(s7, "Live Platform Showcase: Knowledge Notebooks & Multi-Source RAG", "Live System Interface")
+    s9 = prs.slides.add_slide(blank_layout)
+    add_bg(s9)
+    add_top_bar(s9, "Live Platform Showcase: Knowledge Notebooks & Multi-Source RAG", "Live System Interface")
 
     img_notebooks = r"C:\MCIT AI Final\docs\images\tut_ui_notebooks.png"
     if not os.path.exists(img_notebooks):
         img_notebooks = r"C:\Users\abdoh\OneDrive\Documents\Desktop\tut_ui_notebooks.png"
 
-    add_image_showcase(s7, img_notebooks, Inches(0.8), Inches(1.95), Inches(7.4), Inches(4.38), border_color=c_gold)
+    add_image_showcase(s9, img_notebooks, Inches(0.8), Inches(1.95), Inches(7.4), Inches(4.38), border_color=c_gold)
 
-    add_showcase_card(s7, Inches(8.5), Inches(1.88), Inches(4.03), Inches(1.48),
+    add_showcase_card(s9, Inches(8.5), Inches(1.88), Inches(4.03), Inches(1.48),
                       "Multi-Source Knowledge Ingestion",
                       [
                           "Ingests massive governmental PDFs (e.g. WEF Global Risks Report 2024), decrees, and spreadsheets.",
@@ -396,7 +470,7 @@ def create_presentation():
                       ],
                       badge="Data Ingestion", accent_color=c_gold)
 
-    add_showcase_card(s7, Inches(8.5), Inches(3.52), Inches(4.03), Inches(1.48),
+    add_showcase_card(s9, Inches(8.5), Inches(3.52), Inches(4.03), Inches(1.48),
                       "Departmental Notebook Sandboxing",
                       [
                           "Isolated sovereign workspaces ('dsc', 'klh', 'arfa', 'eg') protect departmental boundaries.",
@@ -404,7 +478,7 @@ def create_presentation():
                       ],
                       badge="Security & Isolation", accent_color=c_cyan)
 
-    add_showcase_card(s7, Inches(8.5), Inches(5.16), Inches(4.03), Inches(1.48),
+    add_showcase_card(s9, Inches(8.5), Inches(5.16), Inches(4.03), Inches(1.48),
                       "Sovereign National Attribution",
                       [
                           "Custom-built for the Ministry of Communications & Information Technology.",
@@ -413,19 +487,19 @@ def create_presentation():
                       badge="MCIT Provenance", accent_color=c_green)
 
     # =========================================================================
-    # SLIDE 8: LIVE AGENT SHOWCASE: IN-CHAT DECK GENERATION & 3D AVATAR
+    # SLIDE 10: LIVE AGENT SHOWCASE: IN-CHAT DECK GENERATION & 3D AVATAR
     # =========================================================================
-    s8 = prs.slides.add_slide(blank_layout)
-    add_bg(s8)
-    add_top_bar(s8, "Live Agent Showcase: In-Chat Deck Generation & 3D Avatar", "Conversational Intelligence")
+    s10 = prs.slides.add_slide(blank_layout)
+    add_bg(s10)
+    add_top_bar(s10, "Live Agent Showcase: In-Chat Deck Generation & 3D Avatar", "Conversational Intelligence")
 
     img_agent = r"C:\MCIT AI Final\docs\images\tut_ui_agent.png"
     if not os.path.exists(img_agent):
         img_agent = r"C:\Users\abdoh\OneDrive\Documents\Desktop\tut_ui_agent.png"
 
-    add_image_showcase(s8, img_agent, Inches(0.8), Inches(1.95), Inches(7.4), Inches(4.38), border_color=c_cyan)
+    add_image_showcase(s10, img_agent, Inches(0.8), Inches(1.95), Inches(7.4), Inches(4.38), border_color=c_cyan)
 
-    add_showcase_card(s8, Inches(8.5), Inches(1.88), Inches(4.03), Inches(1.48),
+    add_showcase_card(s10, Inches(8.5), Inches(1.88), Inches(4.03), Inches(1.48),
                       "3D Holographic Sovereign Avatar",
                       [
                           "Interactive real-time 3D King Tut avatar blending Egyptian heritage with state-of-the-art AI.",
@@ -433,7 +507,7 @@ def create_presentation():
                       ],
                       badge="Sovereign Identity", accent_color=c_gold)
 
-    add_showcase_card(s8, Inches(8.5), Inches(3.52), Inches(4.03), Inches(1.48),
+    add_showcase_card(s10, Inches(8.5), Inches(3.52), Inches(4.03), Inches(1.48),
                       "In-Chat Autonomous Presentation Engine",
                       [
                           "Live conversational workflow: User asks in Arabic for presentations on complex national topics.",
@@ -441,7 +515,7 @@ def create_presentation():
                       ],
                       badge="DeckCraft Engine", accent_color=c_cyan)
 
-    add_showcase_card(s8, Inches(8.5), Inches(5.16), Inches(4.03), Inches(1.48),
+    add_showcase_card(s10, Inches(8.5), Inches(5.16), Inches(4.03), Inches(1.48),
                       "Pinned Local Gemma 4 Engine",
                       [
                           "Powered by Gemma 4 e4b pinned directly in NVIDIA RTX GPU VRAM.",
@@ -450,13 +524,13 @@ def create_presentation():
                       badge="GPU Acceleration", accent_color=c_green)
 
     # =========================================================================
-    # SLIDE 9: TECHNICAL ARCHITECTURE & SPEED
+    # SLIDE 11: TECHNICAL BREAKTHROUGHS & SPEED
     # =========================================================================
-    s9 = prs.slides.add_slide(blank_layout)
-    add_bg(s9)
-    add_top_bar(s9, "Technical Breakthroughs: 131k Context & GPU Acceleration", "Engineering Rigor")
+    s11 = prs.slides.add_slide(blank_layout)
+    add_bg(s11)
+    add_top_bar(s11, "Technical Breakthroughs: 131k Context & GPU Acceleration", "Engineering Rigor")
 
-    add_card(s9, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s11, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "131k Context Window",
              [
                  "PostgreSQL database tables unlocked to 131,072 context tokens.",
@@ -466,7 +540,7 @@ def create_presentation():
              ],
              badge="Model Capacity", accent_color=c_cyan)
 
-    add_card(s9, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s11, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "NVIDIA RTX 4050 GPU VRAM",
              [
                  "Pinned local gemma4:e4b weights in dedicated 5.1 GB GPU VRAM.",
@@ -476,7 +550,7 @@ def create_presentation():
              ],
              badge="Velocity", accent_color=c_gold)
 
-    add_card(s9, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s11, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "Self-Healing Docker Stack",
              [
                  "11 isolated Docker services: Agent, Platform, ONLYOFFICE, SurrealDB, Postgres, Redis, Kokoro.",
@@ -487,13 +561,13 @@ def create_presentation():
              badge="Resilience", accent_color=c_green)
 
     # =========================================================================
-    # SLIDE 10: THE DEVELOPMENT JOURNEY (مراحل التطوير)
+    # SLIDE 12: THE DEVELOPMENT JOURNEY (مراحل التطوير)
     # =========================================================================
-    s10 = prs.slides.add_slide(blank_layout)
-    add_bg(s10)
-    add_top_bar(s10, "The Development Journey: 4 Evolutionary Phases", "Engineering Milestones")
+    s12 = prs.slides.add_slide(blank_layout)
+    add_bg(s12)
+    add_top_bar(s12, "The Development Journey: 4 Evolutionary Phases", "Engineering Milestones")
 
-    add_card(s10, Inches(0.8), Inches(1.8), Inches(5.7), Inches(2.4),
+    add_card(s12, Inches(0.8), Inches(1.8), Inches(5.7), Inches(2.4),
              "Phase 1: Foundation & Sovereign Identity",
              [
                  "Transitioned away from generic third-party code to 100% Egyptian sovereign platform.",
@@ -501,7 +575,7 @@ def create_presentation():
              ],
              badge="Phase 1: Inception", accent_color=c_gold)
 
-    add_card(s10, Inches(6.8), Inches(1.8), Inches(5.7), Inches(2.4),
+    add_card(s12, Inches(6.8), Inches(1.8), Inches(5.7), Inches(2.4),
              "Phase 2: Core Engines & Resilient Fixes",
              [
                  "Engineered the 3 pillars: Deep Summarization, DeckCraft (.pptx), and VectorCraft (infographics).",
@@ -509,7 +583,7 @@ def create_presentation():
              ],
              badge="Phase 2: Architecture", accent_color=c_cyan)
 
-    add_card(s10, Inches(0.8), Inches(4.4), Inches(5.7), Inches(2.4),
+    add_card(s12, Inches(0.8), Inches(4.4), Inches(5.7), Inches(2.4),
              "Phase 3: Model Intelligence & GPU Velocity",
              [
                  "Unlocked database to 131,072 context tokens, 16,384 output tokens, and 'pro' reasoning.",
@@ -517,7 +591,7 @@ def create_presentation():
              ],
              badge="Phase 3: Intelligence", accent_color=c_green)
 
-    add_card(s10, Inches(6.8), Inches(4.4), Inches(5.7), Inches(2.4),
+    add_card(s12, Inches(6.8), Inches(4.4), Inches(5.7), Inches(2.4),
              "Phase 4: Turnkey Production & GitHub Release",
              [
                  "Built self-healing Docker architecture and turnkey 1-click setup scripts (.ps1 and .sh).",
@@ -526,13 +600,13 @@ def create_presentation():
              badge="Phase 4: Production", accent_color=RGBColor(245, 158, 11))
 
     # =========================================================================
-    # SLIDE 11: STRATEGIC IMPACT FOR MCIT
+    # SLIDE 13: STRATEGIC IMPACT FOR MCIT
     # =========================================================================
-    s11 = prs.slides.add_slide(blank_layout)
-    add_bg(s11)
-    add_top_bar(s11, "Strategic & Economic Impact for MCIT & Government", "Institutional Value")
+    s13 = prs.slides.add_slide(blank_layout)
+    add_bg(s13)
+    add_top_bar(s13, "Strategic & Economic Impact for MCIT & Government", "Institutional Value")
 
-    add_card(s11, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s13, Inches(0.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "100% Data Sovereignty",
              [
                  "Zero cloud leakage: Classified ministerial files remain within the state firewall.",
@@ -542,7 +616,7 @@ def create_presentation():
              ],
              badge="Sovereignty", accent_color=c_green)
 
-    add_card(s11, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s13, Inches(4.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "10x Operational Speed",
              [
                  "Reduces 4-hour document reading to a 30-second verified executive summary.",
@@ -552,7 +626,7 @@ def create_presentation():
              ],
              badge="Productivity", accent_color=c_gold)
 
-    add_card(s11, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
+    add_card(s13, Inches(8.8), Inches(1.8), Inches(3.7), Inches(5.0),
              "Zero Recurring SaaS Costs",
              [
                  "No per-seat licensing fees (saving thousands of dollars annually on Copilot / ChatGPT Plus).",
@@ -563,13 +637,13 @@ def create_presentation():
              badge="Cost Efficiency", accent_color=c_cyan)
 
     # =========================================================================
-    # SLIDE 12: FUTURE ROADMAP
+    # SLIDE 14: FUTURE ROADMAP
     # =========================================================================
-    s12 = prs.slides.add_slide(blank_layout)
-    add_bg(s12)
-    add_top_bar(s12, "Strategic Future Roadmap: Expanding TuT AI", "Evolution")
+    s14 = prs.slides.add_slide(blank_layout)
+    add_bg(s14)
+    add_top_bar(s14, "Strategic Future Roadmap: Expanding TuT AI", "Evolution")
 
-    add_card(s12, Inches(0.8), Inches(1.8), Inches(5.7), Inches(2.4),
+    add_card(s14, Inches(0.8), Inches(1.8), Inches(5.7), Inches(2.4),
              "1. Ultra-Fast Inference via vLLM",
              [
                  "Integrate containerized vLLM with PagedAttention to achieve 60–80+ tokens/sec on RTX GPUs.",
@@ -577,7 +651,7 @@ def create_presentation():
              ],
              badge="Speed", accent_color=c_cyan)
 
-    add_card(s12, Inches(6.8), Inches(1.8), Inches(5.7), Inches(2.4),
+    add_card(s14, Inches(6.8), Inches(1.8), Inches(5.7), Inches(2.4),
              "2. Egyptian Governmental LoRA Fine-Tuning",
              [
                  "Fine-tune specialized LoRA adapters on official ministerial circulars, decrees, and laws.",
@@ -585,7 +659,7 @@ def create_presentation():
              ],
              badge="Specialization", accent_color=c_gold)
 
-    add_card(s12, Inches(0.8), Inches(4.4), Inches(5.7), Inches(2.4),
+    add_card(s14, Inches(0.8), Inches(4.4), Inches(5.7), Inches(2.4),
              "3. Multimodal Vision for Scanned PDFs",
              [
                  "Deploy Qwen2-VL or Llama-3.2-Vision to process historical Arabic manuscripts, stamps, and blueprints.",
@@ -593,7 +667,7 @@ def create_presentation():
              ],
              badge="Vision", accent_color=c_green)
 
-    add_card(s12, Inches(6.8), Inches(4.4), Inches(5.7), Inches(2.4),
+    add_card(s14, Inches(6.8), Inches(4.4), Inches(5.7), Inches(2.4),
              "4. Autonomous Multi-Agent Swarms",
              [
                  "Autonomous delegation: Thoth researches, Imhotep audits data, and TuT delivers the final slides.",
@@ -602,14 +676,14 @@ def create_presentation():
              badge="Multi-Agent", accent_color=RGBColor(245, 158, 11))
 
     # =========================================================================
-    # SLIDE 13: LEADERSHIP & PROJECT TEAM
+    # SLIDE 15: LEADERSHIP & PROJECT TEAM
     # =========================================================================
-    s13 = prs.slides.add_slide(blank_layout)
-    add_bg(s13)
-    add_top_bar(s13, "Project Leadership & Development Team", "People & Governance")
+    s15 = prs.slides.add_slide(blank_layout)
+    add_bg(s15)
+    add_top_bar(s15, "Project Leadership & Development Team", "People & Governance")
 
     # Leadership Box
-    card_lead = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    card_lead = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.7), Inches(5.0))
     card_lead.fill.solid()
     card_lead.fill.fore_color.rgb = c_card
     card_lead.line.color.rgb = c_gold
@@ -652,7 +726,7 @@ def create_presentation():
         p1.space_after = Pt(20)
 
     # Team Box
-    card_team = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    card_team = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
     card_team.fill.solid()
     card_team.fill.fore_color.rgb = c_card
     card_team.line.color.rgb = c_cyan
@@ -699,15 +773,15 @@ def create_presentation():
         p1.space_after = Pt(12 if is_lead else 8)
 
     # =========================================================================
-    # SLIDE 14: CONCLUSION & CALL TO ACTION
+    # SLIDE 16: CONCLUSION & CALL TO ACTION
     # =========================================================================
-    s14 = prs.slides.add_slide(blank_layout)
-    add_bg(s14)
+    s16 = prs.slides.add_slide(blank_layout)
+    add_bg(s16)
 
     if mcit_logo:
-        s14.shapes.add_picture(mcit_logo, Inches(5.72), Inches(0.6), width=Inches(1.88), height=Inches(0.98))
+        s16.shapes.add_picture(mcit_logo, Inches(5.72), Inches(0.6), width=Inches(1.88), height=Inches(0.98))
 
-    tb = s14.shapes.add_textbox(Inches(1.5), Inches(1.7), Inches(10.33), Inches(4.5))
+    tb = s16.shapes.add_textbox(Inches(1.5), Inches(1.7), Inches(10.33), Inches(4.5))
     tf = tb.text_frame
     tf.word_wrap = True
 
