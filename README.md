@@ -41,7 +41,7 @@ Under the auspices and strategic supervision of the **Ministry of Communications
 │   MINISTRY HEADS & SUPERVISION        ENGINEERING & DEVELOPMENT TEAM   │
 │   ----------------------------        ------------------------------   │
 │   🎖️ Dr. Mohamed Rehan                 ⭐ Ahmed Gamal Sophi Arfa         │
-│   🎖️ Eng. Reham Metwally                    │
+│   🎖️ Eng. Reham Metwally           
 │   🎖️ Eng. Mohamed Khalid              • Abdelrhman Mahmoud Fawzy       │
 │      Mohamed Roshdy                   • Saja Raafat Gaber              │
 │                                       • Mohamed Hamdy Abdelazez        │
