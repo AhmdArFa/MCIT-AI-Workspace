@@ -196,17 +196,6 @@ chmod +x ./scripts/setup_tut_ai.sh
 
 ---
 
-## 📊 Official Pitch Deck Deliverables
-
-| Deliverable | Format | Access Location |
-|---|---|---|
-| **Executive PowerPoint Presentation** | `.pptx` (14 Slides) | [📥 `TuT_AI_Marketing_Pitch_Deck.pptx`](TuT_AI_Marketing_Pitch_Deck.pptx) |
-| **Interactive Web Presentation Deck** | `.html` (Standalone) | [🌐 `TuT_AI_Marketing_Pitch_Deck.html`](TuT_AI_Marketing_Pitch_Deck.html) |
-| **Automated Slide Generator** | Python (`python-pptx`) | [⚙️ `scripts/generate_pitch_deck.py`](scripts/generate_pitch_deck.py) |
-| **Official Team & Governance Roster** | Markdown | [👥 `TEAM.md`](TEAM.md) |
-
----
-
 ## 🔒 Confidentiality & Sovereign License
 
 **CONFIDENTIAL — PROPRIETARY TO MCIT EGYPT.**
