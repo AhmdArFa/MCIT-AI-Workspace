@@ -473,7 +473,7 @@ def create_presentation():
                  "11 isolated Docker services: Agent, Platform, ONLYOFFICE, SurrealDB, Postgres, Redis, Kokoro.",
                  "Built-in runtime self-patching in startServer.js guarantees TRPC stability on container boot.",
                  "Turnkey 1-click bootstrap scripts (.ps1 and .sh) launch the full ecosystem in under 15 seconds.",
-                 "All source code versioned on GitHub: AhmdArFa/TuT-AI."
+                 "All source code versioned on GitHub: MCIT-DEPI/DEPI-PPTX."
              ],
              badge="Resilience", accent_color=c_green)
 
@@ -726,7 +726,7 @@ def create_presentation():
     p.space_after = Pt(32)
 
     p = tf.add_paragraph()
-    p.text = "GitHub Repository: https://github.com/AhmdArFa/TuT-AI\nLocal Endpoints: http://localhost:3210 (TuT Agent) | http://localhost:8502 (Platform)"
+    p.text = "GitHub Repository: https://github.com/MCIT-DEPI/DEPI-PPTX\nLocal Endpoints: http://localhost:3210 (TuT Agent) | http://localhost:8502 (Platform)"
     p.font.name = "Arial"
     p.font.size = Pt(14)
     p.font.bold = True
@@ -742,6 +742,11 @@ def create_presentation():
     project_doc_path = r"C:\MCIT AI Final\docs\TuT_AI_Marketing_Pitch_Deck.pptx"
     prs.save(project_doc_path)
     print(f"SUCCESS: Saved copy to {project_doc_path}")
+
+    # Also save to project root
+    root_path = r"C:\MCIT AI Final\TuT_AI_Marketing_Pitch_Deck.pptx"
+    prs.save(root_path)
+    print(f"SUCCESS: Saved copy to {root_path}")
 
 if __name__ == "__main__":
     create_presentation()

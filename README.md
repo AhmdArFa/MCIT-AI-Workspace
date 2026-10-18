@@ -167,8 +167,8 @@ The evolution of TuT AI followed four structured engineering milestones:
 
 ```powershell
 # Clone the private repository
-git clone https://github.com/AhmdArFa/TuT-AI.git
-cd TuT-AI
+git clone https://github.com/MCIT-DEPI/DEPI-PPTX.git
+cd DEPI-PPTX
 
 # On Windows (PowerShell):
 .\scripts\setup_tut_ai.ps1
