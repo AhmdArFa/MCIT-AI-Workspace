@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="TuT AI Sovereign Platform" width="140" />
+  <img src="mcit-logo.png" alt="Ministry of Communications and Information Technology (MCIT)" width="220" />
 </p>
 
 <h1 align="center">TuT AI: Sovereign Local AI Platform</h1>

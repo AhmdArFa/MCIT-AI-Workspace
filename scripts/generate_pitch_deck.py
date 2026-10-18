@@ -24,6 +24,14 @@ def create_presentation():
     c_white = RGBColor(248, 250, 252)  # #F8FAFC Crisp White
     c_muted = RGBColor(148, 163, 184)  # #94A3B8 Silver Gray
 
+    # Ministry Logo path
+    logo_candidates = [
+        r"C:\MCIT AI Final\mcit-logo.png",
+        r"C:\MCIT AI Final\frontend\public\mcit-logo.png",
+        r"C:\Users\abdoh\OneDrive\Documents\Desktop\mcit-logo.png"
+    ]
+    mcit_logo = next((p for p in logo_candidates if os.path.exists(p)), None)
+
     def add_bg(slide):
         bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), prs.slide_width, prs.slide_height)
         bg.fill.solid()
@@ -33,7 +41,7 @@ def create_presentation():
 
     def add_top_bar(slide, title_text, category="TuT AI — SOVEREIGN INTELLIGENCE PLATFORM"):
         # Category tag
-        cat_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.7), Inches(0.4))
+        cat_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(9.8), Inches(0.4))
         tf = cat_box.text_frame
         tf.word_wrap = True
         p = tf.paragraphs[0]
@@ -44,7 +52,7 @@ def create_presentation():
         p.font.color.rgb = c_gold
 
         # Main Title
-        title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.75), Inches(11.7), Inches(0.7))
+        title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.75), Inches(9.8), Inches(0.7))
         tf2 = title_box.text_frame
         tf2.word_wrap = True
         p2 = tf2.paragraphs[0]
@@ -53,6 +61,10 @@ def create_presentation():
         p2.font.size = Pt(24)
         p2.font.bold = True
         p2.font.color.rgb = c_white
+
+        # Ministry Logo at top right of every slide
+        if mcit_logo:
+            slide.shapes.add_picture(mcit_logo, Inches(11.1), Inches(0.42), width=Inches(1.43), height=Inches(0.75))
 
         # Divider line
         line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.5), Inches(11.733), Inches(0.02))
@@ -171,13 +183,17 @@ def create_presentation():
     s1 = prs.slides.add_slide(blank_layout)
     add_bg(s1)
 
+    # Ministry Logo at top
+    if mcit_logo:
+        s1.shapes.add_picture(mcit_logo, Inches(1.2), Inches(0.8), width=Inches(1.85), height=Inches(0.96))
+
     # Accent decorative box
-    gold_bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.8), Inches(0.12), Inches(3.8))
+    gold_bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(2.1), Inches(0.12), Inches(3.6))
     gold_bar.fill.solid()
     gold_bar.fill.fore_color.rgb = c_gold
     gold_bar.line.fill.background()
 
-    tb = s1.shapes.add_textbox(Inches(1.2), Inches(1.6), Inches(11), Inches(4))
+    tb = s1.shapes.add_textbox(Inches(1.2), Inches(1.9), Inches(11), Inches(4.0))
     tf = tb.text_frame
     tf.word_wrap = True
 
@@ -202,14 +218,7 @@ def create_presentation():
     p_sub.font.name = "Arial"
     p_sub.font.size = Pt(18)
     p_sub.font.color.rgb = c_cyan
-    p_sub.space_after = Pt(28)
-
-    p_lead = tf.add_paragraph()
-    p_lead.text = "Principal Architect & Project Lead: Ahmed Gamal Sophi Arfa | Under the Supervision of MCIT Leadership"
-    p_lead.font.name = "Arial"
-    p_lead.font.size = Pt(13)
-    p_lead.font.bold = True
-    p_lead.font.color.rgb = c_gold_light
+    p_sub.space_after = Pt(16)
 
     # =========================================================================
     # SLIDE 2: THE PROBLEM & SOVEREIGN IMPERATIVE
@@ -695,7 +704,10 @@ def create_presentation():
     s14 = prs.slides.add_slide(blank_layout)
     add_bg(s14)
 
-    tb = s14.shapes.add_textbox(Inches(1.5), Inches(1.5), Inches(10.33), Inches(4.5))
+    if mcit_logo:
+        s14.shapes.add_picture(mcit_logo, Inches(5.72), Inches(0.6), width=Inches(1.88), height=Inches(0.98))
+
+    tb = s14.shapes.add_textbox(Inches(1.5), Inches(1.7), Inches(10.33), Inches(4.5))
     tf = tb.text_frame
     tf.word_wrap = True
 
