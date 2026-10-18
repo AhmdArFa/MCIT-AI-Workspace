@@ -60,4 +60,7 @@ docs
 ollama_data
 surreal_data
 notebook_data
+mcit_data
+office_data
+temp_fav
 .env
